@@ -234,6 +234,85 @@
         </div>
     </div>
 
+    <!-- Video Maker Modal -->
+    <div id="videoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" style="background:rgba(0,0,0,0.85);backdrop-filter:blur(8px)">
+        <div class="bg-ytCard border border-ytBorder rounded-2xl w-full max-w-4xl max-h-[92vh] overflow-y-auto p-5 relative">
+            <button onclick="closeVideoMaker()" class="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-ytHover text-slate-400 hover:text-white transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#f97316,#ea580c)">
+                    <i data-lucide="film" class="w-4 h-4 text-white"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white">Video Maker</h3>
+                    <p class="text-[11px] text-slate-500">Turns your script into a captioned, ready-to-post video</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_260px] gap-5">
+                <div class="flex items-center justify-center rounded-xl bg-black border border-ytBorder p-2">
+                    <canvas id="vmCanvas" width="1080" height="1920" class="rounded-lg" style="max-height:62vh;max-width:100%;height:auto;width:auto"></canvas>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Format</label>
+                            <select id="vmFormat" onchange="vmRebuild()" class="w-full border rounded-xl px-3 py-2 text-white focus:outline-none" style="background:#111;border-color:#2a2a2a">
+                                <option value="vertical">Shorts 9:16</option>
+                                <option value="landscape">YouTube 16:9</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Theme</label>
+                            <select id="vmTheme" onchange="vmDrawStill()" class="w-full border rounded-xl px-3 py-2 text-white focus:outline-none" style="background:#111;border-color:#2a2a2a">
+                                <option value="midnight">Midnight</option>
+                                <option value="sunset">Sunset</option>
+                                <option value="ocean">Ocean</option>
+                                <option value="neon">Neon</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Channel handle (optional)</label>
+                        <input id="vmHandle" type="text" maxlength="30" oninput="vmDrawStill()" placeholder="@yourchannel"
+                            class="w-full border rounded-xl px-3 py-2 text-white placeholder-slate-600 focus:outline-none" style="background:#111;border-color:#2a2a2a" />
+                    </div>
+
+                    <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                        <input id="vmVoice" type="checkbox" checked class="accent-orange-500">
+                        Read aloud during preview
+                    </label>
+
+                    <div id="vmInfo" class="p-3 rounded-xl bg-ytDarkBg border border-ytBorder text-slate-400"></div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="vmPreviewBtn" onclick="vmTogglePreview()" class="py-2.5 rounded-xl font-bold border text-slate-200 hover:bg-ytHover transition flex items-center justify-center gap-1.5" style="border-color:#2a2a2a">
+                            <i data-lucide="play" class="w-3.5 h-3.5"></i> <span>Preview</span>
+                        </button>
+                        <button id="vmDownloadBtn" onclick="vmDownload()" class="py-2.5 rounded-xl font-bold text-white flex items-center justify-center gap-1.5 transition hover:opacity-90" style="background:linear-gradient(135deg,#f97316,#ea580c)">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i> <span>Download</span>
+                        </button>
+                    </div>
+
+                    <div id="vmProgressWrap" class="hidden space-y-1.5">
+                        <div class="h-1.5 rounded-full bg-ytDarkBg overflow-hidden">
+                            <div id="vmProgressBar" class="h-full bg-orange-500 transition-all" style="width:0%"></div>
+                        </div>
+                        <p id="vmStatus" class="text-[11px] text-slate-400"></p>
+                    </div>
+
+                    <p class="text-[10px] text-slate-600 leading-relaxed">
+                        The download is a silent, captioned video. Add your voiceover or a trending sound in YouTube Shorts, TikTok or CapCut.
+                        Keep this tab open and visible while it records; recording runs in real time.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Dashboard Workspace -->
     <main class="flex-1 p-4 lg:p-6 max-w-[1700px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
 
@@ -477,8 +556,8 @@
                                 <button onclick="copyGeneratedScript()" class="py-2.5 rounded-xl text-xs font-bold border text-slate-300 hover:text-white hover:bg-ytHover transition flex items-center justify-center gap-1.5" style="border-color:#2a2a2a">
                                     <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Script
                                 </button>
-                                <button onclick="openPricing()" class="py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition hover:opacity-90" style="background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(234,88,12,0.1));color:#f97316;border:1px solid rgba(249,115,22,0.3)">
-                                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Make Video · Pro
+                                <button onclick="openVideoMaker()" class="py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition hover:opacity-90" style="background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(234,88,12,0.1));color:#f97316;border:1px solid rgba(249,115,22,0.3)">
+                                    <i data-lucide="film" class="w-3.5 h-3.5"></i> Make Video
                                 </button>
                             </div>
                         </div>
@@ -976,6 +1055,8 @@
         document.addEventListener("click", function(e) {
             const modal = document.getElementById("pricingModal");
             if (modal && e.target === modal) closePricing();
+            const videoModal = document.getElementById("videoModal");
+            if (videoModal && e.target === videoModal) closeVideoMaker();
         });
 
         // ── Groq API Key persistence ────────────────────────────────────
@@ -1189,6 +1270,386 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
                 showToast("📋 Script copied to clipboard!");
             }).catch(() => {
                 showToast("Copy failed — try selecting text manually");
+            });
+        }
+
+        // ── Video Maker ─────────────────────────────────────────────────
+        // Renders the generated script as an animated, captioned video on a canvas
+        // and records it with MediaRecorder. Everything runs in the browser.
+        const VM_THEMES = {
+            midnight: { bgs: [["#0f172a", "#312e81"], ["#1e1b4b", "#4c1d95"], ["#111827", "#1e3a8a"]], accent: "#facc15" },
+            sunset:   { bgs: [["#431407", "#9a3412"], ["#4a044e", "#be123c"], ["#3b0764", "#c2410c"]], accent: "#fde047" },
+            ocean:    { bgs: [["#042f2e", "#0e7490"], ["#082f49", "#1d4ed8"], ["#022c22", "#047857"]], accent: "#fef08a" },
+            neon:     { bgs: [["#0a0a0a", "#831843"], ["#0a0a0a", "#1e3a8a"], ["#0a0a0a", "#14532d"]], accent: "#22d3ee" }
+        };
+        const VM_WORDS_PER_SEC = 2.6;
+        const VM_FONT = "Inter, 'Segoe UI', Roboto, Arial, sans-serif";
+        const vm = { title: "", timeline: [], total: 0, raf: null, recorder: null, mode: null, lastSpoken: -1 };
+
+        function vmClean(text) {
+            return text.replace(/\*\*(.+?)\*\*/g, "$1").replace(/[*_`#>]/g, "").replace(/\s+/g, " ").trim();
+        }
+
+        // Splits the Markdown script into a title and sections of narration lines.
+        function vmParseScript(md) {
+            let title = "";
+            const sections = [];
+            let current = null;
+            for (const rawLine of md.split("\n")) {
+                const line = rawLine.trim();
+                let m;
+                if (!line) continue;
+                if ((m = line.match(/^#{1,2}\s+(.*)/)) && !line.startsWith("###")) { title = vmClean(m[1]); continue; }
+                if ((m = line.match(/^#{3,6}\s+(.*)/))) {
+                    current = { heading: vmClean(m[1]), lines: [], onScreen: [] };
+                    sections.push(current);
+                    continue;
+                }
+                if (!current) { current = { heading: "", lines: [], onScreen: [] }; sections.push(current); }
+                let text = line.replace(/\[ON SCREEN(?: TEXT)?:\s*([^\]]*)\]/gi, (_, t) => { current.onScreen.push(vmClean(t)); return ""; });
+                text = vmClean(text.replace(/\[[^\]]*\]/g, "").replace(/^([-*•]|\d+[.)])\s+/, ""));
+                if (text) current.lines.push(text);
+            }
+            return { title: title || "My Video", sections: sections.filter(s => s.lines.length) };
+        }
+
+        // Groups words into short caption chunks, preferring to break after punctuation.
+        function vmChunk(text, maxWords) {
+            const words = text.split(" ").filter(Boolean);
+            const chunks = [];
+            let cur = [];
+            for (const w of words) {
+                cur.push(w);
+                if (cur.length >= maxWords || (cur.length >= 3 && /[.,!?;:]$/.test(w))) { chunks.push(cur.join(" ")); cur = []; }
+            }
+            if (cur.length) chunks.push(cur.join(" "));
+            return chunks;
+        }
+
+        function vmBuildTimeline(md, vertical) {
+            const { title, sections } = vmParseScript(md);
+            const items = [];
+            let t = 0;
+            const push = (item, dur) => { items.push({ ...item, start: t, dur }); t += dur; };
+            push({ type: "title", text: title, scene: 0 }, 3);
+            sections.forEach((sec, i) => {
+                const scene = i + 1;
+                if (sec.heading) push({ type: "section", text: sec.heading, scene }, 1.4);
+                for (const line of sec.lines) {
+                    for (const chunk of vmChunk(line, vertical ? 5 : 8)) {
+                        const words = chunk.split(" ").length;
+                        push({ type: "caption", text: chunk, heading: sec.heading, onScreen: sec.onScreen[0] || "", scene },
+                             Math.max(1.1, words / VM_WORDS_PER_SEC));
+                    }
+                }
+            });
+            push({ type: "outro", text: "Thanks for watching", scene: sections.length + 1 }, 3);
+            return { title, items, total: t };
+        }
+
+        function vmWrap(ctx, text, maxWidth) {
+            const words = text.split(" ");
+            const lines = [];
+            let line = "";
+            for (const w of words) {
+                const test = line ? line + " " + w : w;
+                if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = w; }
+                else line = test;
+            }
+            if (line) lines.push(line);
+            return lines;
+        }
+
+        function vmRoundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r);
+            ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r);
+            ctx.arcTo(x, y, x + w, y, r);
+            ctx.closePath();
+        }
+
+        function vmDrawFrame(t) {
+            const canvas = document.getElementById("vmCanvas");
+            const ctx = canvas.getContext("2d");
+            const W = canvas.width, H = canvas.height;
+            const vertical = H > W;
+            const unit = Math.min(W, H) / 1080;
+            const theme = VM_THEMES[document.getElementById("vmTheme").value] || VM_THEMES.midnight;
+            const item = vm.timeline.find(it => t >= it.start && t < it.start + it.dur) || vm.timeline[vm.timeline.length - 1];
+            if (!item) return;
+            const local = t - item.start;
+            const enter = Math.min(1, local / 0.3);
+            const ease = 1 - Math.pow(1 - enter, 3);
+
+            // Animated gradient background with drifting glows
+            const [c1, c2] = theme.bgs[item.scene % theme.bgs.length];
+            const angle = t * 0.15;
+            const g = ctx.createLinearGradient(W / 2 + Math.cos(angle) * W, 0, W / 2 - Math.cos(angle) * W, H);
+            g.addColorStop(0, c1);
+            g.addColorStop(1, c2);
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+            for (let i = 0; i < 3; i++) {
+                const x = W * (0.5 + 0.35 * Math.sin(t * 0.3 + i * 2.1));
+                const y = H * (0.5 + 0.35 * Math.cos(t * 0.25 + i * 1.7));
+                const r = Math.max(W, H) * 0.35;
+                const glow = ctx.createRadialGradient(x, y, 0, x, y, r);
+                glow.addColorStop(0, "rgba(255,255,255,0.08)");
+                glow.addColorStop(1, "rgba(255,255,255,0)");
+                ctx.fillStyle = glow;
+                ctx.fillRect(0, 0, W, H);
+            }
+
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            const maxText = W * (vertical ? 0.84 : 0.78);
+
+            if (item.type === "title" || item.type === "outro") {
+                ctx.save();
+                ctx.globalAlpha = ease;
+                ctx.translate(W / 2, H / 2);
+                ctx.scale(0.9 + 0.1 * ease, 0.9 + 0.1 * ease);
+                const size = (vertical ? 92 : 84) * unit;
+                ctx.font = `900 ${size}px ${VM_FONT}`;
+                const lines = vmWrap(ctx, item.type === "title" ? item.text : "Thanks for watching!", maxText);
+                const lh = size * 1.15;
+                lines.forEach((ln, i) => {
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fillText(ln, 0, (i - (lines.length - 1) / 2) * lh - (item.type === "outro" ? 60 * unit : 0));
+                });
+                if (item.type === "outro") {
+                    const bw = 420 * unit, bh = 96 * unit, by = (lines.length * lh) / 2 + 20 * unit;
+                    ctx.fillStyle = "#ff0000";
+                    vmRoundRect(ctx, -bw / 2, by, bw, bh, bh / 2);
+                    ctx.fill();
+                    ctx.fillStyle = "#ffffff";
+                    ctx.font = `800 ${44 * unit}px ${VM_FONT}`;
+                    ctx.fillText("SUBSCRIBE", 0, by + bh / 2);
+                } else {
+                    ctx.fillStyle = theme.accent;
+                    ctx.fillRect(-90 * unit, (lines.length * lh) / 2 + 30 * unit, 180 * unit * ease, 10 * unit);
+                }
+                ctx.restore();
+            } else if (item.type === "section") {
+                ctx.save();
+                ctx.globalAlpha = ease;
+                const size = (vertical ? 76 : 68) * unit;
+                ctx.font = `900 ${size}px ${VM_FONT}`;
+                const lines = vmWrap(ctx, item.text.toUpperCase(), maxText);
+                lines.forEach((ln, i) => {
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fillText(ln, W / 2, H / 2 + (i - (lines.length - 1) / 2) * size * 1.15);
+                });
+                ctx.fillStyle = theme.accent;
+                const barW = 240 * unit * ease;
+                ctx.fillRect(W / 2 - barW / 2, H / 2 + (lines.length * size * 1.15) / 2 + 24 * unit, barW, 10 * unit);
+                ctx.restore();
+            } else {
+                // Section label at the top
+                if (item.heading) {
+                    ctx.font = `700 ${34 * unit}px ${VM_FONT}`;
+                    ctx.fillStyle = "rgba(255,255,255,0.65)";
+                    ctx.fillText(item.heading.toUpperCase(), W / 2, H * (vertical ? 0.12 : 0.1));
+                }
+                // On-screen text card
+                if (item.onScreen) {
+                    ctx.font = `800 ${40 * unit}px ${VM_FONT}`;
+                    const tw = Math.min(maxText, ctx.measureText(item.onScreen).width + 60 * unit);
+                    const ty = H * (vertical ? 0.2 : 0.2);
+                    ctx.fillStyle = "rgba(0,0,0,0.45)";
+                    vmRoundRect(ctx, W / 2 - tw / 2, ty - 40 * unit, tw, 80 * unit, 20 * unit);
+                    ctx.fill();
+                    ctx.fillStyle = theme.accent;
+                    ctx.fillText(vmWrap(ctx, item.onScreen, maxText - 60 * unit)[0], W / 2, ty);
+                }
+
+                // Caption with the spoken word highlighted
+                const size = (vertical ? 88 : 72) * unit;
+                ctx.font = `900 ${size}px ${VM_FONT}`;
+                const words = item.text.split(" ");
+                const active = Math.min(words.length - 1, Math.floor((local / item.dur) * words.length));
+                const lines = vmWrap(ctx, item.text, maxText);
+                const lh = size * 1.2;
+                const cy = H * (vertical ? 0.55 : 0.55) + (1 - ease) * 30 * unit;
+                let wordIdx = 0;
+                ctx.lineJoin = "round";
+                lines.forEach((ln, li) => {
+                    const lineWords = ln.split(" ");
+                    const space = ctx.measureText(" ").width;
+                    const lineWidth = ctx.measureText(ln).width;
+                    let x = W / 2 - lineWidth / 2;
+                    const y = cy + (li - (lines.length - 1) / 2) * lh;
+                    ctx.textAlign = "left";
+                    for (const w of lineWords) {
+                        const ww = ctx.measureText(w).width;
+                        ctx.globalAlpha = ease;
+                        ctx.lineWidth = 14 * unit;
+                        ctx.strokeStyle = "rgba(0,0,0,0.55)";
+                        ctx.strokeText(w, x, y);
+                        ctx.fillStyle = wordIdx === active ? theme.accent : "#ffffff";
+                        ctx.fillText(w, x, y);
+                        x += ww + space;
+                        wordIdx++;
+                    }
+                    ctx.textAlign = "center";
+                });
+                ctx.globalAlpha = 1;
+            }
+
+            // Channel handle and progress bar
+            const handle = document.getElementById("vmHandle").value.trim();
+            if (handle) {
+                ctx.textAlign = "center";
+                ctx.font = `700 ${30 * unit}px ${VM_FONT}`;
+                ctx.fillStyle = "rgba(255,255,255,0.75)";
+                ctx.fillText(handle, W / 2, H * (vertical ? 0.9 : 0.9));
+            }
+            ctx.fillStyle = "rgba(255,255,255,0.15)";
+            ctx.fillRect(0, H - 12 * unit, W, 12 * unit);
+            ctx.fillStyle = theme.accent;
+            ctx.fillRect(0, H - 12 * unit, W * Math.min(1, t / vm.total), 12 * unit);
+        }
+
+        function vmFormatTime(sec) {
+            const s = Math.round(sec);
+            return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+        }
+
+        function vmRebuild() {
+            vmStop();
+            const raw = document.getElementById("genScriptContent").dataset.raw || "";
+            const vertical = document.getElementById("vmFormat").value === "vertical";
+            const canvas = document.getElementById("vmCanvas");
+            canvas.width = vertical ? 1080 : 1920;
+            canvas.height = vertical ? 1920 : 1080;
+            const built = vmBuildTimeline(raw, vertical);
+            vm.title = built.title;
+            vm.timeline = built.items;
+            vm.total = built.total;
+            const captions = built.items.filter(i => i.type === "caption").length;
+            document.getElementById("vmInfo").innerHTML =
+                `<span class="text-white font-bold">${vmFormatTime(vm.total)}</span> video · ${captions} caption scenes`;
+            vmDrawStill();
+        }
+
+        function vmDrawStill() {
+            if (vm.mode) return;
+            vmDrawFrame(0.8);
+        }
+
+        function openVideoMaker() {
+            const raw = document.getElementById("genScriptContent").dataset.raw;
+            if (!raw) { showToast("Generate a script first"); return; }
+            document.getElementById("vmFormat").value = document.getElementById("genStyle").value === "shorts" ? "vertical" : "landscape";
+            document.getElementById("videoModal").classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+            vmRebuild();
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeVideoMaker() {
+            vmStop(true);
+            document.getElementById("videoModal").classList.add("hidden");
+            document.body.style.overflow = "";
+        }
+
+        function vmSetProgress(fraction, text) {
+            document.getElementById("vmProgressWrap").classList.remove("hidden");
+            document.getElementById("vmProgressBar").style.width = `${Math.round(fraction * 100)}%`;
+            document.getElementById("vmStatus").innerText = text;
+        }
+
+        function vmSetButtons() {
+            document.querySelector("#vmPreviewBtn span").innerText = vm.mode === "preview" ? "Stop" : "Preview";
+            document.getElementById("vmPreviewBtn").disabled = vm.mode === "record";
+            document.getElementById("vmDownloadBtn").disabled = vm.mode !== null;
+            document.getElementById("vmDownloadBtn").style.opacity = vm.mode ? "0.5" : "1";
+            document.getElementById("vmFormat").disabled = vm.mode !== null;
+        }
+
+        // Plays the timeline in real time; calls onEnd when it finishes.
+        function vmPlay(mode, onEnd) {
+            vm.mode = mode;
+            vm.lastSpoken = -1;
+            vmSetButtons();
+            const startedAt = performance.now();
+            const speak = mode === "preview" && document.getElementById("vmVoice").checked && "speechSynthesis" in window;
+            const tick = () => {
+                const t = (performance.now() - startedAt) / 1000;
+                if (t >= vm.total) { vmDrawFrame(vm.total - 0.01); onEnd(); return; }
+                vmDrawFrame(t);
+                if (speak) {
+                    const idx = vm.timeline.findIndex(it => t >= it.start && t < it.start + it.dur);
+                    if (idx !== vm.lastSpoken) {
+                        vm.lastSpoken = idx;
+                        const it = vm.timeline[idx];
+                        if (it && it.type !== "section") {
+                            speechSynthesis.cancel();
+                            const u = new SpeechSynthesisUtterance(it.type === "outro" ? "Thanks for watching. Subscribe for more." : it.text);
+                            u.rate = 1.1;
+                            speechSynthesis.speak(u);
+                        }
+                    }
+                }
+                vmSetProgress(t / vm.total, `${mode === "record" ? "Recording" : "Previewing"} ${vmFormatTime(t)} / ${vmFormatTime(vm.total)}`);
+                vm.raf = requestAnimationFrame(tick);
+            };
+            tick();
+        }
+
+        function vmStop(discard) {
+            if (vm.raf) cancelAnimationFrame(vm.raf);
+            vm.raf = null;
+            if ("speechSynthesis" in window) speechSynthesis.cancel();
+            if (vm.recorder && vm.recorder.state !== "inactive") {
+                if (discard) { vm.recorder.ondataavailable = null; vm.recorder.onstop = null; }
+                vm.recorder.stop();
+            }
+            vm.recorder = null;
+            vm.mode = null;
+            if (document.getElementById("vmPreviewBtn")) vmSetButtons();
+        }
+
+        function vmTogglePreview() {
+            if (vm.mode === "preview") { vmStop(); vmDrawStill(); return; }
+            vmPlay("preview", () => { vmStop(); vmSetProgress(1, "Preview finished"); });
+        }
+
+        function vmDownload() {
+            if (!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream) {
+                showToast("Video recording isn't supported in this browser — try Chrome or Edge");
+                return;
+            }
+            const canvas = document.getElementById("vmCanvas");
+            const mime = ["video/mp4;codecs=avc1.42E01E", "video/mp4", "video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"]
+                .find(type => MediaRecorder.isTypeSupported(type));
+            const recorder = new MediaRecorder(canvas.captureStream(30), mime ? { mimeType: mime, videoBitsPerSecond: 8000000 } : undefined);
+            const parts = [];
+            recorder.ondataavailable = e => { if (e.data.size) parts.push(e.data); };
+            recorder.onstop = () => {
+                const type = recorder.mimeType || mime || "video/webm";
+                const blob = new Blob(parts, { type });
+                const ext = type.includes("mp4") ? "mp4" : "webm";
+                const slug = vm.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "video";
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = `${slug}.${ext}`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+                vmSetProgress(1, `Saved ${slug}.${ext}`);
+                showToast("🎬 Video downloaded!");
+            };
+            vm.recorder = recorder;
+            recorder.start(1000);
+            vmPlay("record", () => {
+                if (vm.raf) cancelAnimationFrame(vm.raf);
+                vm.raf = null;
+                // Give the encoder a moment to capture the last frame before stopping
+                setTimeout(() => { if (recorder.state !== "inactive") recorder.stop(); vm.recorder = null; vm.mode = null; vmSetButtons(); }, 300);
             });
         }
 
