@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VidPulse Pro - Viral YouTube Growth & Optimization Studio</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        ytDarkBg: '#0f0f0f',
+                        ytCard: '#1f1f1f',
+                        ytHover: '#282828',
+                        ytBorder: '#383838',
+                        ytRed: '#ff0000',
+                        ytRedHover: '#cc0000',
+                        electricBlue: '#3ea6ff',
+                        neonGreen: '#22c55e',
+                        warningYellow: '#eab308',
+                        alertRed: '#ef4444',
+                        purpleAccent: '#a855f7'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js for Growth Timeline and Velocity Radar -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #383838;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #505050;
+        }
+
+        .glass-badge {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .neon-glow-red {
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.35);
+        }
+
+        .neon-glow-blue {
+            box-shadow: 0 0 15px rgba(62, 166, 255, 0.35);
+        }
+
+        /* SVG Circular Progress Gauge */
+        .circle-bg {
+            fill: none;
+            stroke: #282828;
+            stroke-width: 3.5;
+        }
+        .circle-gauge {
+            fill: none;
+            stroke-width: 3.8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s ease-in-out, stroke 0.4s ease;
+        }
+
+        /* Heatmap overlay simulation */
+        .heatmap-overlay {
+            background: radial-gradient(circle at 35% 40%, rgba(255, 0, 0, 0.7) 0%, rgba(255, 230, 0, 0.5) 25%, rgba(0, 255, 120, 0.3) 50%, transparent 75%);
+            mix-blend-mode: color-dodge;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-ytDarkBg text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-ytRed selection:text-white">
+
+    <!-- Navigation & Header Bar -->
+    <header class="sticky top-0 z-50 bg-ytDarkBg/90 backdrop-blur-md border-b border-ytBorder px-4 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <div class="bg-ytRed p-2 rounded-xl shadow-lg neon-glow-red flex items-center justify-center">
+                <i data-lucide="play" class="w-5 h-5 text-white fill-current"></i>
+            </div>
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xl font-black tracking-tight text-white">VidPulse <span class="text-xs px-2 py-0.5 rounded-full bg-ytRed/20 text-ytRed border border-ytRed/40 font-bold">VIRAL ENGINE</span></span>
+                </div>
+                <p class="text-xs text-slate-400 hidden sm:block">YouTube Algorithm Distribution & Virality Studio</p>
+            </div>
+        </div>
+
+        <!-- Video Search & Preset Switcher -->
+        <div class="flex-1 max-w-2xl flex items-center gap-2">
+            <div class="relative flex-1">
+                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input type="text" id="videoSearchInput" placeholder="Paste YouTube link or video ID to run viral diagnostic..." 
+                    class="w-full pl-10 pr-24 py-2 bg-ytCard border border-ytBorder rounded-xl text-sm focus:outline-none focus:border-electricBlue transition text-slate-200 placeholder-slate-500">
+                <button onclick="runCustomAnalysis()" class="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 py-1 bg-ytRed hover:bg-ytRedHover text-white text-xs font-semibold rounded-lg transition flex items-center gap-1 shadow-md">
+                    <span>Analyze</span>
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                </button>
+            </div>
+
+            <select id="presetSelect" onchange="loadPresetVideo(this.value)" class="bg-ytCard border border-ytBorder text-xs text-slate-300 rounded-xl px-3 py-2.5 focus:outline-none focus:border-electricBlue cursor-pointer">
+                <option value="preset1">Preset: VidIQ Viral Growth Guide</option>
+                <option value="preset2">Preset: AI Breakthrough Case Study</option>
+                <option value="preset3">Preset: Extreme Challenge (Outlier 12x)</option>
+            </select>
+        </div>
+
+        <!-- Status & Active Live Metrics Indicator -->
+        <div class="flex items-center gap-3">
+            <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>Algorithm Radar Active</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard Workspace -->
+    <main class="flex-1 p-4 lg:p-6 max-w-[1700px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT PANEL: Video Player, Title & Thumbnail A/B Heatmap (7 Cols) -->
+        <section class="lg:col-span-7 flex flex-col gap-6">
+
+            <!-- Video Embedded Player & Active Title Editor -->
+            <div class="bg-ytCard rounded-2xl overflow-hidden border border-ytBorder shadow-xl">
+                <div class="relative aspect-video bg-black flex items-center justify-center">
+                    <iframe id="mainEmbedPlayer" class="w-full h-full" src="https://www.youtube.com/embed/ey8S1L0Oq8E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <div class="p-5 space-y-4">
+                    <div class="space-y-1.5">
+                        <label class="text-[11px] font-bold uppercase tracking-wider text-electricBlue flex items-center gap-1.5">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Active Video Title (Live Viral Scoring)
+                        </label>
+                        <input type="text" id="videoTitleInput" oninput="recalculateViralScore()" 
+                            class="w-full bg-ytDarkBg border border-ytBorder hover:border-slate-500 focus:border-electricBlue rounded-xl px-3.5 py-2 text-base font-extrabold text-white transition focus:outline-none"
+                            value="How To Grow Your YouTube Channel Using vidIQ in 2026 (Full-Guide)">
+                    </div>
+
+                    <!-- Channel Info Banner -->
+                    <div class="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-ytBorder">
+                        <div class="flex items-center gap-3">
+                            <img id="channelAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Channel" class="w-10 h-10 rounded-full border border-electricBlue">
+                            <div>
+                                <div class="flex items-center gap-1.5">
+                                    <h4 id="channelName" class="font-bold text-sm text-white">vidIQ</h4>
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-electricBlue fill-electricBlue/20"></i>
+                                </div>
+                                <p id="channelSubscribers" class="text-xs text-slate-400">2.44M subscribers</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2 text-xs">
+                            <div class="bg-ytDarkBg px-3 py-1.5 rounded-lg border border-ytBorder flex items-center gap-2">
+                                <i data-lucide="eye" class="w-3.5 h-3.5 text-amber-400"></i>
+                                <span id="metricTotalViews" class="font-bold text-white">180.3K</span>
+                            </div>
+                            <div class="bg-ytDarkBg px-3 py-1.5 rounded-lg border border-ytBorder flex items-center gap-2">
+                                <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span id="metricAge" class="text-slate-300">Published 9mo ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thumbnail A/B Testing & Heatmap Simulator -->
+            <div class="bg-ytCard p-5 rounded-2xl border border-ytBorder space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <div class="p-2 rounded-lg bg-ytRed/10 text-ytRed">
+                            <i data-lucide="image" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-white">Thumbnail A/B Test & Eye-Tracking Heatmap</h3>
+                            <p class="text-xs text-slate-400">Simulate clickability score, face expression impact & contrast</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleHeatmap()" id="heatmapToggleBtn" class="px-3 py-1.5 rounded-lg bg-ytDarkBg hover:bg-ytHover text-xs font-semibold text-slate-300 border border-ytBorder transition flex items-center gap-1.5">
+                            <i data-lucide="flame" class="w-3.5 h-3.5 text-amber-400"></i>
+                            <span id="heatmapBtnText">Show Heatmap Overlay</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Side-by-side Thumbnail Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Variant A -->
+                    <div class="bg-ytDarkBg p-3 rounded-xl border border-ytBorder space-y-2 relative">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="font-bold text-slate-300">Thumbnail Version A</span>
+                            <span class="text-amber-400 font-semibold text-[11px]">CTR: 4.2%</span>
+                        </div>
+                        <div class="relative aspect-video rounded-lg overflow-hidden border border-slate-700 group">
+                            <img id="thumbA" src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover" alt="Variant A">
+                            <div id="heatmapOverlayA" class="absolute inset-0 heatmap-overlay opacity-0 transition-opacity duration-300"></div>
+                            <span class="absolute bottom-2 right-2 bg-black/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">12:34</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1 text-[10px] text-slate-400 pt-1 border-t border-ytBorder/60 text-center">
+                            <div>Contrast: <span class="text-slate-200 font-bold">65%</span></div>
+                            <div>Face: <span class="text-amber-400 font-bold">Neutral</span></div>
+                            <div>Score: <span class="text-amber-400 font-bold">6.8/10</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Variant B (Active Winner) -->
+                    <div class="bg-ytDarkBg p-3 rounded-xl border border-neonGreen/50 space-y-2 relative bg-gradient-to-b from-neonGreen/5 to-transparent">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="font-bold text-neonGreen flex items-center gap-1">
+                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Version B (Winner)
+                            </span>
+                            <span class="text-neonGreen font-extrabold text-[11px] bg-neonGreen/10 px-2 py-0.5 rounded border border-neonGreen/20">CTR: 8.7% (+107%)</span>
+                        </div>
+                        <div class="relative aspect-video rounded-lg overflow-hidden border border-neonGreen/40 group">
+                            <img id="thumbB" src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover" alt="Variant B">
+                            <div id="heatmapOverlayB" class="absolute inset-0 heatmap-overlay opacity-0 transition-opacity duration-300"></div>
+                            <span class="absolute bottom-2 right-2 bg-black/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">12:34</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1 text-[10px] text-slate-400 pt-1 border-t border-ytBorder/60 text-center">
+                            <div>Contrast: <span class="text-neonGreen font-bold">92%</span></div>
+                            <div>Face: <span class="text-neonGreen font-bold">High Emotion</span></div>
+                            <div>Score: <span class="text-neonGreen font-bold">9.4/10</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Viral Title & Hook Generator -->
+            <div class="bg-ytCard p-5 rounded-2xl border border-ytBorder space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="p-2 rounded-lg bg-purpleAccent/10 text-purpleAccent">
+                            <i data-lucide="wand-2" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-white">AI Viral Title & Curiosity Hook Generator</h3>
+                            <p class="text-xs text-slate-400">Generates titles with high click triggers and curiosity gaps</p>
+                        </div>
+                    </div>
+                    <button onclick="generateViralTitles()" class="px-3 py-1.5 bg-purpleAccent hover:bg-purple-600 text-white text-xs font-semibold rounded-xl transition flex items-center gap-1.5 shadow-md">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Regenerate
+                    </button>
+                </div>
+
+                <div id="titleSuggestionsList" class="space-y-2">
+                    <!-- Dynamic suggestions rendered via JS -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RIGHT PANEL: Viral Potential Score, Metrics, Radar & Safety Check (5 Cols) -->
+        <section class="lg:col-span-5 flex flex-col gap-6">
+
+            <!-- MAIN VIRAL POTENTIAL SCORE CARD -->
+            <div class="bg-ytCard p-6 rounded-2xl border border-ytBorder space-y-5 relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-extrabold text-base text-white flex items-center gap-2">
+                            <span>Viral Potential Score</span>
+                            <i data-lucide="zap" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
+                        </h3>
+                        <p class="text-xs text-slate-400">Algorithmic Virality Index (0–100)</p>
+                    </div>
+                    <span id="viralScoreStatus" class="text-xs font-black px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                        HIGH VIRAL CHANCE
+                    </span>
+                </div>
+
+                <!-- Gauge & Metrics Grid -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-6 my-2">
+                    <!-- Circle Score Gauge -->
+                    <div class="relative w-40 h-40 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                            <path id="viralGaugeCircle" class="circle-gauge stroke-ytRed" stroke-dasharray="100, 100" stroke-dashoffset="12" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                        </svg>
+                        <div class="absolute flex flex-col items-center justify-center text-center">
+                            <span id="viralGaugeVal" class="text-4xl font-black text-white tracking-tight">88.5</span>
+                            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">/ 100 Score</span>
+                        </div>
+                    </div>
+
+                    <!-- Metric Breakdown -->
+                    <div class="w-full space-y-2.5 text-xs">
+                        <div class="bg-ytDarkBg p-2.5 rounded-xl border border-ytBorder flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="trending-up" class="w-4 h-4 text-ytRed"></i>
+                                <span class="text-slate-300 font-medium">Outlier Multiplier</span>
+                            </div>
+                            <span id="outlierVal" class="font-extrabold text-white">6.1x</span>
+                        </div>
+
+                        <div class="bg-ytDarkBg p-2.5 rounded-xl border border-ytBorder flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="zap" class="w-4 h-4 text-emerald-400"></i>
+                                <span class="text-slate-300 font-medium">Views Per Hour (VPH)</span>
+                            </div>
+                            <span id="vphVal" class="font-extrabold text-white">16 VPH</span>
+                        </div>
+
+                        <div class="bg-ytDarkBg p-2.5 rounded-xl border border-ytBorder flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="mouse-pointer-click" class="w-4 h-4 text-electricBlue"></i>
+                                <span class="text-slate-300 font-medium">Click-Through Rate</span>
+                            </div>
+                            <span id="ctrVal" class="font-extrabold text-white">8.7%</span>
+                        </div>
+
+                        <div class="bg-ytDarkBg p-2.5 rounded-xl border border-ytBorder flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="heart" class="w-4 h-4 text-pink-500"></i>
+                                <span class="text-slate-300 font-medium">Engagement Rate</span>
+                            </div>
+                            <span id="engagementVal" class="font-extrabold text-white">2.9%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monetization & Keyword Safety Scanner -->
+                <div id="safetyCard" class="p-3.5 rounded-xl bg-ytDarkBg border border-ytBorder flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div id="safetyIconBg" class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
+                            <i data-lucide="shield-check" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h4 id="safetyTitle" class="text-xs font-bold text-white">Monetization & Safety Scanner</h4>
+                            <p id="safetyDesc" class="text-[11px] text-slate-400">0 controversial or demonetizable terms found</p>
+                        </div>
+                    </div>
+                    <span id="safetyBadge" class="text-[10px] font-bold px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        GREEN FLAG
+                    </span>
+                </div>
+            </div>
+
+            <!-- Interactive Growth Projections & Velocity Radar Tab Container -->
+            <div class="bg-ytCard rounded-2xl border border-ytBorder overflow-hidden flex flex-col">
+                <div class="flex border-b border-ytBorder bg-ytDarkBg/80 p-1">
+                    <button onclick="switchRightTab('growth')" id="rtab-growth" class="flex-1 py-2 text-xs font-bold rounded-lg text-white bg-ytCard shadow-sm transition flex items-center justify-center gap-1.5">
+                        <i data-lucide="line-chart" class="w-3.5 h-3.5 text-ytRed"></i> Growth Trajectory
+                    </button>
+                    <button onclick="switchRightTab('radar')" id="rtab-radar" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5">
+                        <i data-lucide="radar" class="w-3.5 h-3.5 text-electricBlue"></i> Velocity Radar
+                    </button>
+                    <button onclick="switchRightTab('coach')" id="rtab-coach" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5">
+                        <i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400"></i> AI Growth Coach
+                    </button>
+                </div>
+
+                <!-- Tab 1: Cumulative Growth Chart -->
+                <div id="rcontent-growth" class="p-5 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-300">Views Growth Projection (28 Days)</span>
+                        <span class="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">+340% Viral Burst Projected</span>
+                    </div>
+                    <div class="h-52 w-full">
+                        <canvas id="growthChartCanvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Velocity Radar -->
+                <div id="rcontent-radar" class="p-5 space-y-3 hidden">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-300">Niche Benchmark Comparison Radar</span>
+                        <span class="text-[10px] text-electricBlue font-bold">vs Tech Niche Avg</span>
+                    </div>
+                    <div class="h-52 w-full flex justify-center">
+                        <canvas id="velocityRadarCanvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tab 3: AI Growth Coach Checklist -->
+                <div id="rcontent-coach" class="p-5 space-y-3 hidden">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i> AI Growth Recommendations
+                        </span>
+                        <span class="text-[10px] text-amber-400 font-bold bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">3 Actionable Steps</span>
+                    </div>
+
+                    <div class="space-y-2 text-xs">
+                        <div class="p-3 rounded-xl bg-ytDarkBg border border-ytBorder flex items-start gap-2.5">
+                            <input type="checkbox" checked class="mt-0.5 accent-ytRed rounded cursor-pointer">
+                            <div>
+                                <p class="font-bold text-white">Optimize First 3 Seconds (Hook)</p>
+                                <p class="text-slate-400 text-[11px]">Ensure main value proposition is stated before the 5-second retention drop-off mark.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-ytDarkBg border border-ytBorder flex items-start gap-2.5">
+                            <input type="checkbox" checked class="mt-0.5 accent-ytRed rounded cursor-pointer">
+                            <div>
+                                <p class="font-bold text-white">Leverage Thumbnail B (Highest Contrast)</p>
+                                <p class="text-slate-400 text-[11px]">Thumbnail B shows 8.7% CTR which is +107% higher than standard niche average.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-ytDarkBg border border-ytBorder flex items-start gap-2.5">
+                            <input type="checkbox" class="mt-0.5 accent-ytRed rounded cursor-pointer">
+                            <div>
+                                <p class="font-bold text-white">Add End Screen Video Card at 95% Mark</p>
+                                <p class="text-slate-400 text-[11px]">Drive session time by recommending your top-performing related playlist.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Notification Toast Element -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-ytCard border border-electricBlue text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 translate-y-28 opacity-0 transition-all duration-300 z-50">
+        <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>
+        <span id="toastMsg" class="text-xs font-semibold">Action completed successfully!</span>
+    </div>
+
+    <script>
+        // Preset Datasets
+        const presets = {
+            "preset1": {
+                title: "How To Grow Your YouTube Channel Using vidIQ in 2026 (Full-Guide)",
+                channel: "vidIQ",
+                subs: "2.44M subscribers",
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+                views: "180.3K",
+                embed: "https://www.youtube.com/embed/ey8S1L0Oq8E",
+                outlier: 6.1,
+                vph: 16,
+                ctr: 8.7,
+                engagement: 2.9,
+                thumbA: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=600&q=80",
+                thumbB: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80",
+                growthCurve: [12000, 35000, 68000, 105000, 142000, 165000, 180300],
+                radarData: [85, 90, 70, 88, 75]
+            },
+            "preset2": {
+                title: "I Built an AI YouTube Automation Bot That Generated 1,000,000 Views",
+                channel: "Tech AI Studio",
+                subs: "910K subscribers",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80",
+                views: "420.5K",
+                embed: "https://www.youtube.com/embed/L_LUpnjgPso",
+                outlier: 8.4,
+                vph: 142,
+                ctr: 11.2,
+                engagement: 6.1,
+                thumbA: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+                thumbB: "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=600&q=80",
+                growthCurve: [30000, 110000, 220000, 310000, 380000, 410000, 420500],
+                radarData: [95, 92, 88, 94, 90]
+            },
+            "preset3": {
+                title: "I Survived 100 Days in Ultra Extreme Hardcore Mode! (EXTREME)",
+                channel: "Gaming Empire",
+                subs: "4.2M subscribers",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80",
+                views: "1.2M",
+                embed: "https://www.youtube.com/embed/rfscVS0vtbw",
+                outlier: 12.3,
+                vph: 480,
+                ctr: 14.5,
+                engagement: 8.4,
+                thumbA: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80",
+                thumbB: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80",
+                growthCurve: [150000, 450000, 780000, 990000, 1100000, 1180000, 1200000],
+                radarData: [98, 96, 95, 99, 92]
+            }
+        };
+
+        const flaggedTerms = ["hack", "crack", "gambling", "scam", "illegal", "free robux", "cheat", "leak"];
+        let currentPreset = presets["preset1"];
+        let growthChart = null;
+        let radarChart = null;
+        let heatmapActive = false;
+
+        window.onload = function() {
+            lucide.createIcons();
+            loadPresetVideo("preset1");
+            generateViralTitles();
+        };
+
+        function loadPresetVideo(presetKey) {
+            if (!presets[presetKey]) return;
+            currentPreset = presets[presetKey];
+
+            document.getElementById("videoTitleInput").value = currentPreset.title;
+            document.getElementById("channelName").innerText = currentPreset.channel;
+            document.getElementById("channelSubscribers").innerText = currentPreset.subs;
+            document.getElementById("channelAvatar").src = currentPreset.avatar;
+            document.getElementById("metricTotalViews").innerText = currentPreset.views;
+            document.getElementById("mainEmbedPlayer").src = currentPreset.embed;
+
+            document.getElementById("outlierVal").innerText = currentPreset.outlier + "x";
+            document.getElementById("vphVal").innerText = currentPreset.vph + " VPH";
+            document.getElementById("ctrVal").innerText = currentPreset.ctr + "%";
+            document.getElementById("engagementVal").innerText = currentPreset.engagement + "%";
+
+            document.getElementById("thumbA").src = currentPreset.thumbA;
+            document.getElementById("thumbB").src = currentPreset.thumbB;
+
+            recalculateViralScore();
+            renderCharts();
+            showToast("Loaded video: " + currentPreset.channel);
+        }
+
+        function recalculateViralScore() {
+            const titleText = document.getElementById("videoTitleInput").value;
+
+            // Algorithm score weightings
+            let baseScore = (currentPreset.outlier * 5) + (currentPreset.ctr * 3) + (currentPreset.engagement * 4) + Math.min(20, currentPreset.vph / 5);
+
+            // Title quality boost / penalty
+            if (titleText.length > 30 && titleText.length < 70) baseScore += 5;
+            if (/\b(How|Why|Secret|I Built|100 Days|2026|Full-Guide)\b/i.test(titleText)) baseScore += 8;
+
+            let finalScore = Math.min(99.4, Math.max(15, baseScore)).toFixed(1);
+
+            document.getElementById("viralGaugeVal").innerText = finalScore;
+
+            // Update Circle SVG Gauge offset
+            const circle = document.getElementById("viralGaugeCircle");
+            const offset = 100 - parseFloat(finalScore);
+            circle.style.strokeDashoffset = offset;
+
+            // Safety Scanner Check
+            let foundFlag = false;
+            let detectedWord = "";
+            flaggedTerms.forEach(term => {
+                if (titleText.toLowerCase().includes(term)) {
+                    foundFlag = true;
+                    detectedWord = term;
+                }
+            });
+
+            const safetyCard = document.getElementById("safetyCard");
+            const safetyIconBg = document.getElementById("safetyIconBg");
+            const safetyTitle = document.getElementById("safetyTitle");
+            const safetyDesc = document.getElementById("safetyDesc");
+            const safetyBadge = document.getElementById("safetyBadge");
+
+            if (foundFlag) {
+                safetyIconBg.className = "p-2 rounded-lg bg-red-500/10 text-red-500";
+                safetyTitle.innerText = "Monetization Risk Warning";
+                safetyDesc.innerText = `Flagged term detected: "${detectedWord}". May reduce ad revenue.`;
+                safetyBadge.className = "text-[10px] font-bold px-2.5 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/30";
+                safetyBadge.innerText = "RED FLAG";
+            } else {
+                safetyIconBg.className = "p-2 rounded-lg bg-emerald-500/10 text-emerald-400";
+                safetyTitle.innerText = "Monetization & Safety Scanner";
+                safetyDesc.innerText = "0 controversial or demonetizable terms found";
+                safetyBadge.className = "text-[10px] font-bold px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                safetyBadge.innerText = "GREEN FLAG";
+            }
+        }
+
+        function generateViralTitles() {
+            const currentTitle = document.getElementById("videoTitleInput").value;
+            const container = document.getElementById("titleSuggestionsList");
+
+            const AI_Templates = [
+                `I Spent 30 Days Testing ${currentTitle.slice(0, 35)}... (Here's What Happened)`,
+                `Why 99% of Channels Fail At This in 2026 (Full Step-by-Step Guide)`,
+                `The SECRET Algorithm Shortcut Nobody Tells You About YouTube Growth`,
+                `How to Get 100,000 Views Faster Using This Hidden Trick`
+            ];
+
+            container.innerHTML = AI_Templates.map((item, idx) => `
+                <div class="p-3 bg-ytDarkBg hover:bg-ytHover rounded-xl border border-ytBorder flex items-center justify-between gap-3 group transition">
+                    <p class="text-xs font-semibold text-slate-200 group-hover:text-white">${item}</p>
+                    <button onclick="applyTitle('${item.replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-ytBorder hover:bg-electricBlue hover:text-black text-[11px] font-bold text-slate-300 rounded-lg transition flex items-center gap-1 flex-shrink-0">
+                        <i data-lucide="check" class="w-3 h-3"></i> Use Title
+                    </button>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function applyTitle(title) {
+            document.getElementById("videoTitleInput").value = title;
+            recalculateViralScore();
+            showToast("Applied AI viral title!");
+        }
+
+        function toggleHeatmap() {
+            heatmapActive = !heatmapActive;
+            const overlayA = document.getElementById("heatmapOverlayA");
+            const overlayB = document.getElementById("heatmapOverlayB");
+            const btnText = document.getElementById("heatmapBtnText");
+
+            if (heatmapActive) {
+                overlayA.classList.remove("opacity-0");
+                overlayB.classList.remove("opacity-0");
+                btnText.innerText = "Hide Heatmap Overlay";
+            } else {
+                overlayA.classList.add("opacity-0");
+                overlayB.classList.add("opacity-0");
+                btnText.innerText = "Show Heatmap Overlay";
+            }
+        }
+
+        function renderCharts() {
+            // 1. Cumulative Growth Timeline Chart
+            const ctxGrowth = document.getElementById('growthChartCanvas').getContext('2d');
+            if (growthChart) growthChart.destroy();
+
+            growthChart = new Chart(ctxGrowth, {
+                type: 'line',
+                data: {
+                    labels: ['Day 1', 'Day 4', 'Day 8', 'Day 12', 'Day 18', 'Day 22', 'Day 28'],
+                    datasets: [
+                        {
+                            label: 'Actual / Projected Views',
+                            data: currentPreset.growthCurve,
+                            borderColor: '#ff0000',
+                            backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#ff0000'
+                        },
+                        {
+                            label: 'Standard Channel Baseline',
+                            data: currentPreset.growthCurve.map(v => Math.round(v * 0.25)),
+                            borderColor: '#383838',
+                            borderDash: [5, 5],
+                            fill: false,
+                            tension: 0.4,
+                            borderWidth: 2,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { size: 10 } } }
+                    },
+                    scales: {
+                        x: { grid: { color: '#282828' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+                        y: { grid: { color: '#282828' }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // 2. Velocity Radar Comparison
+            const ctxRadar = document.getElementById('velocityRadarCanvas').getContext('2d');
+            if (radarChart) radarChart.destroy();
+
+            radarChart = new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: ['Clickability (CTR)', 'Retention %', 'Engagement Rate', 'Search SEO', 'Outlier VPH'],
+                    datasets: [
+                        {
+                            label: 'Current Video',
+                            data: currentPreset.radarData,
+                            borderColor: '#3ea6ff',
+                            backgroundColor: 'rgba(62, 166, 255, 0.25)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Niche Average',
+                            data: [60, 55, 50, 65, 45],
+                            borderColor: '#64748b',
+                            backgroundColor: 'rgba(100, 116, 139, 0.15)',
+                            borderWidth: 1.5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { size: 10 } } }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#282828' },
+                            grid: { color: '#282828' },
+                            pointLabels: { color: '#94a3b8', font: { size: 9, weight: 'bold' } },
+                            ticks: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        function switchRightTab(tabName) {
+            ['growth', 'radar', 'coach'].forEach(t => {
+                document.getElementById('rcontent-' + t).classList.add('hidden');
+                const btn = document.getElementById('rtab-' + t);
+                btn.className = "flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5";
+            });
+
+            document.getElementById('rcontent-' + tabName).classList.remove('hidden');
+            const activeBtn = document.getElementById('rtab-' + tabName);
+            activeBtn.className = "flex-1 py-2 text-xs font-bold rounded-lg text-white bg-ytCard shadow-sm transition flex items-center justify-center gap-1.5";
+        }
+
+        function runCustomAnalysis() {
+            const query = document.getElementById("videoSearchInput").value.trim();
+            if (!query) {
+                showToast("Please enter a YouTube video URL or ID");
+                return;
+            }
+            document.getElementById("videoTitleInput").value = query.length > 20 ? query : "Analyzed: " + query + " (Viral Edition 2026)";
+            recalculateViralScore();
+            showToast("Custom URL analyzed!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById("toast");
+            document.getElementById("toastMsg").innerText = msg;
+            toast.classList.remove("translate-y-28", "opacity-0");
+            setTimeout(() => {
+                toast.classList.add("translate-y-28", "opacity-0");
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
