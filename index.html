@@ -130,8 +130,99 @@
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                 <span>Algorithm Radar Active</span>
             </div>
+            <button onclick="openPricing()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all" style="background:linear-gradient(135deg,#f97316,#ea580c);color:white">
+                <i data-lucide="zap" class="w-3.5 h-3.5 fill-white"></i>
+                Upgrade to Pro
+            </button>
         </div>
     </header>
+
+    <!-- Pricing Modal -->
+    <div id="pricingModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" style="background:rgba(0,0,0,0.85);backdrop-filter:blur(8px)">
+        <div class="bg-ytCard border border-ytBorder rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 space-y-6 relative">
+            <button onclick="closePricing()" class="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-ytHover text-slate-400 hover:text-white transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="text-center space-y-2">
+                <h2 class="text-2xl font-black text-white">Choose Your Plan</h2>
+                <p class="text-sm text-slate-400">Unlock AI-powered YouTube growth tools. Cancel anytime.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Free -->
+                <div class="bg-ytDarkBg border border-ytBorder rounded-xl p-4 space-y-4 flex flex-col">
+                    <div>
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Free</div>
+                        <div class="text-3xl font-black text-white mt-1">$0<span class="text-sm font-normal text-slate-400">/mo</span></div>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-300 flex-1">
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> 3 video analyses/day</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Basic viral score</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="x" class="w-3.5 h-3.5 text-slate-600 flex-shrink-0"></i> <span class="text-slate-500">Thumbnail A/B testing</span></li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="x" class="w-3.5 h-3.5 text-slate-600 flex-shrink-0"></i> <span class="text-slate-500">AI Video Generator</span></li>
+                    </ul>
+                    <button class="w-full py-2 rounded-xl text-xs font-bold border border-ytBorder text-slate-300 hover:bg-ytHover transition">Current Plan</button>
+                </div>
+
+                <!-- Starter -->
+                <div class="bg-ytDarkBg border border-ytBorder rounded-xl p-4 space-y-4 flex flex-col">
+                    <div>
+                        <div class="text-xs font-bold text-electricBlue uppercase tracking-wider">Starter</div>
+                        <div class="text-3xl font-black text-white mt-1">$9<span class="text-sm font-normal text-slate-400">/mo</span></div>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-300 flex-1">
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Unlimited analyses</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Viral potential score</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Thumbnail A/B testing</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> AI title generator</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="x" class="w-3.5 h-3.5 text-slate-600 flex-shrink-0"></i> <span class="text-slate-500">AI Video Generator</span></li>
+                    </ul>
+                    <a href="YOUR_STRIPE_STARTER_LINK" target="_blank" class="w-full py-2 rounded-xl text-xs font-bold text-center transition block" style="background:#3ea6ff20;border:1px solid #3ea6ff60;color:#3ea6ff">
+                        Get Starter →
+                    </a>
+                </div>
+
+                <!-- Pro (highlighted) -->
+                <div class="border-2 rounded-xl p-4 space-y-4 flex flex-col relative" style="background:linear-gradient(135deg,rgba(249,115,22,0.12),rgba(234,88,12,0.06));border-color:#f97316">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[10px] font-black" style="background:#f97316;color:white">MOST POPULAR</div>
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-wider" style="color:#f97316">Pro</div>
+                        <div class="text-3xl font-black text-white mt-1">$29<span class="text-sm font-normal text-slate-400">/mo</span></div>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-300 flex-1">
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Everything in Starter</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> <strong class="text-white">AI Video Generator (5/mo)</strong></li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Algorithm Radar</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> AI Growth Coach</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Velocity tracking</li>
+                    </ul>
+                    <a href="YOUR_STRIPE_PRO_LINK" target="_blank" class="w-full py-2.5 rounded-xl text-xs font-black text-center transition block text-white" style="background:linear-gradient(135deg,#f97316,#ea580c)">
+                        Get Pro →
+                    </a>
+                </div>
+
+                <!-- Agency -->
+                <div class="bg-ytDarkBg border border-ytBorder rounded-xl p-4 space-y-4 flex flex-col">
+                    <div>
+                        <div class="text-xs font-bold text-purpleAccent uppercase tracking-wider">Agency</div>
+                        <div class="text-3xl font-black text-white mt-1">$79<span class="text-sm font-normal text-slate-400">/mo</span></div>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-300 flex-1">
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Everything in Pro</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Unlimited AI videos</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Multi-channel support</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> White-label exports</li>
+                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Priority support</li>
+                    </ul>
+                    <a href="YOUR_STRIPE_AGENCY_LINK" target="_blank" class="w-full py-2 rounded-xl text-xs font-bold text-center transition block" style="background:#a855f720;border:1px solid #a855f760;color:#a855f7">
+                        Get Agency →
+                    </a>
+                </div>
+            </div>
+
+            <p class="text-center text-xs text-slate-500">Secure payments via Stripe · Cancel anytime · 7-day free trial on Pro & Agency</p>
+        </div>
+    </div>
 
     <!-- Main Dashboard Workspace -->
     <main class="flex-1 p-4 lg:p-6 max-w-[1700px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -264,6 +355,124 @@
 
                 <div id="titleSuggestionsList" class="space-y-2">
                     <!-- Dynamic suggestions rendered via JS -->
+                </div>
+            </div>
+
+            <!-- AI Video Generator -->
+            <div class="rounded-2xl border border-ytBorder overflow-hidden" style="background:#1a1a1a">
+                <!-- Header bar -->
+                <div class="px-5 py-4 flex items-center justify-between border-b border-ytBorder" style="background:linear-gradient(135deg,rgba(249,115,22,0.08),rgba(234,88,12,0.04))">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#f97316,#ea580c)">
+                            <i data-lucide="clapperboard" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-white tracking-tight">AI Script Generator</h3>
+                            <p class="text-[11px] text-slate-500 mt-0.5">Turn any topic into a ready-to-film video script</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase" style="background:rgba(34,197,94,0.12);color:#22c55e;border:1px solid rgba(34,197,94,0.2)">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block"></span>
+                        Free
+                    </div>
+                </div>
+
+                <!-- Form body -->
+                <div class="p-5 space-y-4">
+                    <!-- Topic input -->
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Video Topic</label>
+                        <input id="genTopic" type="text" value=""
+                            class="w-full border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition"
+                            style="background:#111;border-color:#2a2a2a;focus:border-color:#3ea6ff"
+                            onfocus="this.style.borderColor='#3ea6ff'" onblur="this.style.borderColor='#2a2a2a'"
+                            placeholder="e.g. How I learned Python in 30 days" />
+                    </div>
+
+                    <!-- Style + Duration -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Format</label>
+                            <select id="genStyle" class="w-full border rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none transition appearance-none cursor-pointer" style="background:#111;border-color:#2a2a2a">
+                                <option value="tutorial">Tutorial</option>
+                                <option value="explainer">Explainer</option>
+                                <option value="shorts">Shorts (60s)</option>
+                                <option value="vlog">Vlog</option>
+                                <option value="review">Review</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Length</label>
+                            <select id="genDuration" class="w-full border rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none transition appearance-none cursor-pointer" style="background:#111;border-color:#2a2a2a">
+                                <option value="1">1 minute</option>
+                                <option value="3" selected>3 minutes</option>
+                                <option value="5">5 minutes</option>
+                                <option value="10">10 minutes</option>
+                                <option value="15">15+ minutes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Groq API Key -->
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center justify-between">
+                            <span>Groq API Key</span>
+                            <a href="https://console.groq.com/keys" target="_blank" class="normal-case font-normal text-electricBlue hover:underline text-[10px]">Get free key →</a>
+                        </label>
+                        <div class="relative">
+                            <input id="groqApiKey" type="password"
+                                class="w-full border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition pr-10"
+                                style="background:#111;border-color:#2a2a2a"
+                                onfocus="this.style.borderColor='#3ea6ff'" onblur="this.style.borderColor='#2a2a2a'"
+                                placeholder="gsk_••••••••••••••••••••••"
+                                oninput="saveGroqKey(this.value)" />
+                            <i data-lucide="key" class="w-3.5 h-3.5 absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-600"></i>
+                        </div>
+                        <p class="text-[10px] text-slate-600">Saved locally in your browser — never sent to our servers</p>
+                    </div>
+
+                    <!-- Generate button -->
+                    <button id="genScriptBtn" onclick="generateVideoScript()"
+                        class="w-full py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 text-white hover:opacity-90 active:scale-[0.99]"
+                        style="background:linear-gradient(135deg,#f97316,#dc6010);box-shadow:0 4px 24px rgba(249,115,22,0.25)">
+                        <i data-lucide="wand-2" class="w-4 h-4"></i>
+                        Generate Script
+                    </button>
+
+                    <!-- Status + Result -->
+                    <div id="genStatus" class="hidden space-y-3">
+                        <!-- Loading -->
+                        <div id="genLoading" class="hidden items-center gap-3 p-3.5 rounded-xl" style="background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.15)">
+                            <div class="w-4 h-4 rounded-full border-2 border-orange-500 border-t-transparent animate-spin flex-shrink-0"></div>
+                            <div>
+                                <p class="text-xs font-semibold text-orange-300">Writing your script...</p>
+                                <p class="text-[10px] text-slate-500 mt-0.5">Usually takes 5–10 seconds</p>
+                            </div>
+                        </div>
+                        <!-- Error -->
+                        <div id="genError" class="hidden items-center gap-3 p-3.5 rounded-xl text-xs text-red-300" style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2)">
+                            <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0 text-red-400"></i>
+                            <span></span>
+                        </div>
+                        <!-- Result -->
+                        <div id="genResult" class="hidden space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Generated Script</span>
+                                <span class="text-[10px] text-green-400 font-semibold flex items-center gap-1">
+                                    <i data-lucide="check-circle-2" class="w-3 h-3"></i> Ready to film
+                                </span>
+                            </div>
+                            <div id="genScriptContent" class="text-xs text-slate-300 leading-relaxed p-4 rounded-xl overflow-y-auto max-h-60 whitespace-pre-wrap font-mono" style="background:#0d0d0d;border:1px solid #2a2a2a;line-height:1.7"></div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="copyGeneratedScript()" class="py-2.5 rounded-xl text-xs font-bold border text-slate-300 hover:text-white hover:bg-ytHover transition flex items-center justify-center gap-1.5" style="border-color:#2a2a2a">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Script
+                                </button>
+                                <button onclick="openPricing()" class="py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition hover:opacity-90" style="background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(234,88,12,0.1));color:#f97316;border:1px solid rgba(249,115,22,0.3)">
+                                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Make Video · Pro
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -741,6 +950,171 @@
                 toast.classList.add("translate-y-28", "opacity-0");
             }, 3000);
         }
+
+        // ── Pricing Modal ──────────────────────────────────────────────
+        function openPricing() {
+            document.getElementById("pricingModal").classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closePricing() {
+            document.getElementById("pricingModal").classList.add("hidden");
+            document.body.style.overflow = "";
+        }
+
+        // Close modal if clicking backdrop
+        document.addEventListener("click", function(e) {
+            const modal = document.getElementById("pricingModal");
+            if (modal && e.target === modal) closePricing();
+        });
+
+        // ── Groq API Key persistence ────────────────────────────────────
+        function saveGroqKey(val) {
+            if (val) localStorage.setItem("groq_api_key", val);
+            else localStorage.removeItem("groq_api_key");
+        }
+
+        // Restore key on page load
+        window.addEventListener("DOMContentLoaded", function() {
+            const saved = localStorage.getItem("groq_api_key");
+            if (saved) {
+                const el = document.getElementById("groqApiKey");
+                if (el) el.value = saved;
+            }
+        });
+
+        // ── AI Script Generator ─────────────────────────────────────────
+        async function generateVideoScript() {
+            const topic    = document.getElementById("genTopic").value.trim();
+            const style    = document.getElementById("genStyle").value;
+            const duration = document.getElementById("genDuration").value;
+            const apiKey   = document.getElementById("groqApiKey").value.trim();
+
+            if (!topic) { showToast("Please enter a video topic first!"); return; }
+            if (!apiKey) { showToast("Enter your free Groq API key to generate scripts"); return; }
+
+            // Save key
+            saveGroqKey(apiKey);
+
+            // Show loading state
+            const status  = document.getElementById("genStatus");
+            const loading = document.getElementById("genLoading");
+            const error   = document.getElementById("genError");
+            const result  = document.getElementById("genResult");
+            const btn     = document.getElementById("genScriptBtn");
+
+            status.classList.remove("hidden");
+            loading.classList.remove("hidden");
+            loading.classList.add("flex");
+            error.classList.add("hidden");
+            error.classList.remove("flex");
+            result.classList.add("hidden");
+            btn.disabled = true;
+            btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Generating...';
+
+            const styleMap = {
+                "tutorial":   "tutorial-style with step-by-step instructions",
+                "explainer":  "explainer video that breaks down complex ideas simply",
+                "shorts":     "YouTube Shorts under 60 seconds — hook in the first 3 seconds, fast-paced",
+                "vlog":       "personal vlog-style, conversational and engaging",
+                "review":     "product or topic review with pros/cons and a verdict"
+            };
+            const durationMap = {
+                "1": "approximately 1 minute (150-200 words)",
+                "3": "approximately 3 minutes (450-500 words)",
+                "5": "approximately 5 minutes (750-800 words)",
+                "10": "approximately 10 minutes (1500-1600 words)",
+                "15": "approximately 15 minutes (2200-2400 words)"
+            };
+
+            const prompt = `You are an expert YouTube scriptwriter. Write a complete, engaging ${styleMap[style] || style} script about: "${topic}".
+
+Duration: ${durationMap[duration] || duration + " minutes"}.
+
+Structure the script with:
+1. 🎬 HOOK (first 5-10 seconds — grab attention immediately)
+2. 📌 INTRO (briefly tell viewers what they'll learn)
+3. 📋 MAIN CONTENT (the core of the video with clear sections)
+4. 💡 KEY TAKEAWAYS (brief summary)
+5. 🔔 CTA (subscribe/like/comment call to action)
+
+Make it conversational, punchy, and optimized for YouTube retention. Use [PAUSE], [B-ROLL: description], and [ON SCREEN TEXT: …] cues where helpful. Write directly — no meta-commentary, just the script.`;
+
+            try {
+                const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: "llama-3.1-8b-instant",
+                        messages: [{ role: "user", content: prompt }],
+                        max_tokens: 2048,
+                        temperature: 0.8
+                    })
+                });
+
+                if (!resp.ok) {
+                    const errData = await resp.json().catch(() => ({}));
+                    throw new Error(errData.error?.message || `HTTP ${resp.status}`);
+                }
+
+                const data = await resp.json();
+                const script = data.choices?.[0]?.message?.content || "No script returned.";
+
+                document.getElementById("genScriptContent").innerText = script;
+                loading.classList.add("hidden");
+                loading.classList.remove("flex");
+                result.classList.remove("hidden");
+                showToast("✅ Script generated successfully!");
+
+            } catch (err) {
+                loading.classList.add("hidden");
+                loading.classList.remove("flex");
+                const errEl = document.getElementById("genError");
+                errEl.querySelector("span").innerText = (err.message || "Unknown error — double-check your API key.");
+                errEl.classList.add("flex");
+                errEl.classList.remove("hidden");
+                showToast("Script generation failed — check your API key");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Generate Script';
+            }
+        }
+
+        function copyGeneratedScript() {
+            const text = document.getElementById("genScriptContent").innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("📋 Script copied to clipboard!");
+            }).catch(() => {
+                showToast("Copy failed — try selecting text manually");
+            });
+        }
+
+        // Auto-fill genTopic when a preset video loads
+        const _origLoadPreset = typeof loadPresetVideo === "function" ? loadPresetVideo : null;
+        // Hook after page fully loads
+        window.addEventListener("load", function() {
+            const presetBtns = document.querySelectorAll('[onclick^="loadPresetVideo"]');
+            presetBtns.forEach(btn => {
+                const orig = btn.getAttribute("onclick");
+                btn.setAttribute("onclick", orig + "; (function(){ var t = document.getElementById('videoTitleInput'); var g = document.getElementById('genTopic'); if(t && g && !g.value) g.value = t.value; })()");
+            });
+
+            // Also fill on any title input change
+            const titleInput = document.getElementById("videoTitleInput");
+            if (titleInput) {
+                titleInput.addEventListener("input", function() {
+                    const genTopic = document.getElementById("genTopic");
+                    if (genTopic && !genTopic._userTyped) genTopic.value = this.value;
+                });
+            }
+            const genTopic = document.getElementById("genTopic");
+            if (genTopic) {
+                genTopic.addEventListener("input", function() { this._userTyped = true; });
+            }
+        });
     </script>
 </body>
 </html>
