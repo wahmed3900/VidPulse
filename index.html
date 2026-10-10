@@ -994,8 +994,38 @@
         });
 
         // ── AI Script Generator ─────────────────────────────────────────
-        const GROQ_PRIMARY_MODEL  = "llama-3.3-70b-versatile";
-        const GROQ_FALLBACK_MODEL = "llama-3.1-8b-instant";
+        // Groq retires models regularly, so ask which ones this key can use and pick the
+        // first preferred match, falling back to any general chat model.
+        const GROQ_PREFERRED_MODELS = [
+            "openai/gpt-oss-120b",
+            "llama-3.3-70b-versatile",
+            "moonshotai/kimi-k2-instruct",
+            "meta-llama/llama-4-maverick-17b-128e-instruct",
+            "qwen/qwen3-32b",
+            "openai/gpt-oss-20b",
+            "llama-3.1-8b-instant"
+        ];
+        const GROQ_NON_CHAT = /whisper|guard|tts|playai|orpheus|distil|safeguard|compound/i;
+        let groqModelCache = null;
+
+        async function pickGroqModel(apiKey) {
+            if (groqModelCache && groqModelCache.key === apiKey) return groqModelCache.model;
+            const resp = await fetch("https://api.groq.com/openai/v1/models", {
+                headers: { "Authorization": `Bearer ${apiKey}` }
+            });
+            if (!resp.ok) {
+                const errData = await resp.json().catch(() => ({}));
+                throw new Error(errData.error?.message || `Could not list Groq models (HTTP ${resp.status})`);
+            }
+            const ids = ((await resp.json()).data || [])
+                .filter(m => m.active !== false)
+                .map(m => m.id);
+            const model = GROQ_PREFERRED_MODELS.find(id => ids.includes(id))
+                || ids.find(id => !GROQ_NON_CHAT.test(id));
+            if (!model) throw new Error("No chat model is available for this Groq API key.");
+            groqModelCache = { key: apiKey, model };
+            return model;
+        }
 
         function escapeHtml(str) {
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -1111,11 +1141,14 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
             });
 
             try {
-                // Prefer the larger model for quality; fall back if it's unavailable on this key
-                let resp = await callGroq(GROQ_PRIMARY_MODEL);
+                let resp = await callGroq(await pickGroqModel(apiKey));
+                // A model can be retired between listing and use; re-pick once
                 if (resp.status === 400 || resp.status === 404) {
                     const errData = await resp.clone().json().catch(() => ({}));
-                    if (/model/i.test(errData.error?.message || "")) resp = await callGroq(GROQ_FALLBACK_MODEL);
+                    if (/model/i.test(errData.error?.message || "")) {
+                        groqModelCache = null;
+                        resp = await callGroq(await pickGroqModel(apiKey));
+                    }
                 }
 
                 if (!resp.ok) {
@@ -1124,7 +1157,8 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
                 }
 
                 const data = await resp.json();
-                const script = data.choices?.[0]?.message?.content || "No script returned.";
+                const script = (data.choices?.[0]?.message?.content || "No script returned.")
+                    .replace(/<think>[\s\S]*?<\/think>/g, "").trim();
 
                 const scriptEl = document.getElementById("genScriptContent");
                 scriptEl.dataset.raw = script;
