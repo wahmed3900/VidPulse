@@ -1,0 +1,38 @@
+import os
+from fastapi import FastAPI, Request, HTTPException
+from fastapi.responses import RedirectResponse
+from google_auth_oauthlib.flow import Flow
+
+app = FastAPI()
+
+CLIENT_SECRETS_FILE = "client_secret.json"  # Downloaded from Google Cloud
+SCOPES = [
+    "https://www.googleapis.com/auth/youtube.readonly",
+    "https://www.googleapis.com/auth/yt-analytics.readonly"
+]
+REDIRECT_URI = "http://localhost:8000/auth/callback"
+
+@app.get("/auth/login")
+def login():
+    flow = Flow.from_client_secrets_file(
+        CLIENT_SECRETS_FILE, scopes=SCOPES, redirect_uri=REDIRECT_URI
+    )
+    authorization_url, state = flow.authorization_url(
+        access_type='offline',
+        include_granted_scopes='true'
+    )
+    return {"auth_url": authorization_url}
+
+@app.get("/auth/callback")
+def auth_callback(code: str):
+    flow = Flow.from_client_secrets_file(
+        CLIENT_SECRETS_FILE, scopes=SCOPES, redirect_uri=REDIRECT_URI
+    )
+    flow.fetch_token(code=code)
+    credentials = flow.credentials
+    
+    # Save credentials.token, credentials.refresh_token to your database for the user session
+    return {
+        "access_token": credentials.token,
+        "refresh_token": credentials.refresh_token
+    }
