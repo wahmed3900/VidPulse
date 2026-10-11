@@ -8,8 +8,8 @@ const VOICES = new Set([
     "en-GB-RyanNeural", "en-GB-SoniaNeural", "en-AU-WilliamNeural", "en-AU-NatashaNeural",
     "en-IN-PrabhatNeural", "en-IN-NeerjaNeural"
 ]);
-const MAX_CHARS = 2000;
-const TIMEOUT_MS = 25000;
+const MAX_CHARS = 5000; // the Recording Studio sends the whole script at once
+const TIMEOUT_MS = 50000;
 
 function escapeXml(text) {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
