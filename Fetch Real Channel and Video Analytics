@@ -1,0 +1,27 @@
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
+
+def get_youtube_analytics(access_token: str, video_id: str):
+    credentials = Credentials(token=access_token)
+    
+    # YouTube Data API client (for video snippets & stats)
+    youtube_data = build("youtube", "v3", credentials=credentials)
+    video_response = youtube_data.videos().list(
+        part="snippet,statistics",
+        id=video_id
+    ).execute()
+
+    # YouTube Analytics API client (for impressions, CTR, watch time)
+    youtube_analytics = build("youtubeAnalytics", "v2", credentials=credentials)
+    analytics_response = youtube_analytics.reports().query(
+        ids="channel==MINE",
+        startDate="2026-10-01",
+        endDate="2026-10-11",
+        metrics="views,estimatedMinutesWatched,averageViewDuration,impressionClickThroughRate,impressions",
+        filters=f"video=={video_id}"
+    ).execute()
+
+    return {
+        "video_metadata": video_response.get("items", []),
+        "analytics": analytics_response.get("rows", [])
+    }
