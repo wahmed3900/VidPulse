@@ -246,16 +246,16 @@
                 </div>
                 <div>
                     <h3 class="font-bold text-sm text-white">Video Maker</h3>
-                    <p class="text-[11px] text-slate-500">Turns your script into a captioned, ready-to-post video</p>
+                    <p class="text-[11px] text-slate-500">Voiceover, stock footage and captions from your script</p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_260px] gap-5">
+            <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_270px] gap-5">
                 <div class="flex items-center justify-center rounded-xl bg-black border border-ytBorder p-2">
                     <canvas id="vmCanvas" width="1080" height="1920" class="rounded-lg" style="max-height:62vh;max-width:100%;height:auto;width:auto"></canvas>
                 </div>
 
-                <div class="space-y-4 text-xs">
+                <div class="space-y-3.5 text-xs">
                     <div class="grid grid-cols-2 gap-2">
                         <div class="space-y-1.5">
                             <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Format</label>
@@ -275,16 +275,50 @@
                         </div>
                     </div>
 
+                    <div class="grid grid-cols-[minmax(0,1fr)_90px] gap-2">
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Voiceover</label>
+                            <select id="vmVoiceSelect" onchange="vmRebuild()" class="w-full border rounded-xl px-3 py-2 text-white focus:outline-none" style="background:#111;border-color:#2a2a2a">
+                                <optgroup label="Edge voices (free)">
+                                    <option value="en-US-AndrewNeural" selected>Andrew · US male</option>
+                                    <option value="en-US-BrianNeural">Brian · US male</option>
+                                    <option value="en-US-GuyNeural">Guy · US male</option>
+                                    <option value="en-US-ChristopherNeural">Christopher · US male</option>
+                                    <option value="en-US-AvaNeural">Ava · US female</option>
+                                    <option value="en-US-EmmaNeural">Emma · US female</option>
+                                    <option value="en-US-JennyNeural">Jenny · US female</option>
+                                    <option value="en-US-AriaNeural">Aria · US female</option>
+                                    <option value="en-GB-RyanNeural">Ryan · UK male</option>
+                                    <option value="en-GB-SoniaNeural">Sonia · UK female</option>
+                                    <option value="en-AU-WilliamNeural">William · AU male</option>
+                                    <option value="en-AU-NatashaNeural">Natasha · AU female</option>
+                                    <option value="en-IN-PrabhatNeural">Prabhat · Indian male</option>
+                                    <option value="en-IN-NeerjaNeural">Neerja · Indian female</option>
+                                </optgroup>
+                                <option value="none">No voiceover (captions only)</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Speed</label>
+                            <select id="vmRate" onchange="vmRebuild()" class="w-full border rounded-xl px-3 py-2 text-white focus:outline-none" style="background:#111;border-color:#2a2a2a">
+                                <option value="-10%">0.9x</option>
+                                <option value="+0%">1.0x</option>
+                                <option value="+10%" selected>1.1x</option>
+                                <option value="+20%">1.2x</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                        <input id="vmStock" type="checkbox" checked onchange="vmRebuild()" class="accent-orange-500">
+                        Stock footage from Pexels
+                    </label>
+
                     <div class="space-y-1.5">
                         <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Channel handle (optional)</label>
                         <input id="vmHandle" type="text" maxlength="30" oninput="vmDrawStill()" placeholder="@yourchannel"
                             class="w-full border rounded-xl px-3 py-2 text-white placeholder-slate-600 focus:outline-none" style="background:#111;border-color:#2a2a2a" />
                     </div>
-
-                    <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
-                        <input id="vmVoice" type="checkbox" checked class="accent-orange-500">
-                        Read aloud during preview
-                    </label>
 
                     <div id="vmInfo" class="p-3 rounded-xl bg-ytDarkBg border border-ytBorder text-slate-400"></div>
 
@@ -305,8 +339,8 @@
                     </div>
 
                     <p class="text-[10px] text-slate-600 leading-relaxed">
-                        The download is a silent, captioned video. Add your voiceover or a trending sound in YouTube Shorts, TikTok or CapCut.
                         Keep this tab open and visible while it records; recording runs in real time.
+                        Stock footage by <a href="https://www.pexels.com" target="_blank" class="underline">Pexels</a>.
                     </p>
                 </div>
             </div>
@@ -1274,8 +1308,8 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
         }
 
         // ── Video Maker ─────────────────────────────────────────────────
-        // Renders the generated script as an animated, captioned video on a canvas
-        // and records it with MediaRecorder. Everything runs in the browser.
+        // Renders the generated script as a captioned video on a canvas, with an Edge TTS
+        // voiceover (/api/tts) and Pexels stock footage (/api/pexels), then records it.
         const VM_THEMES = {
             midnight: { bgs: [["#0f172a", "#312e81"], ["#1e1b4b", "#4c1d95"], ["#111827", "#1e3a8a"]], accent: "#facc15" },
             sunset:   { bgs: [["#431407", "#9a3412"], ["#4a044e", "#be123c"], ["#3b0764", "#c2410c"]], accent: "#fde047" },
@@ -1284,7 +1318,14 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
         };
         const VM_WORDS_PER_SEC = 2.6;
         const VM_FONT = "Inter, 'Segoe UI', Roboto, Arial, sans-serif";
-        const vm = { title: "", timeline: [], total: 0, raf: null, recorder: null, mode: null, lastSpoken: -1 };
+        const VM_OUTRO_LINE = "Thanks for watching. Subscribe for more.";
+        const VM_GENERIC_HEADING = /^(hook|intro(duction)?|key takeaways?|takeaways?|call to action|cta|conclusion|outro|summary|recap)$/i;
+        const vm = {
+            title: "", timeline: [], total: 0, raf: null, recorder: null, mode: null, lastSpoken: -1,
+            audioCtx: null, sources: [], startAt: 0, preparedKey: "", media: {}, sceneStarts: {}, activeVideo: null
+        };
+        const vmAudioCache = new Map();
+        const vmMediaCache = new Map();
 
         function vmClean(text) {
             return text.replace(/\*\*(.+?)\*\*/g, "$1").replace(/[*_`#>]/g, "").replace(/\s+/g, " ").trim();
@@ -1326,25 +1367,52 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
             return chunks;
         }
 
-        function vmBuildTimeline(md, vertical) {
+        function vmSettings() {
+            return {
+                raw: document.getElementById("genScriptContent").dataset.raw || "",
+                vertical: document.getElementById("vmFormat").value === "vertical",
+                voice: document.getElementById("vmVoiceSelect").value,
+                rate: document.getElementById("vmRate").value,
+                stock: document.getElementById("vmStock").checked
+            };
+        }
+
+        // Builds the timeline. `audio` maps narration text to a decoded AudioBuffer; when a line
+        // has audio, its captions share the clip's real duration in proportion to word count.
+        function vmBuildTimeline(md, vertical, audio) {
             const { title, sections } = vmParseScript(md);
             const items = [];
+            const sceneStarts = {};
             let t = 0;
             const push = (item, dur) => { items.push({ ...item, start: t, dur }); t += dur; };
-            push({ type: "title", text: title, scene: 0 }, 3);
+            const titleAudio = audio && audio.get(title);
+            sceneStarts[0] = 0;
+            push({ type: "title", text: title, scene: 0, audio: titleAudio }, Math.max(3, titleAudio ? titleAudio.duration + 0.5 : 0));
             sections.forEach((sec, i) => {
                 const scene = i + 1;
-                if (sec.heading) push({ type: "section", text: sec.heading, scene }, 1.4);
+                sceneStarts[scene] = t;
+                if (sec.heading) push({ type: "section", text: sec.heading, scene }, 1.2);
                 for (const line of sec.lines) {
-                    for (const chunk of vmChunk(line, vertical ? 5 : 8)) {
+                    const chunks = vmChunk(line, vertical ? 5 : 8);
+                    const lineAudio = audio && audio.get(line);
+                    const totalWords = line.split(" ").filter(Boolean).length;
+                    chunks.forEach((chunk, ci) => {
                         const words = chunk.split(" ").length;
-                        push({ type: "caption", text: chunk, heading: sec.heading, onScreen: sec.onScreen[0] || "", scene },
-                             Math.max(1.1, words / VM_WORDS_PER_SEC));
-                    }
+                        const dur = lineAudio
+                            ? Math.max(0.35, lineAudio.duration * words / totalWords)
+                            : Math.max(1.1, words / VM_WORDS_PER_SEC);
+                        push({ type: "caption", text: chunk, heading: sec.heading, onScreen: sec.onScreen[0] || "", scene,
+                               audio: ci === 0 ? lineAudio : null }, dur);
+                    });
+                    if (lineAudio) t += 0.15; // breath between lines
                 }
             });
-            push({ type: "outro", text: "Thanks for watching", scene: sections.length + 1 }, 3);
-            return { title, items, total: t };
+            const outroScene = sections.length + 1;
+            sceneStarts[outroScene] = t;
+            const outroAudio = audio && audio.get(VM_OUTRO_LINE);
+            push({ type: "outro", text: "Thanks for watching", scene: outroScene, audio: outroAudio },
+                 Math.max(3, outroAudio ? outroAudio.duration + 0.8 : 0));
+            return { title, sections, items, total: t, sceneStarts };
         }
 
         function vmWrap(ctx, text, maxWidth) {
@@ -1370,20 +1438,27 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
             ctx.closePath();
         }
 
-        function vmDrawFrame(t) {
-            const canvas = document.getElementById("vmCanvas");
-            const ctx = canvas.getContext("2d");
-            const W = canvas.width, H = canvas.height;
-            const vertical = H > W;
-            const unit = Math.min(W, H) / 1080;
-            const theme = VM_THEMES[document.getElementById("vmTheme").value] || VM_THEMES.midnight;
-            const item = vm.timeline.find(it => t >= it.start && t < it.start + it.dur) || vm.timeline[vm.timeline.length - 1];
-            if (!item) return;
-            const local = t - item.start;
-            const enter = Math.min(1, local / 0.3);
-            const ease = 1 - Math.pow(1 - enter, 3);
-
-            // Animated gradient background with drifting glows
+        function vmDrawBackground(ctx, W, H, item, t, theme) {
+            const media = vm.media[item.scene];
+            const el = media && media.el;
+            const ready = el && (media.kind === "image" ? el.complete && el.naturalWidth : el.readyState >= 2);
+            if (ready) {
+                const sw = media.kind === "image" ? el.naturalWidth : el.videoWidth;
+                const sh = media.kind === "image" ? el.naturalHeight : el.videoHeight;
+                // Cover-fit, with a slow zoom on photos
+                const sceneT = t - (vm.sceneStarts[item.scene] || 0);
+                const zoom = media.kind === "image" ? 1.05 + Math.min(0.12, sceneT * 0.012) : 1;
+                const scale = Math.max(W / sw, H / sh) * zoom;
+                const dw = sw * scale, dh = sh * scale;
+                ctx.drawImage(el, (W - dw) / 2, (H - dh) / 2, dw, dh);
+                const shade = ctx.createLinearGradient(0, 0, 0, H);
+                shade.addColorStop(0, "rgba(0,0,0,0.55)");
+                shade.addColorStop(0.5, "rgba(0,0,0,0.35)");
+                shade.addColorStop(1, "rgba(0,0,0,0.65)");
+                ctx.fillStyle = shade;
+                ctx.fillRect(0, 0, W, H);
+                return true;
+            }
             const [c1, c2] = theme.bgs[item.scene % theme.bgs.length];
             const angle = t * 0.15;
             const g = ctx.createLinearGradient(W / 2 + Math.cos(angle) * W, 0, W / 2 - Math.cos(angle) * W, H);
@@ -1401,6 +1476,23 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
                 ctx.fillStyle = glow;
                 ctx.fillRect(0, 0, W, H);
             }
+            return false;
+        }
+
+        function vmDrawFrame(t) {
+            const canvas = document.getElementById("vmCanvas");
+            const ctx = canvas.getContext("2d");
+            const W = canvas.width, H = canvas.height;
+            const vertical = H > W;
+            const unit = Math.min(W, H) / 1080;
+            const theme = VM_THEMES[document.getElementById("vmTheme").value] || VM_THEMES.midnight;
+            const item = vm.timeline.find(it => t >= it.start && t < it.start + it.dur) || vm.timeline[vm.timeline.length - 1];
+            if (!item) return;
+            const local = t - item.start;
+            const enter = Math.min(1, local / 0.3);
+            const ease = 1 - Math.pow(1 - enter, 3);
+
+            const usedMedia = vmDrawBackground(ctx, W, H, item, t, theme);
 
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
@@ -1415,9 +1507,14 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
                 ctx.font = `900 ${size}px ${VM_FONT}`;
                 const lines = vmWrap(ctx, item.type === "title" ? item.text : "Thanks for watching!", maxText);
                 const lh = size * 1.15;
+                ctx.lineJoin = "round";
                 lines.forEach((ln, i) => {
+                    const y = (i - (lines.length - 1) / 2) * lh - (item.type === "outro" ? 60 * unit : 0);
+                    ctx.lineWidth = 14 * unit;
+                    ctx.strokeStyle = "rgba(0,0,0,0.5)";
+                    ctx.strokeText(ln, 0, y);
                     ctx.fillStyle = "#ffffff";
-                    ctx.fillText(ln, 0, (i - (lines.length - 1) / 2) * lh - (item.type === "outro" ? 60 * unit : 0));
+                    ctx.fillText(ln, 0, y);
                 });
                 if (item.type === "outro") {
                     const bw = 420 * unit, bh = 96 * unit, by = (lines.length * lh) / 2 + 20 * unit;
@@ -1438,27 +1535,30 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
                 const size = (vertical ? 76 : 68) * unit;
                 ctx.font = `900 ${size}px ${VM_FONT}`;
                 const lines = vmWrap(ctx, item.text.toUpperCase(), maxText);
+                ctx.lineJoin = "round";
                 lines.forEach((ln, i) => {
+                    const y = H / 2 + (i - (lines.length - 1) / 2) * size * 1.15;
+                    ctx.lineWidth = 12 * unit;
+                    ctx.strokeStyle = "rgba(0,0,0,0.5)";
+                    ctx.strokeText(ln, W / 2, y);
                     ctx.fillStyle = "#ffffff";
-                    ctx.fillText(ln, W / 2, H / 2 + (i - (lines.length - 1) / 2) * size * 1.15);
+                    ctx.fillText(ln, W / 2, y);
                 });
                 ctx.fillStyle = theme.accent;
                 const barW = 240 * unit * ease;
                 ctx.fillRect(W / 2 - barW / 2, H / 2 + (lines.length * size * 1.15) / 2 + 24 * unit, barW, 10 * unit);
                 ctx.restore();
             } else {
-                // Section label at the top
                 if (item.heading) {
                     ctx.font = `700 ${34 * unit}px ${VM_FONT}`;
-                    ctx.fillStyle = "rgba(255,255,255,0.65)";
+                    ctx.fillStyle = "rgba(255,255,255,0.75)";
                     ctx.fillText(item.heading.toUpperCase(), W / 2, H * (vertical ? 0.12 : 0.1));
                 }
-                // On-screen text card
                 if (item.onScreen) {
                     ctx.font = `800 ${40 * unit}px ${VM_FONT}`;
                     const tw = Math.min(maxText, ctx.measureText(item.onScreen).width + 60 * unit);
-                    const ty = H * (vertical ? 0.2 : 0.2);
-                    ctx.fillStyle = "rgba(0,0,0,0.45)";
+                    const ty = H * 0.2;
+                    ctx.fillStyle = "rgba(0,0,0,0.55)";
                     vmRoundRect(ctx, W / 2 - tw / 2, ty - 40 * unit, tw, 80 * unit, 20 * unit);
                     ctx.fill();
                     ctx.fillStyle = theme.accent;
@@ -1472,25 +1572,23 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
                 const active = Math.min(words.length - 1, Math.floor((local / item.dur) * words.length));
                 const lines = vmWrap(ctx, item.text, maxText);
                 const lh = size * 1.2;
-                const cy = H * (vertical ? 0.55 : 0.55) + (1 - ease) * 30 * unit;
+                const cy = H * 0.55 + (1 - ease) * 30 * unit;
                 let wordIdx = 0;
                 ctx.lineJoin = "round";
+                const space = ctx.measureText(" ").width;
                 lines.forEach((ln, li) => {
-                    const lineWords = ln.split(" ");
-                    const space = ctx.measureText(" ").width;
                     const lineWidth = ctx.measureText(ln).width;
                     let x = W / 2 - lineWidth / 2;
                     const y = cy + (li - (lines.length - 1) / 2) * lh;
                     ctx.textAlign = "left";
-                    for (const w of lineWords) {
-                        const ww = ctx.measureText(w).width;
+                    for (const w of ln.split(" ")) {
                         ctx.globalAlpha = ease;
                         ctx.lineWidth = 14 * unit;
-                        ctx.strokeStyle = "rgba(0,0,0,0.55)";
+                        ctx.strokeStyle = "rgba(0,0,0,0.6)";
                         ctx.strokeText(w, x, y);
                         ctx.fillStyle = wordIdx === active ? theme.accent : "#ffffff";
                         ctx.fillText(w, x, y);
-                        x += ww + space;
+                        x += ctx.measureText(w).width + space;
                         wordIdx++;
                     }
                     ctx.textAlign = "center";
@@ -1498,13 +1596,19 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
                 ctx.globalAlpha = 1;
             }
 
-            // Channel handle and progress bar
             const handle = document.getElementById("vmHandle").value.trim();
             if (handle) {
                 ctx.textAlign = "center";
                 ctx.font = `700 ${30 * unit}px ${VM_FONT}`;
-                ctx.fillStyle = "rgba(255,255,255,0.75)";
-                ctx.fillText(handle, W / 2, H * (vertical ? 0.9 : 0.9));
+                ctx.fillStyle = "rgba(255,255,255,0.8)";
+                ctx.fillText(handle, W / 2, H * 0.9);
+            }
+            if (usedMedia) {
+                ctx.textAlign = "right";
+                ctx.font = `600 ${20 * unit}px ${VM_FONT}`;
+                ctx.fillStyle = "rgba(255,255,255,0.55)";
+                ctx.fillText("Pexels", W - 24 * unit, H - 36 * unit);
+                ctx.textAlign = "center";
             }
             ctx.fillStyle = "rgba(255,255,255,0.15)";
             ctx.fillRect(0, H - 12 * unit, W, 12 * unit);
@@ -1517,20 +1621,25 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
             return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
         }
 
+        // Rough, voice-less timeline used for the still preview and the length estimate.
         function vmRebuild() {
-            vmStop();
-            const raw = document.getElementById("genScriptContent").dataset.raw || "";
-            const vertical = document.getElementById("vmFormat").value === "vertical";
+            vmStop(true);
+            const s = vmSettings();
             const canvas = document.getElementById("vmCanvas");
-            canvas.width = vertical ? 1080 : 1920;
-            canvas.height = vertical ? 1920 : 1080;
-            const built = vmBuildTimeline(raw, vertical);
+            canvas.width = s.vertical ? 1080 : 1920;
+            canvas.height = s.vertical ? 1920 : 1080;
+            const built = vmBuildTimeline(s.raw, s.vertical, null);
             vm.title = built.title;
             vm.timeline = built.items;
             vm.total = built.total;
+            vm.sceneStarts = built.sceneStarts;
+            vm.media = {};
+            vm.preparedKey = "";
             const captions = built.items.filter(i => i.type === "caption").length;
+            const extras = [s.voice !== "none" ? "voiceover" : "", s.stock ? "stock footage" : ""].filter(Boolean).join(" + ");
             document.getElementById("vmInfo").innerHTML =
-                `<span class="text-white font-bold">${vmFormatTime(vm.total)}</span> video · ${captions} caption scenes`;
+                `<span class="text-white font-bold">~${vmFormatTime(vm.total)}</span> video · ${captions} caption scenes` +
+                (extras ? `<br><span class="text-slate-500">${extras} load when you press Preview or Download</span>` : "");
             vmDrawStill();
         }
 
@@ -1557,43 +1666,180 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
 
         function vmSetProgress(fraction, text) {
             document.getElementById("vmProgressWrap").classList.remove("hidden");
-            document.getElementById("vmProgressBar").style.width = `${Math.round(fraction * 100)}%`;
+            document.getElementById("vmProgressBar").style.width = `${Math.round(Math.max(0, Math.min(1, fraction)) * 100)}%`;
             document.getElementById("vmStatus").innerText = text;
         }
 
         function vmSetButtons() {
+            const busy = vm.mode !== null;
             document.querySelector("#vmPreviewBtn span").innerText = vm.mode === "preview" ? "Stop" : "Preview";
-            document.getElementById("vmPreviewBtn").disabled = vm.mode === "record";
-            document.getElementById("vmDownloadBtn").disabled = vm.mode !== null;
-            document.getElementById("vmDownloadBtn").style.opacity = vm.mode ? "0.5" : "1";
-            document.getElementById("vmFormat").disabled = vm.mode !== null;
+            document.getElementById("vmPreviewBtn").disabled = vm.mode === "record" || vm.mode === "prepare";
+            document.getElementById("vmDownloadBtn").disabled = busy;
+            document.getElementById("vmDownloadBtn").style.opacity = busy ? "0.5" : "1";
+            ["vmFormat", "vmVoiceSelect", "vmRate", "vmStock"].forEach(id => { document.getElementById(id).disabled = busy; });
         }
 
-        // Plays the timeline in real time; calls onEnd when it finishes.
-        function vmPlay(mode, onEnd) {
+        async function vmFetchVoice(text, voice, rate) {
+            const key = `${voice}|${rate}|${text}`;
+            if (vmAudioCache.has(key)) return vmAudioCache.get(key);
+            const resp = await fetch("/api/tts", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text, voice, rate })
+            });
+            if (!resp.ok) {
+                const err = await resp.json().catch(() => ({}));
+                throw new Error(err.error || (resp.status === 404
+                    ? "Voice server not found. The voiceover only works on the Vercel deployment."
+                    : `Voice server error (HTTP ${resp.status})`));
+            }
+            const buffer = await vm.audioCtx.decodeAudioData(await resp.arrayBuffer());
+            vmAudioCache.set(key, buffer);
+            return buffer;
+        }
+
+        // Loads a Pexels media element that can be drawn without tainting the canvas.
+        // Tries the CDN directly, then through /api/pexels; returns null if neither works.
+        async function vmLoadMediaElement(kind, url) {
+            const tryLoad = (src) => new Promise((resolve) => {
+                const el = kind === "video" ? document.createElement("video") : new Image();
+                el.crossOrigin = "anonymous";
+                const done = (ok) => {
+                    if (!ok) { resolve(null); return; }
+                    try {
+                        // Reading pixels throws if the source isn't CORS-clean
+                        const probe = document.createElement("canvas");
+                        probe.width = probe.height = 2;
+                        const pctx = probe.getContext("2d");
+                        pctx.drawImage(el, 0, 0, 2, 2);
+                        pctx.getImageData(0, 0, 1, 1);
+                        resolve(el);
+                    } catch { resolve(null); }
+                };
+                const timer = setTimeout(() => done(false), 15000);
+                if (kind === "video") {
+                    Object.assign(el, { muted: true, loop: true, playsInline: true, preload: "auto" });
+                    el.onloadeddata = () => { clearTimeout(timer); done(true); };
+                } else {
+                    el.onload = () => { clearTimeout(timer); done(true); };
+                }
+                el.onerror = () => { clearTimeout(timer); done(false); };
+                el.src = src;
+            });
+            return (await tryLoad(url)) || (await tryLoad(`/api/pexels?url=${encodeURIComponent(url)}`));
+        }
+
+        async function vmFetchMedia(query, orientation) {
+            const key = `${orientation}|${query}`;
+            if (vmMediaCache.has(key)) return vmMediaCache.get(key);
+            let media = null;
+            const resp = await fetch(`/api/pexels?q=${encodeURIComponent(query)}&orientation=${orientation}`);
+            if (resp.ok) {
+                const info = await resp.json();
+                let el = await vmLoadMediaElement(info.type, info.url);
+                let kind = info.type;
+                if (!el && info.type === "video" && info.poster) { el = await vmLoadMediaElement("image", info.poster); kind = "image"; }
+                if (el) media = { kind, el };
+            } else if (resp.status === 500) {
+                const err = await resp.json().catch(() => ({}));
+                throw new Error(err.error || "Pexels lookup failed");
+            }
+            vmMediaCache.set(key, media);
+            return media;
+        }
+
+        async function vmRunPool(tasks, limit, onDone) {
+            let next = 0, finished = 0;
+            const worker = async () => {
+                while (next < tasks.length) {
+                    const i = next++;
+                    await tasks[i]();
+                    onDone(++finished, tasks.length);
+                }
+            };
+            await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, worker));
+        }
+
+        // Generates the voiceover and loads stock media, then rebuilds the timeline around them.
+        async function vmPrepare() {
+            const s = vmSettings();
+            const key = JSON.stringify(s);
+            if (vm.preparedKey === key) return;
+            vm.mode = "prepare";
+            vmSetButtons();
+            const parsed = vmParseScript(s.raw);
+            let audio = null;
+            if (s.voice !== "none") {
+                const texts = [...new Set([parsed.title, ...parsed.sections.flatMap(sec => sec.lines), VM_OUTRO_LINE])];
+                audio = new Map();
+                await vmRunPool(texts.map(text => async () => { audio.set(text, await vmFetchVoice(text, s.voice, s.rate)); }), 4,
+                    (n, total) => vmSetProgress(n / total, `Generating voiceover ${n}/${total}`));
+            }
+            const built = vmBuildTimeline(s.raw, s.vertical, audio);
+            const media = {};
+            if (s.stock) {
+                const orientation = s.vertical ? "portrait" : "landscape";
+                const topic = parsed.title.split(":")[0].slice(0, 60);
+                const scenes = [{ scene: 0, query: topic }];
+                built.sections.forEach((sec, i) => {
+                    const q = !sec.heading || VM_GENERIC_HEADING.test(sec.heading) ? topic : sec.heading.slice(0, 60);
+                    scenes.push({ scene: i + 1, query: q });
+                });
+                scenes.push({ scene: built.sections.length + 1, query: topic });
+                let stockError = null;
+                await vmRunPool(scenes.map(sc => async () => {
+                    try { media[sc.scene] = await vmFetchMedia(sc.query, orientation); }
+                    catch (e) { stockError = e; }
+                }), 3, (n, total) => vmSetProgress(n / total, `Finding stock footage ${n}/${total}`));
+                if (stockError && !Object.values(media).some(Boolean)) showToast(stockError.message);
+            }
+            vm.title = built.title;
+            vm.timeline = built.items;
+            vm.total = built.total;
+            vm.sceneStarts = built.sceneStarts;
+            vm.media = media;
+            vm.preparedKey = key;
+            vm.mode = null;
+            vmSetButtons();
+        }
+
+        function vmSyncVideos(scene, restart) {
+            const media = vm.media[scene];
+            const video = media && media.kind === "video" ? media.el : null;
+            if (vm.activeVideo && vm.activeVideo !== video) vm.activeVideo.pause();
+            if (video) {
+                if (restart) video.currentTime = 0;
+                if (video.paused) video.play().catch(() => {});
+            }
+            vm.activeVideo = video;
+        }
+
+        // Plays the timeline in real time, driven by the audio clock so captions stay in sync.
+        function vmPlay(mode, onEnd, audioDest) {
             vm.mode = mode;
             vm.lastSpoken = -1;
             vmSetButtons();
-            const startedAt = performance.now();
-            const speak = mode === "preview" && document.getElementById("vmVoice").checked && "speechSynthesis" in window;
+            const ctx = vm.audioCtx;
+            vm.startAt = ctx.currentTime + 0.15;
+            vm.sources = [];
+            for (const it of vm.timeline) {
+                if (!it.audio) continue;
+                const src = ctx.createBufferSource();
+                src.buffer = it.audio;
+                src.connect(ctx.destination);
+                if (audioDest) src.connect(audioDest);
+                src.start(vm.startAt + it.start);
+                vm.sources.push(src);
+            }
+            let lastScene = -1;
             const tick = () => {
-                const t = (performance.now() - startedAt) / 1000;
+                const t = ctx.currentTime - vm.startAt;
                 if (t >= vm.total) { vmDrawFrame(vm.total - 0.01); onEnd(); return; }
-                vmDrawFrame(t);
-                if (speak) {
-                    const idx = vm.timeline.findIndex(it => t >= it.start && t < it.start + it.dur);
-                    if (idx !== vm.lastSpoken) {
-                        vm.lastSpoken = idx;
-                        const it = vm.timeline[idx];
-                        if (it && it.type !== "section") {
-                            speechSynthesis.cancel();
-                            const u = new SpeechSynthesisUtterance(it.type === "outro" ? "Thanks for watching. Subscribe for more." : it.text);
-                            u.rate = 1.1;
-                            speechSynthesis.speak(u);
-                        }
-                    }
-                }
-                vmSetProgress(t / vm.total, `${mode === "record" ? "Recording" : "Previewing"} ${vmFormatTime(t)} / ${vmFormatTime(vm.total)}`);
+                const tt = Math.max(0, t);
+                const item = vm.timeline.find(it => tt >= it.start && tt < it.start + it.dur);
+                if (item && item.scene !== lastScene) { vmSyncVideos(item.scene, true); lastScene = item.scene; }
+                vmDrawFrame(tt);
+                vmSetProgress(tt / vm.total, `${mode === "record" ? "Recording" : "Previewing"} ${vmFormatTime(tt)} / ${vmFormatTime(vm.total)}`);
                 vm.raf = requestAnimationFrame(tick);
             };
             tick();
@@ -1602,30 +1848,65 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
         function vmStop(discard) {
             if (vm.raf) cancelAnimationFrame(vm.raf);
             vm.raf = null;
-            if ("speechSynthesis" in window) speechSynthesis.cancel();
+            for (const src of vm.sources) { try { src.stop(); } catch {} }
+            vm.sources = [];
+            if (vm.activeVideo) vm.activeVideo.pause();
+            vm.activeVideo = null;
             if (vm.recorder && vm.recorder.state !== "inactive") {
                 if (discard) { vm.recorder.ondataavailable = null; vm.recorder.onstop = null; }
                 vm.recorder.stop();
             }
             vm.recorder = null;
-            vm.mode = null;
+            if (vm.mode !== "prepare") vm.mode = null;
             if (document.getElementById("vmPreviewBtn")) vmSetButtons();
         }
 
-        function vmTogglePreview() {
+        // Must run synchronously inside the click handler so the browser allows audio.
+        function vmEnsureAudio() {
+            if (!vm.audioCtx) vm.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (vm.audioCtx.state === "suspended") vm.audioCtx.resume();
+        }
+
+        async function vmTogglePreview() {
             if (vm.mode === "preview") { vmStop(); vmDrawStill(); return; }
+            vmEnsureAudio();
+            try {
+                await vmPrepare();
+            } catch (e) {
+                vm.mode = null; vmSetButtons();
+                vmSetProgress(0, e.message);
+                showToast(e.message);
+                return;
+            }
             vmPlay("preview", () => { vmStop(); vmSetProgress(1, "Preview finished"); });
         }
 
-        function vmDownload() {
+        async function vmDownload() {
             if (!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream) {
                 showToast("Video recording isn't supported in this browser — try Chrome or Edge");
                 return;
             }
+            vmEnsureAudio();
+            try {
+                await vmPrepare();
+            } catch (e) {
+                vm.mode = null; vmSetButtons();
+                vmSetProgress(0, e.message);
+                showToast(e.message);
+                return;
+            }
             const canvas = document.getElementById("vmCanvas");
-            const mime = ["video/mp4;codecs=avc1.42E01E", "video/mp4", "video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"]
-                .find(type => MediaRecorder.isTypeSupported(type));
-            const recorder = new MediaRecorder(canvas.captureStream(30), mime ? { mimeType: mime, videoBitsPerSecond: 8000000 } : undefined);
+            const hasVoice = vm.timeline.some(it => it.audio);
+            const audioDest = hasVoice ? vm.audioCtx.createMediaStreamDestination() : null;
+            const stream = new MediaStream([
+                ...canvas.captureStream(30).getVideoTracks(),
+                ...(audioDest ? audioDest.stream.getAudioTracks() : [])
+            ]);
+            const candidates = hasVoice
+                ? ["video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/mp4", "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"]
+                : ["video/mp4;codecs=avc1.42E01E", "video/mp4", "video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"];
+            const mime = candidates.find(type => MediaRecorder.isTypeSupported(type));
+            const recorder = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 8000000 } : undefined);
             const parts = [];
             recorder.ondataavailable = e => { if (e.data.size) parts.push(e.data); };
             recorder.onstop = () => {
@@ -1648,9 +1929,15 @@ Within sections, write the narration as short spoken paragraphs. Use bullet list
             vmPlay("record", () => {
                 if (vm.raf) cancelAnimationFrame(vm.raf);
                 vm.raf = null;
+                if (vm.activeVideo) vm.activeVideo.pause();
                 // Give the encoder a moment to capture the last frame before stopping
-                setTimeout(() => { if (recorder.state !== "inactive") recorder.stop(); vm.recorder = null; vm.mode = null; vmSetButtons(); }, 300);
-            });
+                setTimeout(() => {
+                    if (recorder.state !== "inactive") recorder.stop();
+                    vm.recorder = null;
+                    vm.mode = null;
+                    vmSetButtons();
+                }, 300);
+            }, audioDest);
         }
 
         // Auto-fill genTopic when a preset video loads
