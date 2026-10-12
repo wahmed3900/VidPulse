@@ -417,7 +417,7 @@ Upgrade to Pro
 <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> AI Growth Coach</li>
 <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Velocity tracking</li>
 </ul>
-<a href="YOUR_STRIPE_PRO_LINK" target="_blank" class="w-full py-2.5 rounded-xl text-xs font-black text-center transition block text-white" style="background:linear-gradient(135deg,#f97316,#ea580c)">Get Pro →</a>
+<a href="https://buy.stripe.com/00wdR984J3Xp4nBdvPcMM02" target="_blank" class="w-full py-2.5 rounded-xl text-xs font-black text-center transition block text-white" style="background:linear-gradient(135deg,#f97316,#ea580c)">Get Pro →</a>
 </div>
 <!-- Agency -->
 <div class="bg-ytDarkBg border border-ytBorder rounded-xl p-4 space-y-4 flex flex-col">
@@ -600,22 +600,6 @@ placeholder="e.g. How I learned Python in 30 days" />
 </select>
 </div>
 </div>
-<div class="space-y-1.5">
-<label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center justify-between">
-<span>Groq API Key</span>
-<a href="https://console.groq.com/keys" target="_blank" class="normal-case font-normal text-electricBlue hover:underline text-[10px]">Get free key →</a>
-</label>
-<div class="relative">
-<input id="groqApiKey" type="password"
-class="w-full border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition pr-10"
-style="background:#111;border-color:#2a2a2a"
-onfocus="this.style.borderColor='#3ea6ff'" onblur="this.style.borderColor='#2a2a2a'"
-placeholder="gsk_••••••••••••••••••••••"
-oninput="saveGroqKey(this.value)" />
-<i data-lucide="key" class="w-3.5 h-3.5 absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-600"></i>
-</div>
-<p class="text-[10px] text-slate-600">Saved locally in your browser — never sent to our servers</p>
-</div>
 <button id="genScriptBtn" onclick="generateVideoScript()"
 class="w-full py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 text-white hover:opacity-90 active:scale-[0.99]"
 style="background:linear-gradient(135deg,#f97316,#dc6010);box-shadow:0 4px 24px rgba(249,115,22,0.25)">
@@ -654,6 +638,58 @@ Generate Script
 </div>
 </div>
 </div>
+</div>
+</div>
+
+<!-- SEO Suggestions -->
+<div class="rounded-2xl border border-ytBorder overflow-hidden" style="background:#1a1a1a">
+<div class="px-5 py-4 flex items-center justify-between border-b border-ytBorder" style="background:linear-gradient(135deg,rgba(62,166,255,0.08),rgba(62,166,255,0.03))">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#3ea6ff,#1d7fd6)">
+<i data-lucide="search" class="w-4 h-4 text-white"></i>
+</div>
+<div>
+<h3 class="font-bold text-sm text-white tracking-tight">SEO Suggestions</h3>
+<p class="text-[11px] text-slate-500 mt-0.5">Better titles, description, tags and keywords for YouTube search</p>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase" style="background:rgba(34,197,94,0.12);color:#22c55e;border:1px solid rgba(34,197,94,0.2)">
+<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block"></span>
+Free
+</div>
+</div>
+<div class="p-5 space-y-4">
+<div class="space-y-1.5">
+<label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Video Title</label>
+<input id="seoTitle" type="text"
+class="w-full border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition"
+style="background:#111;border-color:#2a2a2a"
+onfocus="this.style.borderColor='#3ea6ff'" onblur="this.style.borderColor='#2a2a2a'"
+placeholder="Leave blank to use the active video title above" />
+</div>
+<div class="space-y-1.5">
+<label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">What's the video about? (optional)</label>
+<input id="seoTopic" type="text"
+class="w-full border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition"
+style="background:#111;border-color:#2a2a2a"
+onfocus="this.style.borderColor='#3ea6ff'" onblur="this.style.borderColor='#2a2a2a'"
+placeholder="e.g. beginner tips for growing a gaming channel" />
+</div>
+<button id="seoBtn" onclick="generateSeoSuggestions()"
+class="w-full py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 text-white hover:opacity-90 active:scale-[0.99]"
+style="background:linear-gradient(135deg,#3ea6ff,#1d7fd6);box-shadow:0 4px 24px rgba(62,166,255,0.25)">
+<i data-lucide="sparkles" class="w-4 h-4"></i>
+Get SEO Suggestions
+</button>
+<div id="seoLoading" class="hidden items-center gap-3 p-3.5 rounded-xl" style="background:rgba(62,166,255,0.06);border:1px solid rgba(62,166,255,0.15)">
+<div class="w-4 h-4 rounded-full border-2 border-sky-400 border-t-transparent animate-spin flex-shrink-0"></div>
+<p class="text-xs font-semibold text-sky-300">Analyzing your title for search...</p>
+</div>
+<div id="seoError" class="hidden items-center gap-3 p-3.5 rounded-xl text-xs text-red-300" style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2)">
+<i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0 text-red-400"></i>
+<span></span>
+</div>
+<div id="seoResult" class="hidden space-y-4"></div>
 </div>
 </div>
 
@@ -847,8 +883,6 @@ lucide.createIcons();
 loadPresetVideo("preset1");
 generateViralTitles();
 // Restore saved keys
-const savedGroq = localStorage.getItem("groq_api_key");
-if (savedGroq) { const el = document.getElementById("groqApiKey"); if (el) el.value = savedGroq; }
 const savedVsdk = localStorage.getItem("vsdk_token");
 if (savedVsdk) { const el = document.getElementById("vsdkToken"); if (el) el.value = savedVsdk; }
 };
@@ -1011,19 +1045,11 @@ const studioModal = document.getElementById("videoStudioModal");
 if (studioModal && e.target === studioModal) closeVideoStudio();
 });
 
-function saveGroqKey(val) {
-if (val) localStorage.setItem("groq_api_key", val);
-else localStorage.removeItem("groq_api_key");
-}
-
 async function generateVideoScript() {
 const topic = document.getElementById("genTopic").value.trim();
 const style = document.getElementById("genStyle").value;
 const duration = document.getElementById("genDuration").value;
-const apiKey = document.getElementById("groqApiKey").value.trim();
 if (!topic) { showToast("Please enter a video topic first!"); return; }
-if (!apiKey) { showToast("Enter your free Groq API key to generate scripts"); return; }
-saveGroqKey(apiKey);
 const status = document.getElementById("genStatus");
 const loading = document.getElementById("genLoading");
 const error = document.getElementById("genError");
@@ -1035,38 +1061,15 @@ error.classList.add("hidden"); error.classList.remove("flex");
 result.classList.add("hidden");
 btn.disabled = true;
 btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Generating...';
-const styleMap = {
-"tutorial":"tutorial-style with step-by-step instructions",
-"explainer":"explainer video that breaks down complex ideas simply",
-"shorts":"YouTube Shorts under 60 seconds — hook in the first 3 seconds, fast-paced",
-"vlog":"personal vlog-style, conversational and engaging",
-"review":"product or topic review with pros/cons and a verdict"
-};
-const durationMap = {
-"1":"approximately 1 minute (150-200 words)",
-"3":"approximately 3 minutes (450-500 words)",
-"5":"approximately 5 minutes (750-800 words)",
-"10":"approximately 10 minutes (1500-1600 words)",
-"15":"approximately 15 minutes (2200-2400 words)"
-};
-const prompt = `You are an expert YouTube scriptwriter. Write a complete, engaging ${styleMap[style]||style} script about: "${topic}".
-Duration: ${durationMap[duration]||duration+" minutes"}.
-Structure the script with:
-1. 🎬 HOOK (first 5-10 seconds — grab attention immediately)
-2. 📌 INTRO (briefly tell viewers what they'll learn)
-3. 📋 MAIN CONTENT (the core of the video with clear sections)
-4. 💡 KEY TAKEAWAYS (brief summary)
-5. 🔔 CTA (subscribe/like/comment call to action)
-Make it conversational, punchy, and optimized for YouTube retention. Use [PAUSE], [B-ROLL: description], and [ON SCREEN TEXT: …] cues where helpful. Write directly — no meta-commentary, just the script.`;
 try {
-const resp = await fetch("https://api.groq.com/openai/v1/chat/completions",{
+const resp = await fetch("/api/generate",{
 method:"POST",
-headers:{"Content-Type":"application/json","Authorization":`Bearer ${apiKey}`},
-body:JSON.stringify({model:"llama-3.1-8b-instant",messages:[{role:"user",content:prompt}],max_tokens:2048,temperature:0.8})
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({task:"script",topic,style,duration})
 });
-if (!resp.ok) { const errData = await resp.json().catch(()=>({})); throw new Error(errData.error?.message||`HTTP ${resp.status}`); }
-const data = await resp.json();
-const script = data.choices?.[0]?.message?.content || "No script returned.";
+const data = await resp.json().catch(()=>({}));
+if (!resp.ok) throw new Error(data.error||`HTTP ${resp.status}`);
+const script = data.text || "No script returned.";
 document.getElementById("genScriptContent").innerText = script;
 loading.classList.add("hidden"); loading.classList.remove("flex");
 result.classList.remove("hidden");
@@ -1074,9 +1077,9 @@ showToast("✅ Script generated — open Recording Studio to film it!");
 } catch(err) {
 loading.classList.add("hidden"); loading.classList.remove("flex");
 const errEl = document.getElementById("genError");
-errEl.querySelector("span").innerText = (err.message||"Unknown error — double-check your API key.");
+errEl.querySelector("span").innerText = (err.message||"Unknown error — please try again.");
 errEl.classList.add("flex"); errEl.classList.remove("hidden");
-showToast("Script generation failed — check your API key");
+showToast("Script generation failed — please try again");
 } finally {
 btn.disabled = false;
 btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Generate Script';
@@ -1086,6 +1089,79 @@ btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox
 function copyGeneratedScript() {
 const text = document.getElementById("genScriptContent").innerText;
 navigator.clipboard.writeText(text).then(()=>{ showToast("📋 Script copied to clipboard!"); }).catch(()=>{ showToast("Copy failed — try selecting text manually"); });
+}
+
+
+// ── SEO Suggestions ───────────────────────────
+function escapeHtml(str) {
+return String(str ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+async function generateSeoSuggestions() {
+const title = document.getElementById("seoTitle").value.trim() || document.getElementById("videoTitleInput").value.trim();
+const topic = document.getElementById("seoTopic").value.trim();
+if (!title) { showToast("Please enter a video title first!"); return; }
+const btn = document.getElementById("seoBtn");
+const loading = document.getElementById("seoLoading");
+const errEl = document.getElementById("seoError");
+const result = document.getElementById("seoResult");
+loading.classList.remove("hidden"); loading.classList.add("flex");
+errEl.classList.add("hidden"); errEl.classList.remove("flex");
+result.classList.add("hidden");
+btn.disabled = true;
+try {
+const resp = await fetch("/api/generate",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({task:"seo",title,topic})
+});
+const data = await resp.json().catch(()=>({}));
+if (!resp.ok || !data.seo) throw new Error(data.error||`HTTP ${resp.status}`);
+renderSeoResult(data.seo);
+result.classList.remove("hidden");
+showToast("🔍 SEO suggestions ready!");
+} catch(err) {
+errEl.querySelector("span").innerText = err.message || "Something went wrong — please try again.";
+errEl.classList.add("flex"); errEl.classList.remove("hidden");
+} finally {
+loading.classList.add("hidden"); loading.classList.remove("flex");
+btn.disabled = false;
+}
+}
+
+function renderSeoResult(seo) {
+const score = Math.max(0, Math.min(100, parseInt(seo.score, 10) || 0));
+const color = score >= 75 ? "#22c55e" : score >= 50 ? "#f59e0b" : "#ef4444";
+const list = (arr) => Array.isArray(arr) ? arr : [];
+const section = (label, inner) => `<div class="space-y-1.5"><div class="text-[10px] font-bold uppercase tracking-widest text-slate-500">${label}</div>${inner}</div>`;
+const copyBtn = (id) => `<button onclick="copySeo('${id}')" class="text-[10px] font-semibold text-electricBlue hover:underline">Copy</button>`;
+const tags = list(seo.tags).join(", ");
+const hashtags = list(seo.hashtags).join(" ");
+document.getElementById("seoResult").innerHTML = `
+<div class="flex items-center justify-between p-3.5 rounded-xl" style="background:#0d0d0d;border:1px solid #2a2a2a">
+<div><div class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Current title SEO score</div>
+<div class="text-xs text-slate-400 mt-0.5">Target keyword: <span class="text-white font-semibold">${escapeHtml(seo.primaryKeyword)}</span></div></div>
+<div class="text-2xl font-black" style="color:${color}">${score}<span class="text-xs text-slate-500">/100</span></div>
+</div>
+${section("Optimized titles", list(seo.titles).map(t => `<div class="flex items-center justify-between gap-2 p-2.5 rounded-xl text-xs text-white" style="background:#0d0d0d;border:1px solid #2a2a2a"><span>${escapeHtml(t)}</span><button class="text-[10px] font-semibold text-electricBlue hover:underline flex-shrink-0" onclick="applySeoTitle(this)" data-title="${escapeHtml(t)}">Use</button></div>`).join(""))}
+${section(`<span class="flex justify-between">Description ${copyBtn("seoDescText")}</span>`, `<div id="seoDescText" class="text-xs text-slate-300 p-3 rounded-xl whitespace-pre-wrap max-h-48 overflow-y-auto" style="background:#0d0d0d;border:1px solid #2a2a2a;line-height:1.6">${escapeHtml(seo.description)}</div>`)}
+${section(`<span class="flex justify-between">Tags ${copyBtn("seoTagsText")}</span>`, `<div id="seoTagsText" class="hidden">${escapeHtml(tags)}</div><div class="flex flex-wrap gap-1.5">${list(seo.tags).map(t => `<span class="px-2 py-1 rounded-lg text-[11px] text-slate-300" style="background:#111;border:1px solid #2a2a2a">${escapeHtml(t)}</span>`).join("")}</div>`)}
+${hashtags ? section(`<span class="flex justify-between">Hashtags ${copyBtn("seoHashText")}</span>`, `<div id="seoHashText" class="text-xs text-electricBlue">${escapeHtml(hashtags)}</div>`) : ""}
+${section("Tips", `<ul class="space-y-1.5">${list(seo.tips).map(t => `<li class="flex gap-2 text-xs text-slate-300"><span class="text-emerald-400">✓</span><span>${escapeHtml(t)}</span></li>`).join("")}</ul>`)}
+`;
+}
+
+function applySeoTitle(btn) {
+const title = btn.getAttribute("data-title");
+document.getElementById("videoTitleInput").value = title;
+document.getElementById("seoTitle").value = title;
+recalculateViralScore();
+showToast("Applied SEO title!");
+}
+
+function copySeo(id) {
+const text = document.getElementById(id).innerText;
+navigator.clipboard.writeText(text).then(()=>{ showToast("📋 Copied!"); }).catch(()=>{ showToast("Copy failed — try selecting text manually"); });
 }
 
 
