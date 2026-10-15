@@ -116,6 +116,24 @@ class="w-full pl-10 pr-24 py-2 bg-ytCard border border-ytBorder rounded-xl text-
 </select>
 </div>
 
+
+<div class="hidden xl:flex items-center gap-1.5 text-xs text-slate-400 font-semibold border-l border-r border-ytBorder px-3 mx-2">
+  <button onclick="scrollToSection('dailyIdeasSection')" class="px-2.5 py-1 rounded-lg hover:bg-ytHover hover:text-white transition flex items-center gap-1.5">
+    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> Daily Ideas
+  </button>
+  <button onclick="scrollToSection('keywordInspectorSection')" class="px-2.5 py-1 rounded-lg hover:bg-ytHover hover:text-white transition flex items-center gap-1.5">
+    <i data-lucide="key" class="w-3.5 h-3.5 text-electricBlue"></i> Keywords
+  </button>
+  <button onclick="scrollToSection('competitorSection')" class="px-2.5 py-1 rounded-lg hover:bg-ytHover hover:text-white transition flex items-center gap-1.5">
+    <i data-lucide="users" class="w-3.5 h-3.5 text-purpleAccent"></i> Competitors
+  </button>
+  <button onclick="scrollToSection('trendAlertsSection')" class="px-2.5 py-1 rounded-lg hover:bg-ytHover hover:text-white transition flex items-center gap-1.5">
+    <i data-lucide="flame" class="w-3.5 h-3.5 text-ytRed"></i> Trends
+  </button>
+  <button onclick="scrollToSection('channelAuditSection')" class="px-2.5 py-1 rounded-lg hover:bg-ytHover hover:text-white transition flex items-center gap-1.5">
+    <i data-lucide="clipboard-check" class="w-3.5 h-3.5 text-emerald-400"></i> Audit
+  </button>
+</div>
 <div class="flex items-center gap-3">
 <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
@@ -722,6 +740,432 @@ Get SEO Suggestions
 </div>
 <div id="seoResult" class="hidden space-y-4"></div>
 </div>
+</div>
+
+
+<!-- ==============================================
+     VIDIQ PRO FEATURE SUITE
+============================================== -->
+
+<!-- 1. Daily Ideas Engine -->
+<div id="dailyIdeasSection" class="rounded-2xl border border-ytBorder overflow-hidden" style="background:#1a1a1a">
+  <div class="px-5 py-4 flex items-center justify-between border-b border-ytBorder" style="background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(217,119,6,0.03))">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#f59e0b,#d97706)">
+        <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-sm text-white tracking-tight">vidIQ Daily Ideas & Prediction Engine</h3>
+        <p class="text-[11px] text-slate-500 mt-0.5">AI-predicted breakout video opportunities tailored to your channel</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 uppercase">50 Daily Limit</span>
+    </div>
+  </div>
+  <div class="p-5 space-y-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Your Channel Niche</label>
+        <input id="dailyNicheInput" type="text" value="YouTube Growth & AI Tech"
+          class="w-full border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition"
+          style="background:#111;border-color:#2a2a2a" />
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Target Channel or Creator</label>
+        <input id="dailyChannelInput" type="text" value="vidIQ"
+          class="w-full border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition"
+          style="background:#111;border-color:#2a2a2a" />
+      </div>
+    </div>
+    <button onclick="generateDailyIdeas()" id="dailyIdeasBtn"
+      class="w-full py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 text-white hover:opacity-90"
+      style="background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 20px rgba(245,158,11,0.25)">
+      <i data-lucide="lightbulb" class="w-4 h-4"></i> Generate 5 Daily Breakout Ideas
+    </button>
+    <div id="dailyIdeasLoading" class="hidden items-center gap-3 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold">
+      <div class="w-4 h-4 rounded-full border-2 border-amber-400 border-t-transparent animate-spin flex-shrink-0"></div>
+      <span>Scanning algorithmic velocity and generating daily predictions...</span>
+    </div>
+    <div id="dailyIdeasContainer" class="space-y-3">
+      <!-- Default Preloaded High-Velocity Ideas -->
+      <div class="p-4 rounded-xl bg-ytDarkBg border border-ytBorder space-y-2 hover:border-slate-500 transition">
+        <div class="flex items-start justify-between gap-3">
+          <h4 class="font-bold text-sm text-white leading-snug">"The New YouTube Algorithm Change (Good or Bad News?)"</h4>
+          <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">+850 VPH</span>
+        </div>
+        <p class="text-xs text-slate-400"><strong>Hook:</strong> "If your views just dropped overnight, YouTube changed one specific setting in their recommendation model."</p>
+        <div class="flex flex-wrap items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-ytBorder/40">
+          <div class="flex items-center gap-3">
+            <span>Competition: <strong class="text-emerald-400">Low</strong></span>
+            <span>Search Volume: <strong class="text-electricBlue">Very High</strong></span>
+          </div>
+          <button onclick="applyTitle('The New YouTube Algorithm Change (Good or Bad News?)')" class="text-electricBlue hover:underline font-bold text-xs flex items-center gap-1">
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> Use for Analysis
+          </button>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-ytDarkBg border border-ytBorder space-y-2 hover:border-slate-500 transition">
+        <div class="flex items-start justify-between gap-3">
+          <h4 class="font-bold text-sm text-white leading-snug">"I Tested 100 AI Thumbnails (The Winner Shocked Me)"</h4>
+          <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">+1.2K VPH</span>
+        </div>
+        <p class="text-xs text-slate-400"><strong>Hook:</strong> "Human designers charge $100 per thumbnail, but this free AI prompt beat our best designer by 4.2% CTR."</p>
+        <div class="flex flex-wrap items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-ytBorder/40">
+          <div class="flex items-center gap-3">
+            <span>Competition: <strong class="text-amber-400">Medium</strong></span>
+            <span>Search Volume: <strong class="text-emerald-400">Exploding</strong></span>
+          </div>
+          <button onclick="applyTitle('I Tested 100 AI Thumbnails (The Winner Shocked Me)')" class="text-electricBlue hover:underline font-bold text-xs flex items-center gap-1">
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> Use for Analysis
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Keyword Inspector & Search Intelligence -->
+<div id="keywordInspectorSection" class="rounded-2xl border border-ytBorder overflow-hidden" style="background:#1a1a1a">
+  <div class="px-5 py-4 flex items-center justify-between border-b border-ytBorder" style="background:linear-gradient(135deg,rgba(62,166,255,0.08),rgba(37,99,235,0.03))">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#3ea6ff,#2563eb)">
+        <i data-lucide="key" class="w-4 h-4 text-white"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-sm text-white tracking-tight">vidIQ Keyword Inspector</h3>
+        <p class="text-[11px] text-slate-500 mt-0.5">Search volume, competition score, related tags & winning channels</p>
+      </div>
+    </div>
+    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30 uppercase">Pro Feature</span>
+  </div>
+  <div class="p-5 space-y-4">
+    <div class="flex gap-2">
+      <input id="keywordSearchInput" type="text" placeholder="Enter keyword or search query (e.g. youtube automation)"
+        class="flex-1 border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition"
+        style="background:#111;border-color:#2a2a2a" />
+      <button onclick="inspectKeyword()" id="keywordInspectBtn"
+        class="px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2 text-white hover:opacity-90 flex-shrink-0"
+        style="background:linear-gradient(135deg,#3ea6ff,#2563eb)">
+        <i data-lucide="search" class="w-4 h-4"></i> Inspect
+      </button>
+    </div>
+
+    <div id="keywordLoading" class="hidden items-center gap-3 p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-sky-300 text-xs font-semibold">
+      <div class="w-4 h-4 rounded-full border-2 border-sky-400 border-t-transparent animate-spin flex-shrink-0"></div>
+      <span>Extracting YouTube search volume and competition metrics...</span>
+    </div>
+
+    <div id="keywordResultContainer" class="space-y-4">
+      <!-- Metric Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+        <div class="bg-ytDarkBg p-3 rounded-xl border border-ytBorder">
+          <div class="text-[10px] uppercase font-bold text-slate-400">Overall Score</div>
+          <div id="kwOverallScore" class="text-2xl font-black text-emerald-400 mt-1">79<span class="text-xs text-slate-400 font-normal">/100</span></div>
+          <span class="text-[9px] text-emerald-400 font-semibold">HIGH OPPORTUNITY</span>
+        </div>
+        <div class="bg-ytDarkBg p-3 rounded-xl border border-ytBorder">
+          <div class="text-[10px] uppercase font-bold text-slate-400">Search Volume</div>
+          <div id="kwSearchVol" class="text-2xl font-black text-white mt-1">180K</div>
+          <span class="text-[9px] text-slate-400 font-semibold">monthly searches</span>
+        </div>
+        <div class="bg-ytDarkBg p-3 rounded-xl border border-ytBorder">
+          <div class="text-[10px] uppercase font-bold text-slate-400">Competition</div>
+          <div id="kwCompScore" class="text-2xl font-black text-emerald-400 mt-1">32<span class="text-xs text-slate-400 font-normal">/100</span></div>
+          <span id="kwCompLabel" class="text-[9px] text-emerald-400 font-semibold">Low Competition</span>
+        </div>
+        <div class="bg-ytDarkBg p-3 rounded-xl border border-ytBorder">
+          <div class="text-[10px] uppercase font-bold text-slate-400">Top Channels</div>
+          <div id="kwTopChannel" class="text-sm font-black text-amber-400 mt-2 truncate">vidIQ, Think Media</div>
+          <span class="text-[9px] text-slate-400 font-semibold">dominant creators</span>
+        </div>
+      </div>
+
+      <!-- Related Keywords Table -->
+      <div class="bg-ytDarkBg rounded-xl border border-ytBorder overflow-hidden">
+        <div class="px-4 py-2.5 bg-ytCard/50 border-b border-ytBorder text-xs font-bold text-slate-300 flex justify-between">
+          <span>Related Long-Tail Keywords</span>
+          <span class="text-slate-500 font-normal text-[11px]">Volume · Score · Competition</span>
+        </div>
+        <div id="kwRelatedList" class="divide-y divide-ytBorder/40 text-xs">
+          <div class="px-4 py-2.5 flex items-center justify-between hover:bg-ytHover/50 transition">
+            <span class="text-slate-200 font-medium">youtube automation tutorial 2026</span>
+            <div class="flex items-center gap-4">
+              <span class="text-slate-400 font-mono">92K</span>
+              <span class="text-emerald-400 font-bold">81/100</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400">Low</span>
+            </div>
+          </div>
+          <div class="px-4 py-2.5 flex items-center justify-between hover:bg-ytHover/50 transition">
+            <span class="text-slate-200 font-medium">how to start faceless youtube channel</span>
+            <div class="flex items-center gap-4">
+              <span class="text-slate-400 font-mono">140K</span>
+              <span class="text-emerald-400 font-bold">78/100</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400">Low</span>
+            </div>
+          </div>
+          <div class="px-4 py-2.5 flex items-center justify-between hover:bg-ytHover/50 transition">
+            <span class="text-slate-200 font-medium">best ai tools for youtube creators</span>
+            <div class="flex items-center gap-4">
+              <span class="text-slate-400 font-mono">68K</span>
+              <span class="text-amber-400 font-bold">72/100</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400">Med</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Competitor Intelligence & Outlier Multipliers -->
+<div id="competitorSection" class="rounded-2xl border border-ytBorder overflow-hidden" style="background:#1a1a1a">
+  <div class="px-5 py-4 flex items-center justify-between border-b border-ytBorder" style="background:linear-gradient(135deg,rgba(168,85,247,0.08),rgba(147,51,234,0.03))">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#a855f7,#7e22ce)">
+        <i data-lucide="users" class="w-4 h-4 text-white"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-sm text-white tracking-tight">Competitor Tracking & Content Gaps</h3>
+        <p class="text-[11px] text-slate-500 mt-0.5">Benchmark against rival channels and discover unanswered audience questions</p>
+      </div>
+    </div>
+    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 border border-purple-500/30 uppercase">Radar Pro</span>
+  </div>
+  <div class="p-5 space-y-4">
+    <div class="flex gap-2">
+      <input id="competitorChannelInput" type="text" placeholder="Enter channel name to track (e.g. Think Media)"
+        class="flex-1 border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition"
+        style="background:#111;border-color:#2a2a2a" />
+      <button onclick="analyzeCompetitors()" id="competitorBtn"
+        class="px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2 text-white hover:opacity-90 flex-shrink-0"
+        style="background:linear-gradient(135deg,#a855f7,#7e22ce)">
+        <i data-lucide="target" class="w-4 h-4"></i> Track Rivals
+      </button>
+    </div>
+
+    <div id="competitorLoading" class="hidden items-center gap-3 p-3.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold">
+      <div class="w-4 h-4 rounded-full border-2 border-purple-400 border-t-transparent animate-spin flex-shrink-0"></div>
+      <span>Benchmarking competitors and analyzing content gaps...</span>
+    </div>
+
+    <div id="competitorResultContainer" class="space-y-4">
+      <!-- Competitor Table -->
+      <div class="bg-ytDarkBg rounded-xl border border-ytBorder overflow-hidden">
+        <div class="px-4 py-2.5 bg-ytCard/50 border-b border-ytBorder text-xs font-bold text-slate-300">Monitored Niche Competitors</div>
+        <div id="competitorList" class="divide-y divide-ytBorder/40 text-xs">
+          <div class="p-3.5 flex flex-wrap items-center justify-between gap-3 hover:bg-ytHover/30 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-purple-500/20 border border-purple-500/40 flex items-center justify-center font-black text-purple-400">TM</div>
+              <div>
+                <h4 class="font-bold text-white text-xs">Think Media</h4>
+                <p class="text-[10px] text-slate-400">3.1M subscribers · 3 videos / week</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 text-xs">
+              <div class="text-right">
+                <div class="font-bold text-white">145K avg views</div>
+                <div class="text-[10px] text-slate-500">Breakout: Camera Gear 2026</div>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">High Threat</span>
+            </div>
+          </div>
+          <div class="p-3.5 flex flex-wrap items-center justify-between gap-3 hover:bg-ytHover/30 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center font-black text-blue-400">FB</div>
+              <div>
+                <h4 class="font-bold text-white text-xs">Film Booth</h4>
+                <p class="text-[10px] text-slate-400">450K subscribers · 1 video / week</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 text-xs">
+              <div class="text-right">
+                <div class="font-bold text-white">110K avg views</div>
+                <div class="text-[10px] text-slate-500">Breakout: Storytelling Formula</div>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Med Threat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Gap Box -->
+      <div class="p-4 rounded-xl bg-purple-950/20 border border-purple-500/30 space-y-2">
+        <h4 class="text-xs font-bold text-purple-300 flex items-center gap-1.5">
+          <i data-lucide="zap" class="w-4 h-4 text-purple-400"></i> Untapped Content Gaps You Can Dominate
+        </h4>
+        <ul id="contentGapsList" class="space-y-1.5 text-xs text-slate-300">
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 mt-0.5 flex-shrink-0"></i> Step-by-step tutorial comparing automated AI scripts vs human writers.</li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 mt-0.5 flex-shrink-0"></i> Real monetization revenue split for faceless YouTube channels in 2026.</li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 mt-0.5 flex-shrink-0"></i> Complete guide to setting up VideoSDK and teleprompter recording with 0 gear.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Real-Time Trend Alerts -->
+<div id="trendAlertsSection" class="rounded-2xl border border-ytBorder overflow-hidden" style="background:#1a1a1a">
+  <div class="px-5 py-4 flex items-center justify-between border-b border-ytBorder" style="background:linear-gradient(135deg,rgba(255,0,0,0.08),rgba(204,0,0,0.03))">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-ytRed">
+        <i data-lucide="flame" class="w-4 h-4 text-white"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-sm text-white tracking-tight">Real-Time Trend Alerts</h3>
+        <p class="text-[11px] text-slate-500 mt-0.5">Surging velocity alerts to jump on topics before they saturate</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-red-500/20 text-red-400 border border-red-500/40">
+      <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span> Live Scanner
+    </div>
+  </div>
+  <div class="p-5 space-y-4">
+    <div class="flex gap-2">
+      <input id="trendNicheInput" type="text" value="AI & YouTube Growth" placeholder="Enter topic niche"
+        class="flex-1 border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition"
+        style="background:#111;border-color:#2a2a2a" />
+      <button onclick="scanTrends()" id="trendScanBtn"
+        class="px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2 text-white hover:opacity-90 flex-shrink-0"
+        style="background:linear-gradient(135deg,#ff0000,#cc0000)">
+        <i data-lucide="radar" class="w-4 h-4"></i> Scan Velocity
+      </button>
+    </div>
+
+    <div id="trendLoading" class="hidden items-center gap-3 p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs font-semibold">
+      <div class="w-4 h-4 rounded-full border-2 border-red-400 border-t-transparent animate-spin flex-shrink-0"></div>
+      <span>Scanning live search velocity and sudden breakout spikes...</span>
+    </div>
+
+    <div id="trendListContainer" class="space-y-3">
+      <div class="p-4 rounded-xl bg-ytDarkBg border border-ytBorder space-y-2 hover:border-red-500/50 transition">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-red-400 flex items-center gap-1">
+            <i data-lucide="flame" class="w-3.5 h-3.5 fill-red-400"></i> EXPLODING VELOCITY
+          </span>
+          <span class="text-xs font-extrabold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">+4,200 VPH</span>
+        </div>
+        <h4 class="font-bold text-sm text-white">Autonomous AI Agents Workflows for Creators</h4>
+        <p class="text-xs text-slate-400">Best angle: Film a step-by-step screen walkthrough showing Claude/Goose writing, cutting, and publishing automatically.</p>
+        <div class="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-ytBorder/40">
+          <span class="text-slate-400 font-mono">#AIAgents #Automation #YouTubeGrowth</span>
+          <button onclick="applyTitle('Autonomous AI Agents Workflows for YouTube Creators')" class="text-electricBlue hover:underline font-bold text-xs flex items-center gap-1">
+            Analyze Now <i data-lucide="arrow-right" class="w-3 h-3"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-ytDarkBg border border-ytBorder space-y-2 hover:border-amber-500/50 transition">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-amber-400 flex items-center gap-1">
+            <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> RISING MOMENTUM
+          </span>
+          <span class="text-xs font-extrabold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">+2,850 VPH</span>
+        </div>
+        <h4 class="font-bold text-sm text-white">YouTube Algorithm Update: Watch Time vs Re-watches</h4>
+        <p class="text-xs text-slate-400">Best angle: Breakdown of why YouTube now weights re-watches and repeat views 2x higher than initial click-throughs.</p>
+        <div class="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-ytBorder/40">
+          <span class="text-slate-400 font-mono">#YouTubeAlgorithm #CreatorTips #Algorithm2026</span>
+          <button onclick="applyTitle('YouTube Algorithm Update: Watch Time vs Re-watches')" class="text-electricBlue hover:underline font-bold text-xs flex items-center gap-1">
+            Analyze Now <i data-lucide="arrow-right" class="w-3 h-3"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. Channel Audit & Health Consultant -->
+<div id="channelAuditSection" class="rounded-2xl border border-ytBorder overflow-hidden" style="background:#1a1a1a">
+  <div class="px-5 py-4 flex items-center justify-between border-b border-ytBorder" style="background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(16,185,129,0.03))">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-emerald-600">
+        <i data-lucide="clipboard-check" class="w-4 h-4 text-white"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-sm text-white tracking-tight">Channel Audit & Health Scorecard</h3>
+        <p class="text-[11px] text-slate-500 mt-0.5">Automated deep-dive checklist for retention, CTR, metadata & binge-loops</p>
+      </div>
+    </div>
+    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase">Health Check</span>
+  </div>
+  <div class="p-5 space-y-4">
+    <div class="flex gap-2">
+      <input id="auditChannelInput" type="text" value="vidIQ" placeholder="Enter your channel name"
+        class="flex-1 border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition"
+        style="background:#111;border-color:#2a2a2a" />
+      <button onclick="runChannelAudit()" id="auditBtn"
+        class="px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2 text-white hover:opacity-90 flex-shrink-0"
+        style="background:linear-gradient(135deg,#10b981,#059669)">
+        <i data-lucide="activity" class="w-4 h-4"></i> Run Audit
+      </button>
+    </div>
+
+    <div id="auditLoading" class="hidden items-center gap-3 p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold">
+      <div class="w-4 h-4 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin flex-shrink-0"></div>
+      <span>Running complete 360° channel audit across retention, CTR and pacing...</span>
+    </div>
+
+    <div id="auditResultContainer" class="space-y-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+        <div class="bg-ytDarkBg p-3 rounded-xl border border-ytBorder">
+          <div class="text-[10px] uppercase font-bold text-slate-400">Health Score</div>
+          <div id="auditHealthScore" class="text-2xl font-black text-emerald-400 mt-1">82<span class="text-xs text-slate-400 font-normal">/100</span></div>
+          <span class="text-[9px] text-emerald-400 font-semibold">STRONG HEALTH</span>
+        </div>
+        <div class="bg-ytDarkBg p-3 rounded-xl border border-ytBorder">
+          <div class="text-[10px] uppercase font-bold text-slate-400">CTR Rating</div>
+          <div id="auditCtrScore" class="text-2xl font-black text-electricBlue mt-1">86<span class="text-xs text-slate-400 font-normal">/100</span></div>
+          <span class="text-[9px] text-electricBlue font-semibold">Above Benchmark</span>
+        </div>
+        <div class="bg-ytDarkBg p-3 rounded-xl border border-ytBorder">
+          <div class="text-[10px] uppercase font-bold text-slate-400">SEO / Metadata</div>
+          <div id="auditSeoScore" class="text-2xl font-black text-purpleAccent mt-1">88<span class="text-xs text-slate-400 font-normal">/100</span></div>
+          <span class="text-[9px] text-purpleAccent font-semibold">Fully Indexed</span>
+        </div>
+        <div class="bg-ytDarkBg p-3 rounded-xl border border-ytBorder">
+          <div class="text-[10px] uppercase font-bold text-slate-400">Retention Pacing</div>
+          <div id="auditPacingScore" class="text-2xl font-black text-amber-400 mt-1">71<span class="text-xs text-slate-400 font-normal">/100</span></div>
+          <span class="text-[9px] text-amber-400 font-semibold">Needs Polish</span>
+        </div>
+      </div>
+
+      <div class="bg-ytDarkBg rounded-xl border border-ytBorder overflow-hidden">
+        <div class="px-4 py-2.5 bg-ytCard/50 border-b border-ytBorder text-xs font-bold text-slate-300">Channel Audit Checklist</div>
+        <div id="auditChecklist" class="divide-y divide-ytBorder/40 text-xs">
+          <div class="p-3 flex items-start gap-3">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0"></i>
+            <div>
+              <div class="font-bold text-white">Title Length Under 60 Characters</div>
+              <p class="text-[11px] text-slate-400">Optimal for mobile truncation and search readability.</p>
+            </div>
+          </div>
+          <div class="p-3 flex items-start gap-3">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0"></i>
+            <div>
+              <div class="font-bold text-white">First 5-Second Retention Hook</div>
+              <p class="text-[11px] text-slate-400">Intro animations cause an 18% audience drop-off before the content starts.</p>
+            </div>
+          </div>
+          <div class="p-3 flex items-start gap-3">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0"></i>
+            <div>
+              <div class="font-bold text-white">Thumbnail Contrast & Face Isolation</div>
+              <p class="text-[11px] text-slate-400">High contrast borders perform well against YouTube dark theme.</p>
+            </div>
+          </div>
+          <div class="p-3 flex items-start gap-3">
+            <i data-lucide="x-circle" class="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0"></i>
+            <div>
+              <div class="font-bold text-white">End Screen Binge-Loop Cards</div>
+              <p class="text-[11px] text-slate-400">Missing immediate recommendation link to your highest-retention playlist.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 </section>
@@ -1728,6 +2172,285 @@ function showTtsStatus(msg, colorClass) {
   el.className = `text-[10px] ${colorClass}`;
   el.classList.remove("hidden");
 }
+
+
+// ── Smooth Scroll Helper ──────────────────────
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Daily Ideas Feature ───────────────────────
+async function generateDailyIdeas() {
+  const niche = document.getElementById("dailyNicheInput").value.trim() || "YouTube Growth & Tech";
+  const channel = document.getElementById("dailyChannelInput").value.trim() || "vidIQ";
+  const btn = document.getElementById("dailyIdeasBtn");
+  const loading = document.getElementById("dailyIdeasLoading");
+  const container = document.getElementById("dailyIdeasContainer");
+
+  btn.disabled = true;
+  loading.classList.remove("hidden");
+  loading.classList.add("flex");
+
+  try {
+    const resp = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task: "ideas", niche, channel })
+    });
+    const res = await resp.json();
+    const ideas = res.ideas?.ideas || res.data?.ideas || res.ideas || [];
+
+    if (!ideas || ideas.length === 0) throw new Error("No ideas returned.");
+
+    container.innerHTML = ideas.map(item => `
+      <div class="p-4 rounded-xl bg-ytDarkBg border border-ytBorder space-y-2 hover:border-slate-500 transition">
+        <div class="flex items-start justify-between gap-3">
+          <h4 class="font-bold text-sm text-white leading-snug">"${escapeHtml(item.title)}"</h4>
+          <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">+${item.predictedVph || 750} VPH</span>
+        </div>
+        <p class="text-xs text-slate-400"><strong>Hook:</strong> "${escapeHtml(item.hook || '')}"</p>
+        <p class="text-[11px] text-slate-500 italic">${escapeHtml(item.whyItWorks || '')}</p>
+        <div class="flex flex-wrap items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-ytBorder/40">
+          <div class="flex items-center gap-3">
+            <span>Competition: <strong class="${item.competition === 'Low' ? 'text-emerald-400' : 'text-amber-400'}">${escapeHtml(item.competition || 'Low')}</strong></span>
+            <span>Search Volume: <strong class="text-electricBlue">${escapeHtml(item.searchVolume || 'High')}</strong></span>
+          </div>
+          <button onclick="applyTitle('${escapeHtml(item.title).replace(/'/g, "\\'")}')" class="text-electricBlue hover:underline font-bold text-xs flex items-center gap-1">
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> Use for Analysis
+          </button>
+        </div>
+      </div>
+    `).join("");
+
+    lucide.createIcons();
+    showToast("✨ Generated 5 fresh Daily Ideas!");
+  } catch (err) {
+    showToast("Failed to generate ideas: " + err.message);
+  } finally {
+    btn.disabled = false;
+    loading.classList.add("hidden");
+    loading.classList.remove("flex");
+  }
+}
+
+// ── Keyword Inspector Feature ─────────────────
+async function inspectKeyword() {
+  const kw = document.getElementById("keywordSearchInput").value.trim() || "youtube automation";
+  const btn = document.getElementById("keywordInspectBtn");
+  const loading = document.getElementById("keywordLoading");
+
+  btn.disabled = true;
+  loading.classList.remove("hidden");
+  loading.classList.add("flex");
+
+  try {
+    const resp = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task: "keyword", keyword: kw })
+    });
+    const res = await resp.json();
+    const data = res.keyword || res.data || {};
+
+    if (data.overallScore) document.getElementById("kwOverallScore").innerHTML = `${data.overallScore}<span class="text-xs text-slate-400 font-normal">/100</span>`;
+    if (data.searchVolume) document.getElementById("kwSearchVol").innerText = data.searchVolume;
+    if (data.competitionScore) document.getElementById("kwCompScore").innerHTML = `${data.competitionScore}<span class="text-xs text-slate-400 font-normal">/100</span>`;
+    if (data.competitionLabel) document.getElementById("kwCompLabel").innerText = data.competitionLabel + " Competition";
+    if (data.topRankedChannels) document.getElementById("kwTopChannel").innerText = data.topRankedChannels.join(", ");
+
+    if (data.relatedKeywords && data.relatedKeywords.length > 0) {
+      document.getElementById("kwRelatedList").innerHTML = data.relatedKeywords.map(rk => `
+        <div class="px-4 py-2.5 flex items-center justify-between hover:bg-ytHover/50 transition">
+          <span class="text-slate-200 font-medium">${escapeHtml(rk.keyword)}</span>
+          <div class="flex items-center gap-4">
+            <span class="text-slate-400 font-mono">${escapeHtml(rk.volume || '50K')}</span>
+            <span class="text-emerald-400 font-bold">${rk.score || 75}/100</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${rk.competition === 'Low' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">${escapeHtml(rk.competition || 'Low')}</span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    lucide.createIcons();
+    showToast("🔑 Keyword inspected: " + kw);
+  } catch (err) {
+    showToast("Error inspecting keyword: " + err.message);
+  } finally {
+    btn.disabled = false;
+    loading.classList.add("hidden");
+    loading.classList.remove("flex");
+  }
+}
+
+// ── Competitor Analysis Feature ──────────────
+async function analyzeCompetitors() {
+  const targetChannel = document.getElementById("competitorChannelInput").value.trim() || "Think Media";
+  const btn = document.getElementById("competitorBtn");
+  const loading = document.getElementById("competitorLoading");
+
+  btn.disabled = true;
+  loading.classList.remove("hidden");
+  loading.classList.add("flex");
+
+  try {
+    const resp = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task: "competitor", targetChannel, niche: "YouTube Creator Economy" })
+    });
+    const res = await resp.json();
+    const data = res.competitor || res.data || {};
+
+    if (data.competitors && data.competitors.length > 0) {
+      document.getElementById("competitorList").innerHTML = data.competitors.map(c => `
+        <div class="p-3.5 flex flex-wrap items-center justify-between gap-3 hover:bg-ytHover/30 transition">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-purple-500/20 border border-purple-500/40 flex items-center justify-center font-black text-purple-400">
+              ${c.name.slice(0, 2).toUpperCase()}
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-xs">${escapeHtml(c.name)}</h4>
+              <p class="text-[10px] text-slate-400">${escapeHtml(c.subs || '1M')} subs · ${escapeHtml(c.uploadRate || '2x/wk')}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 text-xs">
+            <div class="text-right">
+              <div class="font-bold text-white">${escapeHtml(c.avgViews || '80K')} avg views</div>
+              <div class="text-[10px] text-slate-500">${escapeHtml(c.topRecentTopic || '')}</div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${c.threatLevel === 'High' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'}">
+              ${escapeHtml(c.threatLevel || 'Med')} Threat
+            </span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    if (data.contentGaps && data.contentGaps.length > 0) {
+      document.getElementById("contentGapsList").innerHTML = data.contentGaps.map(gap => `
+        <li class="flex items-start gap-2">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 mt-0.5 flex-shrink-0"></i>
+          <span>${escapeHtml(gap)}</span>
+        </li>
+      `).join("");
+    }
+
+    lucide.createIcons();
+    showToast("🎯 Competitor intel updated!");
+  } catch (err) {
+    showToast("Error updating competitors: " + err.message);
+  } finally {
+    btn.disabled = false;
+    loading.classList.add("hidden");
+    loading.classList.remove("flex");
+  }
+}
+
+// ── Real-Time Trends Feature ─────────────────
+async function scanTrends() {
+  const niche = document.getElementById("trendNicheInput").value.trim() || "AI & YouTube Growth";
+  const btn = document.getElementById("trendScanBtn");
+  const loading = document.getElementById("trendLoading");
+
+  btn.disabled = true;
+  loading.classList.remove("hidden");
+  loading.classList.add("flex");
+
+  try {
+    const resp = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task: "trends", niche })
+    });
+    const res = await resp.json();
+    const data = res.trends || res.data || {};
+    const trends = data.trends || [];
+
+    if (trends && trends.length > 0) {
+      document.getElementById("trendListContainer").innerHTML = trends.map(t => `
+        <div class="p-4 rounded-xl bg-ytDarkBg border border-ytBorder space-y-2 hover:border-red-500/50 transition">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-red-400 flex items-center gap-1">
+              <i data-lucide="flame" class="w-3.5 h-3.5 fill-red-400"></i> ${escapeHtml(t.viralMomentum || 'EXPLODING')}
+            </span>
+            <span class="text-xs font-extrabold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">${escapeHtml(t.vphVelocity || '+3,000 VPH')}</span>
+          </div>
+          <h4 class="font-bold text-sm text-white">${escapeHtml(t.topic)}</h4>
+          <p class="text-xs text-slate-400">Best angle: ${escapeHtml(t.bestAngle || '')}</p>
+          <div class="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-ytBorder/40">
+            <span class="text-slate-400 font-mono">${(t.recommendedTags || []).map(x => escapeHtml(x)).join(" ")}</span>
+            <button onclick="applyTitle('${escapeHtml(t.topic).replace(/'/g, "\\'")}')" class="text-electricBlue hover:underline font-bold text-xs flex items-center gap-1">
+              Analyze Now <i data-lucide="arrow-right" class="w-3 h-3"></i>
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    lucide.createIcons();
+    showToast("🔥 Trend scan complete!");
+  } catch (err) {
+    showToast("Trend scan error: " + err.message);
+  } finally {
+    btn.disabled = false;
+    loading.classList.add("hidden");
+    loading.classList.remove("flex");
+  }
+}
+
+// ── Channel Audit Feature ────────────────────
+async function runChannelAudit() {
+  const channelName = document.getElementById("auditChannelInput").value.trim() || "vidIQ";
+  const btn = document.getElementById("auditBtn");
+  const loading = document.getElementById("auditLoading");
+
+  btn.disabled = true;
+  loading.classList.remove("hidden");
+  loading.classList.add("flex");
+
+  try {
+    const resp = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task: "audit", channelName, videoCount: 85, avgViews: "45K" })
+    });
+    const res = await resp.json();
+    const data = res.audit || res.data || {};
+
+    if (data.healthScore) document.getElementById("auditHealthScore").innerHTML = `${data.healthScore}<span class="text-xs text-slate-400 font-normal">/100</span>`;
+    if (data.thumbnailScore) document.getElementById("auditCtrScore").innerHTML = `${data.thumbnailScore}<span class="text-xs text-slate-400 font-normal">/100</span>`;
+    if (data.titleSeoScore) document.getElementById("auditSeoScore").innerHTML = `${data.titleSeoScore}<span class="text-xs text-slate-400 font-normal">/100</span>`;
+    if (data.retentionPacingScore) document.getElementById("auditPacingScore").innerHTML = `${data.retentionPacingScore}<span class="text-xs text-slate-400 font-normal">/100</span>`;
+
+    if (data.checklist && data.checklist.length > 0) {
+      document.getElementById("auditChecklist").innerHTML = data.checklist.map(chk => {
+        let icon = '<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0"></i>';
+        if (chk.status === 'warning') icon = '<i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0"></i>';
+        if (chk.status === 'critical') icon = '<i data-lucide="x-circle" class="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0"></i>';
+        return `
+          <div class="p-3 flex items-start gap-3">
+            ${icon}
+            <div>
+              <div class="font-bold text-white">${escapeHtml(chk.item)}</div>
+              <p class="text-[11px] text-slate-400">${escapeHtml(chk.detail || '')}</p>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    lucide.createIcons();
+    showToast("📋 360° Channel Audit Complete!");
+  } catch (err) {
+    showToast("Audit failed: " + err.message);
+  } finally {
+    btn.disabled = false;
+    loading.classList.add("hidden");
+    loading.classList.remove("flex");
+  }
+}
+
 </script>
 <script>
 if ('serviceWorker' in navigator) {
