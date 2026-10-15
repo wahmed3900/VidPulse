@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VidPulse Pro - Viral YouTube Growth & Optimization Studio</title>
+<title>vidIQ Pro - Viral YouTube Growth & Optimization Studio</title>
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#0f0f0f">
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
@@ -93,7 +93,7 @@ scroll-behavior: smooth;
 </div>
 <div>
 <div class="flex items-center gap-2">
-<span class="text-xl font-black tracking-tight text-white">VidPulse <span class="text-xs px-2 py-0.5 rounded-full bg-ytRed/20 text-ytRed border border-ytRed/40 font-bold">VIRAL ENGINE</span></span>
+<span class="text-xl font-black tracking-tight text-white">vidIQ <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/40 font-bold">PRO PULSE</span></span>
 </div>
 <p class="text-xs text-slate-400 hidden sm:block">YouTube Algorithm Distribution & Virality Studio</p>
 </div>
@@ -369,77 +369,104 @@ Upgrade to Pro
 
 <!-- Pricing Modal -->
 <div id="pricingModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" style="background:rgba(0,0,0,0.85);backdrop-filter:blur(8px)">
-<div class="bg-ytCard border border-ytBorder rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 space-y-6 relative">
+<div class="bg-ytCard border border-ytBorder rounded-2xl w-full max-w-5xl max-h-[92vh] overflow-y-auto p-6 space-y-6 relative shadow-2xl">
 <button onclick="closePricing()" class="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-ytHover text-slate-400 hover:text-white transition">
 <i data-lucide="x" class="w-5 h-5"></i>
 </button>
 <div class="text-center space-y-2">
-<h2 class="text-2xl font-black text-white">Choose Your Plan</h2>
-<p class="text-sm text-slate-400">Unlock AI-powered YouTube growth tools. Cancel anytime.</p>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold uppercase tracking-wider">
+<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Official vidIQ Plans & Pricing
 </div>
+<h2 class="text-3xl font-black text-white">Unlock Your YouTube Superpowers</h2>
+<p class="text-sm text-slate-400 max-w-xl mx-auto">Get more views, viral insights, AI scriptwriting, algorithm velocity radar, and real-time optimization tools. Cancel anytime.</p>
+</div>
+
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-<!-- Free -->
-<div class="bg-ytDarkBg border border-ytBorder rounded-xl p-4 space-y-4 flex flex-col">
+<!-- Free Basic Plan -->
+<div class="bg-ytDarkBg border border-ytBorder rounded-xl p-5 space-y-4 flex flex-col hover:border-slate-500 transition">
 <div>
-<div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Free</div>
+<div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Free (Basic)</div>
 <div class="text-3xl font-black text-white mt-1">$0<span class="text-sm font-normal text-slate-400">/mo</span></div>
+<p class="text-[11px] text-slate-400 mt-1">Essential tools for brand new channels</p>
 </div>
-<ul class="space-y-2 text-xs text-slate-300 flex-1">
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> 3 video analyses/day</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Basic viral score</li>
-<li class="flex items-center gap-1.5"><i data-lucide="x" class="w-3.5 h-3.5 text-slate-600 flex-shrink-0"></i> <span class="text-slate-500">Thumbnail A/B testing</span></li>
-<li class="flex items-center gap-1.5"><i data-lucide="x" class="w-3.5 h-3.5 text-slate-600 flex-shrink-0"></i> <span class="text-slate-500">AI Video Generator</span></li>
+<ul class="space-y-2.5 text-xs text-slate-300 flex-1">
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> 3 daily video/SEO analyses</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Basic viral potential score</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Top 3 keyword suggestions</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> 3 daily AI topic & title ideas</li>
+<li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-slate-600 flex-shrink-0"></i> <span class="text-slate-500">Thumbnail heatmap analysis</span></li>
+<li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-slate-600 flex-shrink-0"></i> <span class="text-slate-500">AI Scriptwriter & Teleprompter</span></li>
+<li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-slate-600 flex-shrink-0"></i> <span class="text-slate-500">Algorithm Velocity Radar</span></li>
 </ul>
-<button class="w-full py-2 rounded-xl text-xs font-bold border border-ytBorder text-slate-300 hover:bg-ytHover transition">Current Plan</button>
+<button class="w-full py-2.5 rounded-xl text-xs font-bold border border-ytBorder text-slate-300 hover:bg-ytHover transition">Current Active Plan</button>
 </div>
-<!-- Starter -->
-<div class="bg-ytDarkBg border border-ytBorder rounded-xl p-4 space-y-4 flex flex-col">
+
+<!-- Boost Plan (Most Popular) -->
+<div class="border-2 rounded-xl p-5 space-y-4 flex flex-col relative shadow-lg" style="background:linear-gradient(135deg,rgba(37,99,235,0.15),rgba(29,78,216,0.08));border-color:#3ea6ff">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[10px] font-black text-white" style="background:linear-gradient(135deg,#3ea6ff,#2563eb)">MOST POPULAR</div>
 <div>
-<div class="text-xs font-bold text-electricBlue uppercase tracking-wider">Starter</div>
-<div class="text-3xl font-black text-white mt-1">$9<span class="text-sm font-normal text-slate-400">/mo</span></div>
+<div class="text-xs font-bold uppercase tracking-wider text-electricBlue">Boost</div>
+<div class="text-3xl font-black text-white mt-1">$39<span class="text-sm font-normal text-slate-400">/mo</span></div>
+<p class="text-[11px] text-slate-400 mt-1">For serious creators who want 10x growth</p>
 </div>
-<ul class="space-y-2 text-xs text-slate-300 flex-1">
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Unlimited analyses</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Viral potential score</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Thumbnail A/B testing</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> AI title generator</li>
-<li class="flex items-center gap-1.5"><i data-lucide="x" class="w-3.5 h-3.5 text-slate-600 flex-shrink-0"></i> <span class="text-slate-500">AI Video Generator</span></li>
+<ul class="space-y-2.5 text-xs text-slate-200 flex-1">
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> <strong>Unlimited video diagnostics</strong></li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> <strong>50 Daily AI Ideas</strong> & Hook predictions</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Full AI SEO Generator (Tags, Titles, Desc)</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Thumbnail A/B Heatmap & Predictor</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> AI Script Generator + Teleprompter Studio</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Velocity Radar & 28-day growth curve</li>
 </ul>
-<a href="YOUR_STRIPE_STARTER_LINK" target="_blank" class="w-full py-2 rounded-xl text-xs font-bold text-center transition block" style="background:#3ea6ff20;border:1px solid #3ea6ff60;color:#3ea6ff">Get Starter →</a>
+<a href="https://buy.stripe.com/00wdR984J3Xp4nBdvPcMM02" target="_blank" class="w-full py-2.5 rounded-xl text-xs font-black text-center transition block text-white shadow-md hover:brightness-110" style="background:linear-gradient(135deg,#3ea6ff,#2563eb)">Get Boost Plan →</a>
 </div>
-<!-- Pro -->
-<div class="border-2 rounded-xl p-4 space-y-4 flex flex-col relative" style="background:linear-gradient(135deg,rgba(249,115,22,0.12),rgba(234,88,12,0.06));border-color:#f97316">
-<div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[10px] font-black" style="background:#f97316;color:white">MOST POPULAR</div>
+
+<!-- Max Plan -->
+<div class="bg-ytDarkBg border border-purpleAccent/50 rounded-xl p-5 space-y-4 flex flex-col hover:border-purpleAccent transition relative">
 <div>
-<div class="text-xs font-bold uppercase tracking-wider" style="color:#f97316">Pro</div>
-<div class="text-3xl font-black text-white mt-1">$29<span class="text-sm font-normal text-slate-400">/mo</span></div>
+<div class="text-xs font-bold text-purpleAccent uppercase tracking-wider">Max</div>
+<div class="text-3xl font-black text-white mt-1">$99<span class="text-sm font-normal text-slate-400">/mo</span></div>
+<p class="text-[11px] text-slate-400 mt-1">For scaling creators, multi-channels & teams</p>
 </div>
-<ul class="space-y-2 text-xs text-slate-300 flex-1">
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Everything in Starter</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> <strong class="text-white">AI Video Generator (5/mo)</strong></li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Algorithm Radar</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> AI Growth Coach</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Velocity tracking</li>
+<ul class="space-y-2.5 text-xs text-slate-300 flex-1">
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> <strong>Everything in Boost</strong></li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Multi-channel management (up to 5 channels)</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Unlimited AI Script & SEO Generations</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Advanced Competitor Outlier Multiplier (10x)</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Bulk optimization tools & exports</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> VIP Creator support channel</li>
 </ul>
-<a href="https://buy.stripe.com/00wdR984J3Xp4nBdvPcMM02" target="_blank" class="w-full py-2.5 rounded-xl text-xs font-black text-center transition block text-white" style="background:linear-gradient(135deg,#f97316,#ea580c)">Get Pro →</a>
+<a href="https://buy.stripe.com/00wdR984J3Xp4nBdvPcMM02" target="_blank" class="w-full py-2 rounded-xl text-xs font-bold text-center transition block" style="background:#a855f720;border:1px solid #a855f760;color:#c084fc">Get Max Plan →</a>
 </div>
-<!-- Agency -->
-<div class="bg-ytDarkBg border border-ytBorder rounded-xl p-4 space-y-4 flex flex-col">
+
+<!-- Boost + 1-on-1 Coaching -->
+<div class="bg-ytDarkBg border border-amber-500/40 rounded-xl p-5 space-y-4 flex flex-col hover:border-amber-400 transition relative">
 <div>
-<div class="text-xs font-bold text-purpleAccent uppercase tracking-wider">Agency</div>
-<div class="text-3xl font-black text-white mt-1">$79<span class="text-sm font-normal text-slate-400">/mo</span></div>
+<div class="text-xs font-bold text-amber-400 uppercase tracking-wider">Boost + Coaching</div>
+<div class="text-3xl font-black text-white mt-1">$199<span class="text-sm font-normal text-slate-400">/mo</span></div>
+<p class="text-[11px] text-slate-400 mt-1">Full tools + Dedicated 1-on-1 YouTube Coach</p>
 </div>
-<ul class="space-y-2 text-xs text-slate-300 flex-1">
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Everything in Pro</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Unlimited AI videos</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Multi-channel support</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> White-label exports</li>
-<li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i> Priority support</li>
+<ul class="space-y-2.5 text-xs text-slate-300 flex-1">
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> <strong>Everything in Max</strong></li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Monthly 1-on-1 strategy video call</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Direct video review (hooks, pacing, thumbnail)</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Custom personalized channel roadmap</li>
+<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Unlimited coach messaging & channel audits</li>
 </ul>
-<a href="YOUR_STRIPE_AGENCY_LINK" target="_blank" class="w-full py-2 rounded-xl text-xs font-bold text-center transition block" style="background:#a855f720;border:1px solid #a855f760;color:#a855f7">Get Agency →</a>
+<a href="https://buy.stripe.com/00wdR984J3Xp4nBdvPcMM02" target="_blank" class="w-full py-2 rounded-xl text-xs font-bold text-center transition block text-amber-300" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.5)">Get Boost + Coach →</a>
 </div>
 </div>
-<p class="text-center text-xs text-slate-500">Secure payments via Stripe · Cancel anytime · 7-day free trial on Pro & Agency</p>
+
+<div class="pt-2 border-t border-ytBorder/60 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-3">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> Secure Stripe Checkout</span>
+<span class="flex items-center gap-1.5"><i data-lucide="refresh-cw" class="w-4 h-4 text-blue-400"></i> Cancel Anytime</span>
+<span class="flex items-center gap-1.5"><i data-lucide="zap" class="w-4 h-4 text-amber-400"></i> Instant Activation</span>
+</div>
+<div class="text-[11px] text-slate-500">
+Questions? Contact creator-support@vidiq.com
+</div>
+</div>
+
 </div>
 </div>
 
@@ -1441,7 +1468,7 @@ const { roomId } = await roomRes.json();
 window.VideoSDK.config(token);
 vsdkMeeting = window.VideoSDK.initMeeting({
 meetingId: roomId,
-name: "VidPulse Creator",
+name: "vidIQ Creator",
 micEnabled: true,
 webcamEnabled: true,
 });
