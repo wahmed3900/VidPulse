@@ -215,8 +215,62 @@ Reply with ONLY a JSON object in this exact shape:
       "recommendedTags": ["#AIVoice", "#Monetization", "#YouTubeRules"]
     }
   ]
+};
+}
+
+function veoPrompt({ topic, script }) {
+  return `You are an elite cinematic video director and AI prompt engineer for Google Veo 3 and Google Vids.
+Video Topic: "${topic}"
+Script reference: "${(script || topic).slice(0, 600)}"
+
+Generate a 4-scene video generation storyboard with ultra-descriptive, cinematic text-to-video prompts tailored for Google Veo 3 and Google Vids.
+
+Reply with ONLY a JSON object in this exact shape:
+{
+  "title": "${topic}",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "segment": "Hook (0-5s)",
+      "visualDescription": "Cinematic visual breakdown of what the viewer sees",
+      "veoPrompt": "Photorealistic 4K cinematic footage: [ultra-detailed visual action, lighting e.g. soft volumetric amber rim lighting, camera movement e.g. slow forward dolly with shallow depth of field, 35mm lens, atmospheric haze]",
+      "motionInstruction": "Slow forward push-in with subtle handheld parallax and cinematic depth of field",
+      "voiceoverLine": "1 punchy opening hook sentence matching this scene"
+    },
+    {
+      "sceneNumber": 2,
+      "segment": "Core Concept (5-20s)",
+      "visualDescription": "High-interest demonstration or visual metaphor",
+      "veoPrompt": "Photorealistic 4K cinematic shot: [dynamic angle, lighting, detailed environment, motion pace]",
+      "motionInstruction": "Medium horizontal tracking shot with smooth motion blur",
+      "voiceoverLine": "1 engaging explanation sentence"
+    },
+    {
+      "sceneNumber": 3,
+      "segment": "High-Stakes Climax (20-40s)",
+      "visualDescription": "The dramatic payoff or turning point",
+      "veoPrompt": "Photorealistic 4K cinematic macro shot: [high tension visual, dramatic backlighting, fast cinematic pan]",
+      "motionInstruction": "Dynamic whip pan with speed ramp acceleration into sharp focus",
+      "voiceoverLine": "1 dramatic revelation sentence"
+    },
+    {
+      "sceneNumber": 4,
+      "segment": "Conclusion & CTA (40-60s)",
+      "visualDescription": "Inspiring closing scene with clear visual call to action",
+      "veoPrompt": "Photorealistic 4K cinematic wide shot: [golden hour warm lighting, smooth camera crane up and away]",
+      "motionInstruction": "Smooth crane pullback revealing wide horizon with warm sunset rays",
+      "voiceoverLine": "1 memorable takeaway sentence urging viewer to subscribe"
+    }
+  ],
+  "avatarPreset": {
+    "recommendedPresenter": "Charismatic tech and creator educator",
+    "voiceStyle": "Energetic, crisp, authoritative with natural pauses",
+    "backdrop": "Modern minimalist creator studio with soft neon accent lighting"
+  },
+  "workspaceVidsTranscript": "Hook: [Hook line]\\n\\nScene 2: [Concept line]\\n\\nScene 3: [Payoff line]\\n\\nConclusion: [CTA line]"
 }`;
 }
+
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
@@ -269,6 +323,11 @@ module.exports = async function handler(req, res) {
     prompt = trendsPrompt({ niche: clean(body.niche, 100) });
     json = true;
     maxTokens = 1500;
+  } else if (task === "veo") {
+    const topic = clean(body.topic, 200) || "The High-Stakes Experiment";
+    prompt = veoPrompt({ topic, script: clean(body.script, 1500) });
+    json = true;
+    maxTokens = 2000;
   } else {
     return res.status(400).json({ error: "Unknown task." });
   }
