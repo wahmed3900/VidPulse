@@ -1,7 +1,8 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, jsonify
 from flask_cors import CORS
 import edge_tts
-import asyncio, tempfile, re
+import asyncio, tempfile, re, os
+from moviepy.editor import AudioFileClip, ColorClip, TextClip, CompositeVideoClip
 
 app = Flask(__name__)
 CORS(app)
@@ -40,7 +41,72 @@ def tts():
     path = asyncio.run(generate())
     return send_file(path, mimetype='audio/mpeg', as_attachment=False)
 
+@app.route('/generate-video', methods=['POST'])
+def generate_video():
+    data = request.get_json()
+    raw_text = data.get('text', 'Hello from VidPulse')
+    voice = data.get('voice', 'en-GB-RyanNeural')
+
+    text = clean_script(raw_text)
+    print(f"\n[VIDEO] Voice: {voice}")
+    print(f"[VIDEO] Text preview: {text[:200]}...\n")
+
+    # Use temp files so concurrent requests don't collide
+    audio_tmp = tempfile.NamedTemporaryFile(suffix='.mp3', delete=False)
+    video_tmp = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
+    audio_path = audio_tmp.name
+    output_path = video_tmp.name
+    audio_tmp.close()
+    video_tmp.close()
+
+    try:
+        # 1. Generate TTS audio
+        async def create_tts():
+            communicate = edge_tts.Communicate(text, voice)
+            await communicate.save(audio_path)
+
+        asyncio.run(create_tts())
+
+        # 2. Load audio to get exact duration
+        audio_clip = AudioFileClip(audio_path)
+        duration = audio_clip.duration
+
+        # 3. Dark background clip
+        background = ColorClip(size=(1280, 720), color=(20, 20, 30), duration=duration)
+
+        # 4. Text overlay — first 120 chars of script, centered
+        preview_text = text[:120] + ('...' if len(text) > 120 else '')
+        txt_clip = (
+            TextClip(preview_text, fontsize=38, color='white', size=(1100, None), method='caption')
+            .set_duration(duration)
+            .set_position('center')
+        )
+
+        # 5. Composite and attach audio
+        video = CompositeVideoClip([background, txt_clip])
+        final_video = video.set_audio(audio_clip)
+
+        # 6. Render to MP4
+        final_video.write_videofile(
+            output_path, fps=24, codec='libx264', audio_codec='aac',
+            logger=None  # suppress verbose moviepy output
+        )
+
+        return send_file(output_path, mimetype='video/mp4', as_attachment=True,
+                         download_name='VidPulse-Generated.mp4')
+
+    except Exception as e:
+        print(f"[VIDEO ERROR] {e}")
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        try:
+            os.unlink(audio_path)
+        except Exception:
+            pass
+
+
 if __name__ == '__main__':
     print("Edge TTS server running on http://localhost:5050")
-    print("Paste this URL in your app: http://localhost:5050/tts")
+    print("Routes: POST /tts  |  POST /generate-video")
     app.run(port=5050, debug=False)
