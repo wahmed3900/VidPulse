@@ -3,7 +3,29 @@
 // sent from the browser) so this can't be used as an open LLM proxy.
 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const MODEL = "llama-3.1-8b-instant";
+const CANDIDATE_MODELS = [
+  process.env.GROQ_MODEL,
+  "openai/gpt-oss-20b",
+  "qwen/qwen3.8-27b",
+  "openai/gpt-oss-120b",
+  "llama-3.3-70b-versatile",
+].filter(Boolean);
+
+function extractJson(str) {
+  if (!str) return null;
+  const cleaned = str.replace(/```json\s*|```/gi, "").trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    const match = cleaned.match(/\{[\s\S]*\}/);
+    if (match) {
+      try {
+        return JSON.parse(match[0]);
+      } catch {}
+    }
+    return null;
+  }
+}
 
 const STYLES = {
   tutorial: "tutorial-style with step-by-step instructions",
@@ -251,36 +273,56 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: "Unknown task." });
   }
 
-  try {
-    const resp = await fetch(GROQ_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model: MODEL,
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: maxTokens,
-        temperature: json ? 0.6 : 0.8,
-        ...(json && { response_format: { type: "json_object" } }),
-      }),
-    });
-    const data = await resp.json().catch(() => ({}));
-    if (!resp.ok) {
-      console.error("Groq error", resp.status, data);
-      const busy = resp.status === 429;
-      return res.status(busy ? 429 : 502).json({
-        error: busy ? "Lots of people are using this right now — try again in a minute." : "AI service error. Please try again.",
-      });
-    }
-    const content = data.choices?.[0]?.message?.content || "";
-    if (!json) return res.status(200).json({ text: content });
+  let lastStatus = 502;
+  let lastError = "AI service error. Please try again.";
+
+  for (const model of CANDIDATE_MODELS) {
     try {
-      const parsed = JSON.parse(content);
-      return res.status(200).json({ [task]: parsed, data: parsed, seo: parsed });
-    } catch {
-      return res.status(502).json({ error: "Couldn't read the AI response. Please try again." });
+      const resp = await fetch(GROQ_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: "user", content: prompt }],
+          max_tokens: maxTokens,
+          temperature: json ? 0.6 : 0.8,
+          ...(json && { response_format: { type: "json_object" } }),
+        }),
+      });
+
+      const data = await resp.json().catch(() => ({}));
+      if (resp.ok) {
+        const content = data.choices?.[0]?.message?.content || "";
+        if (!json) return res.status(200).json({ text: content });
+
+        const parsed = extractJson(content);
+        if (parsed) {
+          return res.status(200).json({ [task]: parsed, data: parsed, seo: parsed, ideas: parsed });
+        }
+        console.warn(`JSON parsing failed on model ${model}, raw:`, content.slice(0, 100));
+        lastError = "Couldn't read the AI response. Please try again.";
+        continue;
+      }
+
+      console.error(`Groq error with model ${model}`, resp.status, data);
+      if (resp.status === 429) {
+        return res.status(429).json({ error: "Lots of people are using this right now — try again in a minute." });
+      }
+
+      lastStatus = resp.status >= 500 ? 502 : resp.status;
+      lastError = data.error?.message || "AI service error. Please try again.";
+
+      // If model not found or invalid request for this model, try next candidate model
+      if (resp.status === 404 || resp.status === 400) {
+        continue;
+      }
+      break;
+    } catch (err) {
+      console.error(`Groq network error with model ${model}`, err);
+      lastStatus = 502;
+      lastError = "Couldn't reach the AI service. Please try again.";
     }
-  } catch (err) {
-    console.error(err);
-    return res.status(502).json({ error: "Couldn't reach the AI service. Please try again." });
   }
+
+  return res.status(lastStatus).json({ error: lastError });
 };
