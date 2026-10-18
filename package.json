@@ -3,5 +3,9 @@
   "version": "1.0.0",
   "engines": {
     "node": "24.x"
-  }
+  },
+  "rewrites": [
+    { "source": "/generate500", "destination": "/api/generate500.js" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ]
 }
