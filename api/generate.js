@@ -1,5 +1,5 @@
 // api/generate.js — Vercel serverless AI endpoint
-// Provider fallback: Groq → Gemini → Anthropic
+// Provider fallback: Groq → Gemini → Anthropic (fix)
 // Keys live in Vercel env vars — never sent to the browser.
 
 // ── Provider configs ──────────────────────────────────────────────────────────
