@@ -1,7 +1,7 @@
 // Vercel serverless function: api/youtube-video.js
 // Set YOUTUBE_API_KEY in Vercel Project Settings > Environment Variables.
 // Never put your API key in browser-side HTML.
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
     return res.status(405).json({ error: "Method not allowed" });
