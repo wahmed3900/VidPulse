@@ -110,6 +110,7 @@ class="w-full pl-10 pr-24 py-2 bg-ytCard border border-ytBorder rounded-xl text-
 </button>
 </div>
 <select id="presetSelect" onchange="loadPresetVideo(this.value)" class="bg-ytCard border border-ytBorder text-xs text-slate-300 rounded-xl px-3 py-2.5 focus:outline-none focus:border-electricBlue cursor-pointer">
+<option value="" disabled selected>Demo presets (examples)</option>
 <option value="preset1">Demo preset: VidIQ Viral Growth Guide</option>
 <option value="preset2">Demo preset: AI Breakthrough Case Study</option>
 <option value="preset3">Demo preset: Extreme Challenge (Outlier 12x)</option>
@@ -346,39 +347,43 @@ Upgrade to Pro
         <span id="scriptReadTime"></span>
       </div>
 
-      <!-- ── Edge TTS Voiceover ── -->
-      <div class="flex-shrink-0 rounded-xl p-3 flex flex-col gap-2.5"
-           style="background:#0d0d0d;border:1px solid rgba(168,85,247,0.25)">
-        <div class="flex items-center justify-between">
-          <span class="text-[11px] font-bold text-purple-400 flex items-center gap-1.5">
-            <i data-lucide="mic-2" class="w-3.5 h-3.5"></i> AI Voiceover (Edge TTS)
-          </span>
-          <audio id="voiceoverAudio" controls class="h-6 hidden" style="max-width:200px;filter:invert(1) brightness(0.6)"></audio>
+      <!-- ── Hosted AI Voiceover ── -->
+      <section class="flex-shrink-0 rounded-xl p-4 flex flex-col gap-3"
+           style="background:linear-gradient(145deg,rgba(14,18,28,0.98),rgba(18,12,27,0.98));border:1px solid rgba(168,85,247,0.28)">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(168,85,247,0.16);color:#c084fc"><i data-lucide="audio-lines" class="w-4 h-4"></i></span>
+              <div><h3 class="text-sm font-bold text-white">AI voiceover</h3><p class="text-[10px] text-slate-500">Studio-quality narration · MP3 download</p></div>
+            </div>
+          </div>
+          <span class="px-2 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider" style="color:#c084fc;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.22)">ElevenLabs</span>
         </div>
-        <div class="flex items-center gap-2 flex-wrap">
-          <input id="ttsBkUrl" type="text" placeholder="Edge TTS backend URL  e.g. http://localhost:5050/tts"
-            class="flex-1 min-w-0 bg-ytCard border border-ytBorder rounded-lg px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500"
-            style="min-width:160px">
-          <select id="ttsVoice"
-            class="bg-ytCard border border-ytBorder rounded-lg px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-purple-500">
-            <option value="en-US-AriaNeural">Aria (US, Female)</option>
-            <option value="en-US-GuyNeural">Guy (US, Male)</option>
-            <option value="en-US-JennyNeural">Jenny (US, Female)</option>
-            <option value="en-GB-SoniaNeural">Sonia (UK, Female)</option>
-            <option value="en-GB-RyanNeural">Ryan (UK, Male)</option>
-            <option value="en-AU-NatashaNeural">Natasha (AU, Female)</option>
-            <option value="en-AU-WilliamNeural">William (AU, Male)</option>
-            <option value="en-IN-NeerjaNeural">Neerja (IN, Female)</option>
-          </select>
-          <button onclick="generateVoiceover()"
-            class="px-3 py-1.5 rounded-lg text-[11px] font-black flex items-center gap-1.5 transition flex-shrink-0"
-            style="background:rgba(168,85,247,0.2);color:#c084fc;border:1px solid rgba(168,85,247,0.4)"
-            id="ttsGenBtn">
-            <i data-lucide="sparkles" class="w-3 h-3"></i> Generate
-          </button>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <label class="flex flex-col gap-1 text-[10px] font-semibold text-slate-400">Voice
+            <select id="ttsVoice" class="w-full bg-ytCard border border-ytBorder rounded-lg px-2.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-purple-500">
+              <option value="JBFqnCBsd6RMkjVDRZzb">George · warm, clear</option>
+              <option value="pNInz6obpgDQGcFmaJgB">Adam · resonant, confident</option>
+              <option value="21m00Tcm4TlvDq8ikWAM">Rachel · bright, conversational</option>
+            </select>
+          </label>
+          <label class="flex flex-col gap-1 text-[10px] font-semibold text-slate-400">Delivery pace <span class="flex items-center gap-2"><input id="ttsSpeed" type="range" min="0.8" max="1.2" step="0.05" value="1" class="flex-1 accent-purple-500"><output id="ttsSpeedValue" class="w-10 text-right text-slate-300">1.00×</output></span></label>
+          <label class="flex flex-col gap-1 text-[10px] font-semibold text-slate-400 sm:col-span-2">Expression <span class="flex items-center gap-2"><input id="ttsStability" type="range" min="0.2" max="0.8" step="0.05" value="0.55" class="flex-1 accent-purple-500"><output id="ttsStabilityValue" class="w-20 text-right text-slate-300">Balanced</output></span></label>
         </div>
-        <p id="ttsStatus" class="text-[10px] text-slate-600 hidden"></p>
-      </div>
+        <div class="flex items-center justify-between gap-2 flex-wrap">
+          <p id="ttsCharCount" class="text-[10px] text-slate-500">0 / 10,000 characters</p>
+          <div class="flex items-center gap-2">
+            <button id="ttsPreviewBtn" onclick="generateVoiceover('preview')" class="px-3 py-2 rounded-lg text-[10px] font-bold text-slate-200 border border-ytBorder hover:border-purple-400 transition flex items-center gap-1.5"><i data-lucide="headphones" class="w-3 h-3"></i> Preview voice</button>
+            <button id="ttsGenBtn" onclick="generateVoiceover('script')" class="px-3 py-2 rounded-lg text-[10px] font-bold text-white transition flex items-center gap-1.5" style="background:linear-gradient(135deg,#9333ea,#6d28d9);box-shadow:0 4px 16px rgba(147,51,234,0.22)"><i data-lucide="sparkles" class="w-3 h-3"></i> Generate voiceover</button>
+          </div>
+        </div>
+        <div id="ttsPlayerWrap" class="hidden rounded-lg p-2.5" style="background:rgba(0,0,0,0.28);border:1px solid rgba(255,255,255,0.06)">
+          <div class="flex items-center justify-between gap-3 mb-2"><span class="text-[10px] text-slate-400">Your AI-generated narration</span><a id="ttsDownload" class="hidden text-[10px] font-bold text-purple-300 hover:text-white flex items-center gap-1" download="VidPulse-voiceover.mp3"><i data-lucide="download" class="w-3 h-3"></i> Download MP3</a></div>
+          <audio id="voiceoverAudio" controls class="w-full h-8"></audio>
+        </div>
+        <p id="ttsStatus" role="status" aria-live="polite" class="text-[10px] text-slate-500">Choose a voice and preview it, or generate narration from the script in your teleprompter.</p>
+        <p class="text-[9px] leading-relaxed text-slate-600">Voice is AI-generated. Audio generation uses your connected ElevenLabs API account and may incur usage charges.</p>
+      </section>
     </div>
 
   </div><!-- /modal body -->
@@ -489,6 +494,12 @@ Questions? Contact creator-support@vidiq.com
 </div>
 
 <!-- Main Dashboard -->
+<div id="dataModeNotice" class="mx-auto mt-3 px-4 max-w-[1700px] w-full">
+  <div id="dataModeNoticeInner" class="flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-[11px]" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.22);color:#fbbf24">
+    <i data-lucide="flask-conical" class="w-3.5 h-3.5 flex-shrink-0"></i><strong id="dataModeLabel">DEMO DATA</strong><span id="dataModeDetail" class="text-slate-400">Preset analytics are illustrative examples, not live YouTube measurements. Analyze a public video to load available live data.</span>
+  </div>
+</div>
+
 <main class="flex-1 p-4 lg:p-6 max-w-[1700px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
 
 <!-- LEFT PANEL -->
@@ -1355,6 +1366,7 @@ let growthChart = null, radarChart = null, heatmapActive = false;
 
 window.onload = function() {
 lucide.createIcons();
+initVoiceoverControls();
 loadPresetVideo("preset1");
 generateViralTitles();
 // Restore saved keys
@@ -1365,6 +1377,7 @@ if (savedVsdk) { const el = document.getElementById("vsdkToken"); if (el) el.val
 function loadPresetVideo(presetKey) {
 if (!presets[presetKey]) return;
 currentPreset = presets[presetKey];
+setDataMode(false);
 document.getElementById("videoTitleInput").value = currentPreset.title;
 document.getElementById("channelName").innerText = currentPreset.channel;
 document.getElementById("channelSubscribers").innerText = currentPreset.subs;
@@ -1535,6 +1548,8 @@ async function runCustomAnalysis() {
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.error || `YouTube lookup failed (${response.status})`);
 
+    setDataMode(true);
+    document.getElementById("presetSelect").value = "";
     document.getElementById("videoTitleInput").value = data.title || "Untitled video";
     document.getElementById("channelName").innerText = data.channelTitle || "Unknown channel";
     document.getElementById("channelSubscribers").innerText =
@@ -1777,10 +1792,12 @@ const words = script.split(/\s+/).filter(Boolean).length;
 const mins = Math.round(words / 130);
 document.getElementById("scriptWordCount").innerText = `${words} words`;
 document.getElementById("scriptReadTime").innerText = `~${mins} min to read`;
+updateVoiceControls();
 } else {
 tpEl.innerHTML = '<p class="text-slate-600 text-sm italic text-center mt-8">Generate a script first, then come back here to film it!</p>';
 document.getElementById("scriptWordCount").innerText = "";
 document.getElementById("scriptReadTime").innerText = "";
+updateVoiceControls();
 }
 
 // Restore token
@@ -2088,80 +2105,103 @@ document.getElementById("tpBtn").innerHTML = '<i data-lucide="play" class="w-3 h
 lucide.createIcons();
 }
 
-// ── Edge TTS Voiceover ──────────────────────────────────────────────────────
-async function generateVoiceover() {
-  const bkUrl = (document.getElementById("ttsBkUrl").value || "").trim();
-  if (!bkUrl) {
-    showTtsStatus("⚠ Enter your Edge TTS backend URL first.", "text-yellow-500");
-    return;
-  }
+// ── Hosted AI Voiceover ────────────────────────────────────────────────────
+let voiceoverObjectUrl = null;
+const VOICEOVER_MAX_CHARS = 10000;
+const VOICEOVER_PREVIEW_TEXT = "Welcome to VidPulse. This is a short preview of your selected AI narrator.";
 
-  // Get script text from teleprompter
+function initVoiceoverControls() {
+  const voice = document.getElementById("ttsVoice");
+  const speed = document.getElementById("ttsSpeed");
+  const stability = document.getElementById("ttsStability");
+  const teleprompter = document.getElementById("teleprompterText");
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem("vidpulseVoiceSettings") || "{}"); } catch { localStorage.removeItem("vidpulseVoiceSettings"); }
+  if (saved.voice && [...voice.options].some((option) => option.value === saved.voice)) voice.value = saved.voice;
+  if (saved.speed) speed.value = saved.speed;
+  if (saved.stability) stability.value = saved.stability;
+  const persist = () => {
+    localStorage.setItem("vidpulseVoiceSettings", JSON.stringify({ voice: voice.value, speed: speed.value, stability: stability.value }));
+    updateVoiceControls();
+  };
+  [voice, speed, stability].forEach((el) => el.addEventListener("input", persist));
+  teleprompter.addEventListener("input", updateVoiceControls);
+  updateVoiceControls();
+}
+
+function updateVoiceControls() {
+  const speed = document.getElementById("ttsSpeed");
+  const stability = document.getElementById("ttsStability");
+  if (speed) document.getElementById("ttsSpeedValue").textContent = `${Number(speed.value).toFixed(2)}×`;
+  if (stability) {
+    const value = Number(stability.value);
+    document.getElementById("ttsStabilityValue").textContent = value < 0.4 ? "Expressive" : value > 0.65 ? "Steady" : "Balanced";
+  }
+  const teleprompter = document.getElementById("teleprompterText");
+  const text = (teleprompter?.innerText || teleprompter?.textContent || "").trim();
+  const count = text.startsWith("Your generated script") ? 0 : text.length;
+  const counter = document.getElementById("ttsCharCount");
+  if (counter) {
+    counter.textContent = `${count.toLocaleString()} / ${VOICEOVER_MAX_CHARS.toLocaleString()} characters`;
+    counter.className = `text-[10px] ${count > VOICEOVER_MAX_CHARS ? "text-red-400" : "text-slate-500"}`;
+  }
+}
+
+async function generateVoiceover(mode = "script") {
+  const preview = mode === "preview";
   const tpEl = document.getElementById("teleprompterText");
   const scriptText = (tpEl.innerText || tpEl.textContent || "").trim();
-  if (!scriptText || scriptText.startsWith("Your generated script")) {
-    showTtsStatus("⚠ No script loaded — generate a script first.", "text-yellow-500");
+  const text = preview ? VOICEOVER_PREVIEW_TEXT : scriptText;
+  if (!preview && (!text || text.startsWith("Your generated script"))) {
+    showTtsStatus("Generate or load a script in the teleprompter before creating a voiceover.", "text-amber-400");
+    return;
+  }
+  if (text.length > VOICEOVER_MAX_CHARS) {
+    showTtsStatus("This script is over 10,000 characters. Shorten it before generating audio.", "text-red-400");
     return;
   }
 
   const voice = document.getElementById("ttsVoice").value;
-  const btn = document.getElementById("ttsGenBtn");
-  btn.disabled = true;
-  btn.innerHTML = '<svg class="w-3 h-3 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Generating…';
-  showTtsStatus("Calling Edge TTS backend…", "text-slate-400");
+  const speed = Number(document.getElementById("ttsSpeed").value);
+  const stability = Number(document.getElementById("ttsStability").value);
+  const generateButton = document.getElementById("ttsGenBtn");
+  const previewButton = document.getElementById("ttsPreviewBtn");
+  generateButton.disabled = true;
+  previewButton.disabled = true;
+  generateButton.innerHTML = '<svg class="w-3 h-3 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Creating audio…';
+  previewButton.textContent = "Please wait…";
+  showTtsStatus(preview ? "Preparing a short voice sample…" : `Generating ${text.length.toLocaleString()} characters of narration…`, "text-slate-400");
 
   try {
-    // Support both POST with JSON and GET with query params
-    // Try POST first (most Edge TTS wrappers use this)
-    let resp = await fetch(bkUrl, {
+    const response = await fetch("/api/voiceover", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: scriptText, voice })
+      body: JSON.stringify({ text, voice, speed, stability })
     });
-
-    // If POST not allowed, fall back to GET with ?text=&voice=
-    if (!resp.ok && resp.status === 405) {
-      const url = new URL(bkUrl);
-      url.searchParams.set("text", scriptText);
-      url.searchParams.set("voice", voice);
-      resp = await fetch(url.toString());
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      throw new Error(payload.error || `Voice generation failed (${response.status}). Try again.`);
     }
-
-    if (!resp.ok) {
-      const errText = await resp.text().catch(() => resp.statusText);
-      showTtsStatus(`✗ Server error ${resp.status}: ${errText.slice(0,120)}`, "text-red-400");
-      return;
-    }
-
-    const contentType = resp.headers.get("Content-Type") || "";
-    let audioUrl;
-
-    if (contentType.includes("audio/")) {
-      // Backend returns audio bytes directly
-      const blob = await resp.blob();
-      audioUrl = URL.createObjectURL(blob);
-    } else {
-      // Backend returns JSON with { url } or { audio_url }
-      const json = await resp.json();
-      audioUrl = json.url || json.audio_url || json.audioUrl || json.file;
-      if (!audioUrl) {
-        showTtsStatus("✗ Unexpected response — no audio URL in JSON.", "text-red-400");
-        return;
-      }
-    }
-
-    const audioEl = document.getElementById("voiceoverAudio");
-    audioEl.src = audioUrl;
-    audioEl.classList.remove("hidden");
-    audioEl.play().catch(() => {});
-    showTtsStatus("✓ Voiceover ready — press play or record it alongside your camera!", "text-green-400");
-    lucide.createIcons();
-
-  } catch (err) {
-    showTtsStatus(`✗ ${err.message}`, "text-red-400");
+    const blob = await response.blob();
+    if (!blob.size) throw new Error("The voice service returned an empty audio file. Please try again.");
+    if (voiceoverObjectUrl) URL.revokeObjectURL(voiceoverObjectUrl);
+    voiceoverObjectUrl = URL.createObjectURL(blob);
+    const audio = document.getElementById("voiceoverAudio");
+    audio.src = voiceoverObjectUrl;
+    document.getElementById("ttsPlayerWrap").classList.remove("hidden");
+    const download = document.getElementById("ttsDownload");
+    download.href = voiceoverObjectUrl;
+    download.download = preview ? "VidPulse-voice-preview.mp3" : "VidPulse-voiceover.mp3";
+    download.classList.toggle("hidden", preview);
+    audio.play().catch(() => {});
+    showTtsStatus(preview ? "Voice preview ready. Adjust the controls and preview again, or generate the full narration." : "Voiceover ready. Preview it here or download the MP3.", "text-green-400");
+  } catch (error) {
+    showTtsStatus(error.message || "Could not generate audio. Check your connection and try again.", "text-red-400");
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<i data-lucide="sparkles" class="w-3 h-3"></i> Generate';
+    generateButton.disabled = false;
+    previewButton.disabled = false;
+    generateButton.innerHTML = '<i data-lucide="sparkles" class="w-3 h-3"></i> Generate voiceover';
+    previewButton.innerHTML = '<i data-lucide="headphones" class="w-3 h-3"></i> Preview voice';
     lucide.createIcons();
   }
 }
@@ -2170,9 +2210,30 @@ function showTtsStatus(msg, colorClass) {
   const el = document.getElementById("ttsStatus");
   el.textContent = msg;
   el.className = `text-[10px] ${colorClass}`;
-  el.classList.remove("hidden");
 }
 
+function setDataMode(isLive) {
+  const inner = document.getElementById("dataModeNoticeInner");
+  const label = document.getElementById("dataModeLabel");
+  const detail = document.getElementById("dataModeDetail");
+  const icon = inner.querySelector("i");
+  if (isLive) {
+    inner.style.background = "rgba(34,197,94,0.07)";
+    inner.style.borderColor = "rgba(34,197,94,0.22)";
+    inner.style.color = "#4ade80";
+    label.textContent = "LIVE PUBLIC DATA";
+    detail.textContent = "Values come from YouTube’s public Data API. CTR, impressions and historical view velocity require channel-owner access.";
+    icon.setAttribute("data-lucide", "radio");
+  } else {
+    inner.style.background = "rgba(245,158,11,0.08)";
+    inner.style.borderColor = "rgba(245,158,11,0.22)";
+    inner.style.color = "#fbbf24";
+    label.textContent = "DEMO DATA";
+    detail.textContent = "Preset analytics are illustrative examples, not live YouTube measurements. Analyze a public video to load available live data.";
+    icon.setAttribute("data-lucide", "flask-conical");
+  }
+  lucide.createIcons();
+}
 
 // ── Smooth Scroll Helper ──────────────────────
 function scrollToSection(id) {
