@@ -27,3 +27,10 @@ This patch changes the Analyze button so it fetches a real video's public metada
 
 ## Important
 The preset dropdown still contains demonstration presets. Use Analyze with a real URL to load live public data. Review the project's existing Vercel structure before replacing files so you don't overwrite API routes or other working code.
+
+
+## Hosted AI voiceover
+
+The Recording Studio can generate and download narrated MP3 audio through ElevenLabs. Add `ELEVENLABS_API_KEY` in Vercel → Project Settings → Environment Variables, then redeploy. The key stays server-side; the browser calls `/api/voiceover`.
+
+Voice generation uses the ElevenLabs API and may consume paid account credits. Set a usage limit in the ElevenLabs account before sharing the public app. The endpoint accepts up to 10,000 characters per generation and applies a lightweight per-instance request limit.
