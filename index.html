@@ -41,8 +41,6 @@ sans: ['Inter', 'Roboto', 'sans-serif']
 <script src="https://unpkg.com/lucide@latest"></script>
 <!-- Chart.js for Growth Timeline and Velocity Radar -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- VideoSDK JS SDK -->
-<script src="https://sdk.videosdk.live/js-sdk/1.1.1/videosdk.js"></script>
 
 <style>
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -148,7 +146,7 @@ Upgrade to Pro
 </header>
 
 <!-- ══════════════════════════════════════════════
-     VIDEO RECORDING STUDIO MODAL (VideoSDK)
+     VIDEO RECORDING STUDIO MODAL
 ════════════════════════════════════════════════ -->
 <div id="videoStudioModal" class="fixed inset-0 z-[60] hidden items-center justify-center p-3" style="background:rgba(0,0,0,0.96);backdrop-filter:blur(16px)">
 <div class="bg-ytCard border border-ytBorder rounded-2xl w-full max-w-5xl flex flex-col relative overflow-hidden" style="max-height:95vh">
@@ -161,7 +159,7 @@ Upgrade to Pro
       </div>
       <div>
         <h2 class="font-black text-white text-base">Video Recording Studio</h2>
-        <p class="text-[11px] text-slate-400">Powered by VideoSDK · Record yourself reading your script</p>
+        <p class="text-[11px] text-slate-400">Record yourself reading your script with a local teleprompter</p>
       </div>
     </div>
     <div class="flex items-center gap-2">
@@ -180,42 +178,13 @@ Upgrade to Pro
     <!-- ── LEFT: Camera + Controls ── -->
     <div class="md:w-[45%] flex flex-col gap-3 p-4 border-b md:border-b-0 md:border-r border-ytBorder overflow-y-auto">
 
-      <!-- Step 1: VideoSDK token setup -->
-      <div id="vsdkSetup" class="space-y-3">
-        <div class="p-3.5 rounded-xl space-y-1" style="background:rgba(62,166,255,0.06);border:1px solid rgba(62,166,255,0.15)">
-          <p class="text-xs font-bold text-electricBlue flex items-center gap-1.5"><i data-lucide="info" class="w-3.5 h-3.5"></i> Quick Setup</p>
-          <p class="text-[11px] text-slate-400">Get a free VideoSDK token from their dashboard (takes 30 seconds). It unlocks camera access + cloud recording.</p>
-        </div>
-        <div class="space-y-1.5">
-          <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center justify-between">
-            <span>VideoSDK Token</span>
-            <a href="https://app.videosdk.live/api-keys" target="_blank" class="normal-case font-normal text-electricBlue hover:underline text-[10px]">Get free token →</a>
-          </label>
-          <div class="relative">
-            <input id="vsdkToken" type="password"
-              class="w-full border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition pr-10"
-              style="background:#111;border-color:#2a2a2a"
-              onfocus="this.style.borderColor='#3ea6ff'" onblur="this.style.borderColor='#2a2a2a'"
-              placeholder="eyJhbGci••••••" />
-            <i data-lucide="key" class="w-3.5 h-3.5 absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-600"></i>
-          </div>
-          <p class="text-[10px] text-slate-600">Saved locally in your browser — never sent to our servers</p>
-        </div>
-        <button onclick="startVideoSession()"
+      <div id="cameraSetup">
+        <button onclick="startCameraOnly()"
           class="w-full py-3 rounded-xl text-sm font-bold text-white transition flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.99]"
           style="background:linear-gradient(135deg,#ff0000,#cc0000);box-shadow:0 4px 24px rgba(255,0,0,0.25)">
           <i data-lucide="camera" class="w-4 h-4"></i> Start Camera
         </button>
-        <div class="flex items-center gap-2 text-[10px] text-slate-600">
-          <div class="flex-1 h-px bg-ytBorder"></div>
-          <span>or</span>
-          <div class="flex-1 h-px bg-ytBorder"></div>
-        </div>
-        <button onclick="startCameraOnly()"
-          class="w-full py-2.5 rounded-xl text-xs font-bold border text-slate-300 hover:text-white hover:bg-ytHover transition flex items-center justify-center gap-2"
-          style="border-color:#2a2a2a">
-          <i data-lucide="video" class="w-3.5 h-3.5"></i> Use Camera Without Token (Local Only)
-        </button>
+        <p class="text-[11px] text-slate-500 text-center">Camera access and recording stay in this browser.</p>
       </div>
 
       <!-- Camera Preview (shown after setup) -->
@@ -228,11 +197,6 @@ Upgrade to Pro
           <div id="recIndicator" class="absolute top-3 left-3 hidden items-center gap-1.5 px-2.5 py-1 rounded-full" style="background:rgba(0,0,0,0.85);border:1px solid rgba(239,68,68,0.5)">
             <span class="w-2 h-2 rounded-full bg-red-500 rec-pulse"></span>
             <span class="text-[11px] font-black text-red-400 tabular-nums" id="recTimer">REC 00:00</span>
-          </div>
-
-          <!-- Cloud badge -->
-          <div id="cloudBadge" class="absolute top-3 right-3 hidden items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold" style="background:rgba(0,0,0,0.8);border:1px solid rgba(62,166,255,0.3);color:#3ea6ff">
-            <i data-lucide="cloud" class="w-2.5 h-2.5"></i> VideoSDK Cloud
           </div>
 
           <!-- Live label -->
@@ -1009,7 +973,7 @@ Get SEO Suggestions
         <ul id="contentGapsList" class="space-y-1.5 text-xs text-slate-300">
           <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 mt-0.5 flex-shrink-0"></i> Step-by-step tutorial comparing automated AI scripts vs human writers.</li>
           <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 mt-0.5 flex-shrink-0"></i> Real monetization revenue split for faceless YouTube channels in 2026.</li>
-          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 mt-0.5 flex-shrink-0"></i> Complete guide to setting up VideoSDK and teleprompter recording with 0 gear.</li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 mt-0.5 flex-shrink-0"></i> Complete guide to recording with the built-in teleprompter using only your camera.</li>
         </ul>
       </div>
     </div>
@@ -1294,7 +1258,7 @@ Get SEO Suggestions
 </div>
 <div>
 <h3 class="font-black text-white text-sm">Video Recording Studio</h3>
-<p class="text-[11px] text-slate-400">Camera + teleprompter + VideoSDK cloud recording</p>
+<p class="text-[11px] text-slate-400">Camera + teleprompter + local video recording</p>
 </div>
 </div>
 <div class="grid grid-cols-3 gap-2 text-[10px] text-slate-400">
@@ -1369,9 +1333,6 @@ lucide.createIcons();
 initVoiceoverControls();
 loadPresetVideo("preset1");
 generateViralTitles();
-// Restore saved keys
-const savedVsdk = localStorage.getItem("vsdk_token");
-if (savedVsdk) { const el = document.getElementById("vsdkToken"); if (el) el.value = savedVsdk; }
 };
 
 function loadPresetVideo(presetKey) {
@@ -1759,9 +1720,8 @@ navigator.clipboard.writeText(text).then(()=>{ showToast("📋 Copied!"); }).cat
 
 
 // ══════════════════════════════════════════════
-//  VIDEO RECORDING STUDIO — VideoSDK Integration
+//  VIDEO RECORDING STUDIO — browser camera and local recording
 // ══════════════════════════════════════════════
-let vsdkMeeting = null;
 let localStream = null;
 let mediaRecorder = null;
 let recordedChunks = [];
@@ -1800,10 +1760,6 @@ document.getElementById("scriptReadTime").innerText = "";
 updateVoiceControls();
 }
 
-// Restore token
-const saved = localStorage.getItem("vsdk_token");
-if (saved) document.getElementById("vsdkToken").value = saved;
-
 lucide.createIcons();
 }
 
@@ -1815,22 +1771,15 @@ document.body.style.overflow = "";
 }
 
 // ── Camera Setup ──────────────────────────────
-async function startVideoSession() {
-const token = document.getElementById("vsdkToken").value.trim();
-if (!token) { showToast("Enter your VideoSDK token first"); return; }
-localStorage.setItem("vsdk_token", token);
-await bootCamera(true, token);
-}
-
 async function startCameraOnly() {
-await bootCamera(false, null);
+await bootCamera();
 }
 
-async function bootCamera(withSDK, token) {
+async function bootCamera() {
 try {
 localStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: 1280, height: 720 }, audio: true });
 document.getElementById("localVideo").srcObject = localStream;
-document.getElementById("vsdkSetup").classList.add("hidden");
+document.getElementById("cameraSetup").classList.add("hidden");
 const preview = document.getElementById("cameraPreview");
 preview.classList.remove("hidden");
 preview.classList.add("flex");
@@ -1841,10 +1790,6 @@ showToast("📷 Camera live! Hit Record when ready.");
 // Populate device selectors
 await populateDevices();
 
-// Init VideoSDK meeting for cloud recording
-if (withSDK && token && window.VideoSDK) {
-initVsdkMeeting(token);
-}
 lucide.createIcons();
 } catch(err) {
 showToast("Camera access denied — allow camera permissions and try again");
@@ -1916,41 +1861,6 @@ const vid = document.getElementById("localVideo");
 vid.style.transform = camFlipped ? "scaleX(-1)" : "scaleX(1)";
 }
 
-// ── VideoSDK Meeting (cloud recording) ────────
-async function initVsdkMeeting(token) {
-try {
-const roomRes = await fetch("https://api.videosdk.live/v2/rooms", {
-method: "POST",
-headers: { "Authorization": token, "Content-Type": "application/json" }
-});
-if (!roomRes.ok) { console.log("VideoSDK room creation failed — using local-only recording"); return; }
-const { roomId } = await roomRes.json();
-
-window.VideoSDK.config(token);
-vsdkMeeting = window.VideoSDK.initMeeting({
-meetingId: roomId,
-name: "vidIQ Creator",
-micEnabled: true,
-webcamEnabled: true,
-});
-vsdkMeeting.join();
-vsdkMeeting.on("meeting-joined", () => {
-const badge = document.getElementById("cloudBadge");
-badge.classList.remove("hidden");
-badge.classList.add("flex");
-showToast("☁️ VideoSDK cloud recording ready");
-console.log("VideoSDK meeting joined:", roomId);
-});
-vsdkMeeting.on("meeting-left", () => {
-const badge = document.getElementById("cloudBadge");
-badge.classList.add("hidden");
-badge.classList.remove("flex");
-});
-} catch(e) {
-console.log("VideoSDK cloud recording not available:", e.message);
-}
-}
-
 // ── Record / Stop ─────────────────────────────
 function startStopRecording() {
 if (mediaRecorder && mediaRecorder.state === "recording") {
@@ -1964,8 +1874,6 @@ btn.innerHTML = '<i data-lucide="circle" class="w-3 h-3 fill-white"></i> Record'
 btn.style.background = "linear-gradient(135deg,#ff0000,#cc0000)";
 btn.style.boxShadow = "0 2px 12px rgba(255,0,0,0.3)";
 lucide.createIcons();
-// Stop VideoSDK cloud recording
-if (vsdkMeeting) { try { vsdkMeeting.stopRecording(); } catch(e) {} }
 showToast("Recording stopped — processing...");
 } else {
 // START
@@ -2004,8 +1912,6 @@ btn.innerHTML = '<i data-lucide="square" class="w-3 h-3 fill-white"></i> Stop';
 btn.style.background = "#ef4444";
 btn.style.boxShadow = "0 2px 12px rgba(239,68,68,0.4)";
 lucide.createIcons();
-// Start VideoSDK cloud recording
-if (vsdkMeeting) { try { vsdkMeeting.startRecording(); } catch(e) {} }
 showToast("🔴 Recording started...");
 }
 }
@@ -2037,18 +1943,14 @@ if (mediaRecorder && mediaRecorder.state !== "inactive") { try { mediaRecorder.s
 clearInterval(recTimerInterval);
 // Stop camera/mic
 if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
-// Leave VideoSDK
-if (vsdkMeeting) { try { vsdkMeeting.leave(); } catch(e) {} vsdkMeeting = null; }
 // Stop teleprompter
 stopTeleprompterScroll();
 // Reset UI
-document.getElementById("vsdkSetup").classList.remove("hidden");
+document.getElementById("cameraSetup").classList.remove("hidden");
 const preview = document.getElementById("cameraPreview");
 preview.classList.add("hidden"); preview.classList.remove("flex");
 document.getElementById("studioStatus").classList.add("hidden");
 document.getElementById("studioStatus").classList.remove("flex");
-const badge = document.getElementById("cloudBadge");
-badge.classList.add("hidden"); badge.classList.remove("flex");
 document.getElementById("downloadSection").classList.add("hidden");
 document.getElementById("recIndicator").classList.add("hidden");
 document.getElementById("recIndicator").classList.remove("flex");
