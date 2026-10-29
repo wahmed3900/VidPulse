@@ -353,10 +353,21 @@ module.exports = async function handler(req, res) {
 
   const hasKey = process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY || process.env.ANTHROPIC_API_KEY;
   if (!hasKey) {
-    return res.status(500).json({ error: "AI is not configured yet. Please try again later." });
+    return res.status(503).json({
+      error: "Script generation is not set up yet. Add GROQ_API_KEY, GEMINI_API_KEY, or ANTHROPIC_API_KEY in your Vercel project’s Environment Variables, then redeploy.",
+    });
   }
 
-  const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
+  let body;
+  try {
+    body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
+  } catch {
+    return res.status(400).json({ error: "The request could not be read. Please refresh and try again." });
+  }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return res.status(400).json({ error: "The request could not be read. Please refresh and try again." });
+  }
+
   const task = body.task;
   let prompt, json = false, maxTokens = 2048;
 
