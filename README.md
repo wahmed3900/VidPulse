@@ -34,3 +34,8 @@ The preset dropdown still contains demonstration presets. Use Analyze with a rea
 The Recording Studio can generate and download narrated MP3 audio through ElevenLabs. Add `ELEVENLABS_API_KEY` in Vercel → Project Settings → Environment Variables, then redeploy. The key stays server-side; the browser calls `/api/voiceover`.
 
 Voice generation uses the ElevenLabs API and may consume paid account credits. Set a usage limit in the ElevenLabs account before sharing the public app. The endpoint accepts up to 10,000 characters per generation and applies a lightweight per-instance request limit.
+
+
+## AI script generation setup
+
+Script generation and the other AI tools require at least one server-side provider key: `GROQ_API_KEY`, `GEMINI_API_KEY`, or `ANTHROPIC_API_KEY`. Add the key in Vercel → Project → Settings → Environment Variables, enable it for the deployment environment, and redeploy. Do not put provider keys in the browser or commit them to GitHub. The separate `ELEVENLABS_API_KEY` only enables voiceover and does not enable script generation.
